@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>修改配置</title>
+    <link rel="stylesheet" href="${os.mcss}" />
+
+
+</head>
+<body>
+    <div class="form form2" id="form1" style="padding:20px">
+        <div class="title" style="margin-top:0"><span class="icon icon1"></span>基本</div>
+
+        <div class="fl">
+            <div class="label"><span class="red">*</span>开发者URL：</div>
+            <div class="in">
+                <div field="Weixin_Url" style="border:solid 1px #ff6600;background:gold;color:#000;padding:2px 5px;float: left">
+                    ${data.url}
+                </div>
+                *拷贝此Url到微信后台
+            </div>
+        </div>
+
+        <div class="fl">
+            <div class="label"><span class="red">*</span>开发者Token：</div>
+            <div class="in">
+                <input type="text" class="tb_normal ui-validate" required="true" field="Weixin_Token" value="${data.token}" />
+            </div>
+        </div>
+        <br />
+        <div class="title" style="margin-top:0"><span class="icon icon1"></span>微信API设置</div>
+        <div class="fl">
+            <div class="label"><span class="red">*</span>AppId：</div>
+            <div class="in">
+                <input type="text" class="tb_normal ui-validate" required="true" field="Weixin_AppId" value="${data.appId}" />
+            </div>
+        </div>
+        <div class="fl">
+            <div class="label"><span class="red">*</span>AppSecret：</div>
+            <div class="in">
+                <input type="text" class="tb_normal ui-validate" required="true" field="Weixin_AppSecret" value="${data.appSecret}" />
+            </div>
+        </div>
+
+        <div class="fl">
+            <div class="label"><span class="red">*</span>消息解密<br />AES KEY：</div>
+            <div class="in">
+                <input type="text" class="tb_normal ui-validate" field="Weixin_AppEncodeString" value="${data.aes}" />
+                <div class="note">如果为明文模式，则不填写。</div>
+            </div>
+        </div>
+
+
+        <div class="title" style="margin-top: 0"><span class="icon icon1"></span>其他设置</div>
+        <div class="fl">
+            <div class="label">
+                <span class="red">*</span>欢迎语：
+            </div>
+            <div class="in">
+                <textarea class="tb_normal ui-validate" field="Weixin_WelcomeMessage" rows="3">${data.welcomeMessage}</textarea>
+                <div class="note">留空，则自动调用素材(key:welcome)。</div>
+            </div>
+        </div>
+
+        <div class="fl hidden">
+            <div class="label">
+                <span class="red">*</span>进入微信消息：
+            </div>
+            <div class="in">
+                <textarea class="tb_normal ui-validate" field="Weixin_EnterMessage" rows="3">${data.enterMessage}</textarea>
+                <div class="note">留空，则自动调用素材(名称:enter)。</div>
+            </div>
+        </div>
+
+        <div class="fl">
+            <div class="label">
+                <span class="red">*</span>默认自动回复消息：
+            </div>
+            <div class="in">
+                <textarea class="tb_normal ui-validate" field="Weixin_DefaultResponseMessage" rows="3">${data.defaultRspMessage}</textarea>
+                <div class="note">留空则不自动回复。</div>
+            </div>
+        </div>
+
+        <div class="fl">
+            <div class="label"></div>
+            <div class="in">
+                <a class="btn leftbtn" id="btn_save" href="javascript:void(0);">保存</a>
+            </div>
+        </div>
+
+
+        <div class="btnarea" style="padding-left:58px;padding-top:25px;">
+
+        </div>
+    </div>
+
+    <script src="${os.mjs}" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        window.saveData = function () {
+            if (cms.validator.validate('form1')) {
+                var data = cms.json.toObject('form1');
+                cms.xhr.jsonPost(location.href, data, function (json) {
+                    if (json.result) {
+                        parent.M.alert(json.message);
+                    } else {
+                        parent.M.alert(json.message);
+                    }
+                });
+            }
+        };
+
+        cms.$('btn_save').onclick = window.saveData;
+
+
+    </script>
+
+</body>
+</html>

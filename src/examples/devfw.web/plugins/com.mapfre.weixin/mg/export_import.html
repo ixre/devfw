@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>导入数据</title>
+    <link rel="Stylesheet" type="text/css" href="${page.domain}/admin?res=c3R5bGU=&amp;${os.version}.css" />
+    <style>
+        dl{ clear: both;}
+        dt{ width: 120px;float: left;}
+        dd{ float: left;}
+    </style>
+</head>
+    <body>
+        <div class="form">
+          <table>
+            <tr>
+              <td style="width:100px">上传数据文件：</td>
+              <td>
+                <input type="text" class="ui-validate" field="file" id="file" tipin="file_tip" />
+                <span id="file_tip">(*.xls文件)</span>
+                <div style="position:relative">
+                  <span style="display: inline-block; position: relative;" id="upload1">上传文件</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>下载数据模板:</td>
+              <td>
+                <a href="${os.ppath}/xls/2014_ipt_sheet.xls">点击这里下载</a>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <a id="btn" field="Btn" class="btn" href="javascript:;">导入</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <script type="text/javascript" src="${page.domain}/admin?res=c2NyaXB0&amp;${os.version}.js"></script>
+        <script type="text/javascript">
+            var upload = cms.upload({
+                id: 'upload1',
+                url: '/admin?module=upload&action=uploadimage&for=link&upload.id=upload',
+                exts: '*.xls'
+            }, function (result, data) {
+                if (result) {
+                    $JS.$('file').value = data.url;
+                } else {
+                    alert('上传失败：' + data);
+                }
+            });
+
+            if (/MSIE\s[6|7]/.test(window.navigator.userAgent) && window.parent!=window) {
+                var e = $JS.$('upload1').getElementsByTagName('INPUT')[0];
+                e.style.cssText += ';filter:alpha(opacity=100)';
+            }
+
+           $JS.$('btn').onclick = function () {
+                J.$('btn').setAttribute('disabled', 'disabled');
+                J.$('btn').innerHTML = '正在导入...';
+                $JS.xhr.jsonPost('', { file: $JS.$('file').value }, function(json) {
+                    alert(json.message);
+                    if (json.result) {
+                        window.parent.location.reload();
+                    } else {
+                        $JS.$('btn').removeAttribute('disabled');
+                        J.$('btn').innerHTML = '导入';
+                    }
+                },function() {
+                    alert('导入过程中发生了出错！');
+                });
+            }
+        </script>
+</body>
+</html>
