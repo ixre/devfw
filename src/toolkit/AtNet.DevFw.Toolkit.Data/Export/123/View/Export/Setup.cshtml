@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .ui-export{padding:15px;}
+    .ui-export ul{margin:0;padding:0;}
+    .ui-export input,.ui-export label{vertical-align:middle;}
+    .ui-export li{float:left;margin-right:10px;line-height:30px;}
+    .btn_export{margin-left:16px;}
+    strong{color:#333;}
+</style>
+
+
+
+@Html.Raw(ViewBag.SetupHtml)
+<!--
+    <input type="button" value="导出并发送到邮箱"/>
+    -->  
+<script type="text/javascript">
+    EXPORT.config.jsonHandler = J4HTML;
+    EXPORT.config.urlHandler = "processExport";
+
+</script>
