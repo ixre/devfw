@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using AtNet.DevFw.Framework;
 using AtNet.DevFw.Framework.Net;
+using AtNet.DevFw.PluginKernel;
 using AtNet.DevFw.Web;
 using Newtonsoft.Json;
 using Senparc.Weixin.MP;
@@ -195,8 +196,15 @@ namespace Com.Plugin.Weixin
         {
             if (_authUrlPrefix == null)
             {
-                _authUrlPrefix =WebCtx.Domain +
-                    Config.PluginAttr.WorkIndent + ".sh.aspx/";
+                String overrideIndent =  Config.PluginAttr.Settings[DefaultSettingKeys.OverrideUrlIndent];
+                if (overrideIndent == null || overrideIndent.Trim() == "")
+                {
+                    _authUrlPrefix = WebCtx.Domain + "/" + Config.PluginAttr.WorkIndent + ".sh.aspx/";
+                }
+                else
+                {
+                    _authUrlPrefix = WebCtx.Domain + "/" + overrideIndent + "/";
+                }
             }
             return _authUrlPrefix;
         }
