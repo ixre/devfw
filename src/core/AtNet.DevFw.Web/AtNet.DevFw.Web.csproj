@@ -16,11 +16,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\dist\dll\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\AtNet.DevFw.Web.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -67,25 +68,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AtNet.DevFw.Core\AtNet.DevFw.Core.csproj">
+    <Folder Include="Mvc\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AtNet.DevFw.Core\AtNet.DevFw.Core.csproj">
       <Project>{44e05d6c-5b0a-453a-913f-00124d1bf435}</Project>
       <Name>AtNet.DevFw.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\AtNet.DevFw.Data\AtNet.DevFw.Data.csproj">
-      <Project>{1d053644-937a-4d8e-9740-43823183a39a}</Project>
-      <Name>AtNet.DevFw.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AtNet.DevFw.PluginKernel\kernel\AtNet.DevFw.PluginKernel.csproj">
+    <ProjectReference Include="..\AtNet.DevFw.PluginKernel\kernel\AtNet.DevFw.PluginKernel.csproj">
       <Project>{cad14dcc-112c-4b28-98eb-1ce143d09033}</Project>
       <Name>AtNet.DevFw.PluginKernel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\AtNet.DevFw.Template\AtNet.DevFw.Template.csproj">
+    <ProjectReference Include="..\AtNet.DevFw.Template\AtNet.DevFw.Template.csproj">
       <Project>{275cae3e-a9e0-4de0-8031-e9137bbdd693}</Project>
       <Name>AtNet.DevFw.Template</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mvc\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
