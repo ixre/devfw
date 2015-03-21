@@ -31,8 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtNet.DevFw.Toolkit.Region"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtNet.DevFw.Toolkit.Tags", "toolkit\AtNet.DevFw.Toolkit.Tags\AtNet.DevFw.Toolkit.Tags.csproj", "{1E9FCAD5-DF56-469B-BCEB-806BF9085A47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtNet.DevFw.Toolkit.ThirdApi", "toolkit\AtNet.DevFw.Toolkit.ThirdApi\AtNet.DevFw.Toolkit.ThirdApi.csproj", "{D1FBD275-BF29-4823-970A-0F341BF99A9F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,18 +151,6 @@ Global
 		{1E9FCAD5-DF56-469B-BCEB-806BF9085A47}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1E9FCAD5-DF56-469B-BCEB-806BF9085A47}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1E9FCAD5-DF56-469B-BCEB-806BF9085A47}.Release|x86.ActiveCfg = Release|Any CPU
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Debug|x86.ActiveCfg = Debug|x86
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Debug|x86.Build.0 = Debug|x86
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Release|Mixed Platforms.Build.0 = Release|x86
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Release|x86.ActiveCfg = Release|x86
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -181,7 +167,6 @@ Global
 		{74914743-7506-414A-8F6B-45E5479F0127} = {BCF72535-6C75-4DFB-BCDC-5242AAF7FE5D}
 		{84942A04-73A1-447A-9D39-CC1CF88B5158} = {BCF72535-6C75-4DFB-BCDC-5242AAF7FE5D}
 		{1E9FCAD5-DF56-469B-BCEB-806BF9085A47} = {BCF72535-6C75-4DFB-BCDC-5242AAF7FE5D}
-		{D1FBD275-BF29-4823-970A-0F341BF99A9F} = {BCF72535-6C75-4DFB-BCDC-5242AAF7FE5D}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = OPS.BaseLib.vsmdi
