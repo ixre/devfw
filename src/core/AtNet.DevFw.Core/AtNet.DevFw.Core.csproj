@@ -36,7 +36,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ops.core.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>atnet.devfw.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -131,7 +131,7 @@
   <ItemGroup>
     <None Include="Framework\Security\AESCrypto.cs" />
     <None Include="OPS.Core.cd" />
-    <None Include="ops.core.snk" />
+    <None Include="atnet.devfw.snk" />
     <None Include="Framework\Service\Service.config">
       <SubType>Designer</SubType>
     </None>

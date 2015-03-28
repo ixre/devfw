@@ -1,6 +1,6 @@
 ﻿
 /*
-* Copyright(C) 2010-2013 OPSoft Inc
+* Copyright(C) 2010-2013 S1N1.COM
 * 
 * File Name	: TemplateUrlRule
 * Author	: Newmin (new.min@msn.com)

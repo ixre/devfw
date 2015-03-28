@@ -1,6 +1,6 @@
 //
 //
-//  Copryright 2011 @ OPSoft INC.All rights reseved.
+//  Copryright 2011 @ S1N1.COM.All rights reseved.
 //
 //  Project : OPS.Data
 //  File Name : OLEDBFactory.cs

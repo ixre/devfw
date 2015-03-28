@@ -41,16 +41,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Data.Sqlite">
-      <HintPath>..\..\..\dll\Mono.Data.Sqlite.dll</HintPath>
+      <HintPath>..\..\..\..\weixinmp\src\dev.fw\dll\Mono.Data.Sqlite.dll</HintPath>
     </Reference>
     <Reference Include="mysql.data">
-      <HintPath>..\..\..\dll\mysql.data.dll</HintPath>
+      <HintPath>..\..\..\..\weixinmp\src\dev.fw\dll\mysql.data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite">
-      <HintPath>..\..\..\dll\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\..\..\weixinmp\src\dev.fw\dll\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>

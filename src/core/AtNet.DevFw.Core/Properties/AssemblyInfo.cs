@@ -14,7 +14,7 @@ using System.Security;
 [assembly: AssemblyTitle("OPSoft.CoreLib ,dotnet平台框架")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("OPSoft INC  (www.ops.cc)")]
+[assembly: AssemblyCompany("S1N1.COM  (www.ops.cc)")]
 [assembly: AssemblyProduct("OPSoft.CoreLibrary")]
 [assembly: AssemblyCopyright("Copyright © OPSoft 2012")]
 [assembly: AssemblyTrademark("")]

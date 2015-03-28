@@ -1,5 +1,5 @@
 ﻿//
-// Copyright (C) 2007-2012 OPSoft INC,All rights reseved.
+// Copyright (C) 2007-2012 S1N1.COM,All rights reseved.
 // 
 // Project: OPS.Data.Extensions
 // FileName : ObjectExtensions.cs

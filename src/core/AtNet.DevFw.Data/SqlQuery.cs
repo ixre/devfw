@@ -1,6 +1,6 @@
 ﻿//
 //
-//  Copryright 2013 @ OPSoft INC.All rights reseved.
+//  Copryright 2013 @ S1N1.COM.All rights reseved.
 //
 //  Project : OPS.Data
 //  File Name : SqlEntity.cs
