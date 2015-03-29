@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("标签组件-多配置文件版本")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("OPSoft Inc")]
+[assembly: AssemblyCompany("S1N1.COM")]
 [assembly: AssemblyProduct("OPSoft.Tags")]
-[assembly: AssemblyCopyright("Copyright ©  2012 OPSoft INC.")]
+[assembly: AssemblyCopyright("Copyright ©  2012 S1N1.COM.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
