@@ -1,6 +1,6 @@
 //
 //
-//  Copyright 2011 @ OPSoft Inc.all rights reseved.
+//  Copyright 2011 @ S1N1.COM.all rights reseved.
 //
 //  Project : Untitled
 //  File Name : PropertyRule.cs

@@ -72,7 +72,7 @@ namespace AtNet.DevFw.Toolkit.NetCrawl {
         ///&lt;!--
         ///
         /////
-        ///// Copyright 2011 @ OPSoft INC,All rights reseved.
+        ///// Copyright 2011 @ S1N1.COM,All rights reseved.
         ///// Project : 奥博网站管理系统
         ///// Name : 采集组件
         ///// Author : Newmin (newmin.net@gmail.com)
@@ -105,7 +105,7 @@ namespace AtNet.DevFw.Toolkit.NetCrawl {
         ///&lt;!--
         ///
         /////
-        ///// Copyright 2011 @ OPSoft INC,All rights reseved.
+        ///// Copyright 2011 @ S1N1.COM,All rights reseved.
         ///// Project : 奥博网站管理系统
         ///// Name : 采集组件
         ///// Author : Newmin (newmin.net@gmail.com)
@@ -142,7 +142,7 @@ namespace AtNet.DevFw.Toolkit.NetCrawl {
         ///&lt;!--
         ///
         /////
-        ///// Copyright 2011 @ OPSoft INC,All rights reseved.
+        ///// Copyright 2011 @ S1N1.COM,All rights reseved.
         ///// Project : 奥博网站管理系统
         ///// Name : 采集组件
         ///// Author : Newmin (newmin.net@gmail.com)
@@ -176,7 +176,7 @@ namespace AtNet.DevFw.Toolkit.NetCrawl {
         ///&lt;!--
         ///
         /////
-        ///// Copyright 2011 @ OPSoft INC,All rights reseved.
+        ///// Copyright 2011 @ S1N1.COM,All rights reseved.
         ///// Project : 奥博网站管理系统
         ///// Name : 采集组件
         ///// Author : Newmin (newmin.net@gmail.com)
@@ -222,7 +222,7 @@ namespace AtNet.DevFw.Toolkit.NetCrawl {
         ///&lt;!--
         ///
         /////
-        ///// Copyright 2011 @ OPSoft INC,All rights reseved.
+        ///// Copyright 2011 @ S1N1.COM,All rights reseved.
         ///// Project : 奥博网站管理系统
         ///// Name : 采集组件
         ///// Author : Newmin (newmin.net@gmail.com)
@@ -280,7 +280,7 @@ namespace AtNet.DevFw.Toolkit.NetCrawl {
         ///&lt;!--
         ///
         /////
-        ///// Copyright 2011 @ OPSoft INC,All rights reseved.
+        ///// Copyright 2011 @ S1N1.COM,All rights reseved.
         ///// Project : 奥博网站管理系统
         ///// Name : 采集组件
         ///// Author : Newmin (newmin.net@gmail.com)
@@ -354,7 +354,7 @@ namespace AtNet.DevFw.Toolkit.NetCrawl {
         ///&lt;!--
         ///
         /////
-        ///// Copyright 2011 @ OPSoft INC,All rights reseved.
+        ///// Copyright 2011 @ S1N1.COM,All rights reseved.
         ///// Project : 奥博网站管理系统
         ///// Name : 采集组件
         ///// Author : Newmin (newmin.net@gmail.com)

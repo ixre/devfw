@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OPSoft采集组件")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("OPSoft INC")]
+[assembly: AssemblyCompany("S1N1.COM")]
 [assembly: AssemblyProduct("OPS.NetCrawl")]
 [assembly: AssemblyCopyright("Copyright ©  2012 OPSoft")]
 [assembly: AssemblyTrademark("")]

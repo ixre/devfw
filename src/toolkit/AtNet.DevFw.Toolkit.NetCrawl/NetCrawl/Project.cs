@@ -1,6 +1,6 @@
 //
 //
-//  Copyright 2011 (C) OPSoft INC,All rights reseved.
+//  Copyright 2011 (C) S1N1.COM,All rights reseved.
 //  -----------------------------
 //  Project : OPSoft.Plugin.NetCrawl
 //  File Name : Project.cs
