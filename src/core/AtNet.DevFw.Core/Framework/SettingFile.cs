@@ -24,17 +24,21 @@ namespace AtNet.DevFw.Framework
     /// </summary>
     public class SettingFile
     {
-        private string filePath;
-        private XmlDocument xdoc;
-        private XmlNode rootNode;
+        private readonly string _filePath;
+        private readonly XmlDocument _xdoc;
+        private readonly XmlNode _rootNode;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filePath"></param>
         public SettingFile(string filePath)
         {
-            xdoc = new XmlDocument();
-            this.filePath = filePath;
+            this._xdoc = new XmlDocument();
+            this._filePath = filePath;
 
             //不存在，则创建
-            if (!File.Exists(this.filePath))
+            if (!File.Exists(this._filePath))
             {
                 File.Create(filePath).Dispose();
                 const string initData = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<settings>\r\n</settings>";
@@ -47,11 +51,11 @@ namespace AtNet.DevFw.Framework
             }
 
             //读取文档
-            using (TextReader tr = new StreamReader(this.filePath))
+            using (TextReader tr = new StreamReader(this._filePath))
             {
-                xdoc.LoadXml(tr.ReadToEnd());
+                _xdoc.LoadXml(tr.ReadToEnd());
                 tr.Dispose();
-                this.rootNode = xdoc.SelectSingleNode("//settings");
+                this._rootNode = _xdoc.SelectSingleNode("/settings");
             }
         }
 
@@ -63,7 +67,7 @@ namespace AtNet.DevFw.Framework
         /// <returns></returns>
         public bool Contains(string key)
         {
-            return this.rootNode.SelectSingleNode(String.Format("/settings/add[@key='{0}']", key)) != null;
+            return this._rootNode.SelectSingleNode(String.Format("/settings/add[@key='{0}']", key)) != null;
         }
 
         /// <summary>
@@ -73,46 +77,63 @@ namespace AtNet.DevFw.Framework
         /// <returns></returns>
         public string this[string key]
         {
-            get
-            {
-                XmlNode node = this.rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
-                if (node == null)
-                {
-                    throw new ArgumentOutOfRangeException("key", "no such key named \"" + key + "\"");
-                }
-                return node.InnerText;
-            }
+            get { return this.Get(key); }
             set
             {
-                XmlNode node = this.rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
-                if (node == null)
-                {
-                    throw new ArgumentOutOfRangeException("key", "no such key named \"" + key+"\"");
-                }
-
-
-                //如果不是文本注释,删除第一个节点并重新保存值
-                if (node.FirstChild.Name == "#cdata-section")
-                {
-                    (node.FirstChild as XmlCDataSection).InnerText = value;
-                }
-                else
-                {
-                    node.RemoveChild(node.FirstChild);
-                    node.InsertBefore(xdoc.CreateCDataSection(value), node.FirstChild);
-                }
+                this.Set(key, value);
             }
         }
 
-        [Obsolete]
-        public void Append(string key, string value)
+        /// <summary>
+        /// Get the field value by key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string Get(String key)
         {
-            this.Add(key, value);
+            XmlNode node = this._rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
+            if (node == null)
+            {
+                throw new ArgumentOutOfRangeException("key", "no such key named \"" + key + "\"");
+            }
+            return node.InnerText;
+        }
+
+        /// <summary>
+        /// Set field value, if not exits will add new one.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public void Set(String key, String value)
+        {
+            XmlNode node = this._rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
+            if (node == null)
+            {
+                this.Add(key,value,false);
+                return;
+                //throw new ArgumentOutOfRangeException("key", "no such key named \"" + key + "\"");
+            }
+
+
+            //如果不是文本注释,删除第一个节点并重新保存值
+            if (node.FirstChild.Name == "#cdata-section")
+            {
+                XmlCDataSection xmlCDataSection = node.FirstChild as XmlCDataSection;
+                if (xmlCDataSection != null) xmlCDataSection.InnerText = value;
+            }
+            else
+            {
+                node.RemoveChild(node.FirstChild);
+                node.InsertBefore(_xdoc.CreateCDataSection(value), node.FirstChild);
+            }
         }
 
         /// <summary>
         /// 添加新的设置
         /// </summary>
+        [Obsolete]
         public void Add(string key, string value)
         {
             this.Add(key, value, false);
@@ -124,10 +145,11 @@ namespace AtNet.DevFw.Framework
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="ignoreExist">是否忽略已经存在的配置</param>
-        public void Add(string key, string value, bool ignoreExist)
+        private void Add(string key, string value, bool ignoreExist)
         {
             //检查是否已经存在
-            XmlNode _xn = this.rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
+            XmlNode _xn;
+            _xn = this._rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
             if (_xn != null)
             {
                 if (ignoreExist)
@@ -140,18 +162,18 @@ namespace AtNet.DevFw.Framework
                 }
             }
 
-            XmlNode root = this.rootNode;
+            XmlNode root = this._rootNode;
 
 
-            XmlNode xn = xdoc.CreateElement("add");
+            XmlNode xn = _xdoc.CreateElement("add");
 
             //添加key属性
-            XmlAttribute xa = xdoc.CreateAttribute("key");
+            XmlAttribute xa = _xdoc.CreateAttribute("key");
             xa.Value = key;
-            xn.Attributes.Append(xa);
+            if (xn.Attributes != null) xn.Attributes.Append(xa);
 
             //添加JSON内容
-            xn.AppendChild(xdoc.CreateCDataSection(value));
+            xn.AppendChild(_xdoc.CreateCDataSection(value));
 
             //将新元素添加到DOM
             root.AppendChild(xn);
@@ -163,10 +185,10 @@ namespace AtNet.DevFw.Framework
         /// <param name="key"></param>
         public void Remove(string key)
         {
-            XmlNode _xn = this.rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
+            XmlNode _xn = this._rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
             if (_xn != null)
             {
-                this.rootNode.RemoveChild(_xn);
+                this._rootNode.RemoveChild(_xn);
             }
         }
 
@@ -180,13 +202,16 @@ namespace AtNet.DevFw.Framework
         {
             IDictionary<string, string> dict = new Dictionary<string, string>();
 
-            XmlNodeList node = this.rootNode.SelectNodes(String.Format("add[contains(@key,'{0}')]", keyword));
+            XmlNodeList node = this._rootNode.SelectNodes(String.Format("add[contains(@key,'{0}')]", keyword));
 
-            if (node.Count != 0)
+            if (node != null && node.Count != 0)
             {
                 foreach (XmlNode xn in node)
                 {
-                    dict.Add(xn.Attributes["key"].Value, xn.InnerText);
+                    if (xn.Attributes != null)
+                    {
+                        dict.Add(xn.Attributes["key"].Value, xn.InnerText);
+                    }
                 }
             }
 
@@ -206,7 +231,7 @@ namespace AtNet.DevFw.Framework
                 tr.Dispose();
             }*/
 
-            xdoc.Save(this.filePath);
+            _xdoc.Save(this._filePath);
         }
     }
 }
