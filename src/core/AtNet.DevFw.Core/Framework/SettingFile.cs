@@ -88,7 +88,7 @@ namespace AtNet.DevFw.Framework
         /// Get the field value by key
         /// </summary>
         /// <param name="key"></param>
-        /// <returns></returns>
+         
         public string Get(String key)
         {
             XmlNode node = this._rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
@@ -111,7 +111,7 @@ namespace AtNet.DevFw.Framework
             XmlNode node = this._rootNode.SelectSingleNode(String.Format("add[@key='{0}']", key));
             if (node == null)
             {
-                this.Add(key,value,false);
+                this.Add(key,value??"",false);
                 return;
                 //throw new ArgumentOutOfRangeException("key", "no such key named \"" + key + "\"");
             }
@@ -121,12 +121,12 @@ namespace AtNet.DevFw.Framework
             if (node.FirstChild.Name == "#cdata-section")
             {
                 XmlCDataSection xmlCDataSection = node.FirstChild as XmlCDataSection;
-                if (xmlCDataSection != null) xmlCDataSection.InnerText = value;
+                if (xmlCDataSection != null) xmlCDataSection.InnerText = value??"";
             }
             else
             {
                 node.RemoveChild(node.FirstChild);
-                node.InsertBefore(_xdoc.CreateCDataSection(value), node.FirstChild);
+                node.InsertBefore(_xdoc.CreateCDataSection(value??""), node.FirstChild);
             }
         }
 

@@ -1,7 +1,15 @@
 ﻿namespace AtNet.DevFw.PluginKernel
 {
+    /// <summary>
+    /// 插件接口
+    /// </summary>
     public interface IPlugin
     {
+        /// <summary>
+        /// 连接插件
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
         PluginConnectionResult Connect(IPluginHost app);
 
 

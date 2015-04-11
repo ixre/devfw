@@ -11,12 +11,12 @@ using System.Security;
 
 [assembly:AllowPartiallyTrustedCallers]
 [assembly: SecurityRules(SecurityRuleSet.Level1)] 
-[assembly: AssemblyTitle("OPSoft.CoreLib ,dotnet平台框架")]
+[assembly: AssemblyTitle("atnet.devfw - .NET平台开发框架")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("S1N1.COM  (www.ops.cc)")]
-[assembly: AssemblyProduct("OPSoft.CoreLibrary")]
-[assembly: AssemblyCopyright("Copyright © OPSoft 2012")]
+[assembly: AssemblyCompany("S1N1.COM")]
+[assembly: AssemblyProduct("devfw")]
+[assembly: AssemblyCopyright("Copyright © S1N1.com 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -41,5 +41,5 @@ using System.Security;
 // 方法是按如下所示使用“*”:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.1.*")]
-[assembly: AssemblyFileVersion("0.1.*")]
+[assembly: AssemblyVersion("1.0.1")]
+[assembly: AssemblyFileVersion("1.0.1")]
