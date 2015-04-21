@@ -6,14 +6,14 @@ namespace AtNet.DevFw.PluginKernel.Web
     /// <summary>
     /// B/S插件宿主
     /// </summary>
-    public interface IExtendPluginHost : IPluginHost
+    public interface IWebPluginHost : IPluginHost
     {
         /// <summary>
         /// 注册扩展处理程序
         /// </summary>
         /// <param name="plugin"></param>
-        /// <param name="getReqHandler">委托PluginHandler<CmsContext,string>的实例</param>
-        /// <param name="postReqHandler">委托PluginHandler<CmsContext,string>的实例</param>
+        /// <param name="getReqHandler">委托PluginHandler<HttpContext,string>的实例</param>
+        /// <param name="postReqHandler">委托PluginHandler<HttpContext,string>的实例</param>
         /// <returns></returns>
         bool Register(IPlugin plugin, PluginHandler<HttpContext> getReqHandler,
             PluginHandler<HttpContext> postReqHandler);

@@ -8,14 +8,14 @@ namespace AtNet.DevFw.PluginKernel.Web
     /// B/S插件宿主
     /// </summary>
     [PluginHost("B/S插件宿主", "使用{module}.sh/{action}访问自定义扩展")]
-    public abstract class BaseExtendPluginHost : BasePluginHost, IExtendPluginHost
+    public abstract class BaseWebPluginHost : BasePluginHost, IWebPluginHost
     {
-        protected PluginWebHandleProxy<HttpContext> WebHandler;
+        protected WebPluginHandleProxy<HttpContext> WebHandler;
 
         /// <summary>
         /// 
         /// </summary>
-        protected BaseExtendPluginHost()
+        protected BaseWebPluginHost()
         {
         }
 
@@ -23,7 +23,7 @@ namespace AtNet.DevFw.PluginKernel.Web
         /// 
         /// </summary>
         /// <param name="_webHandler"></param>
-        protected BaseExtendPluginHost(PluginWebHandleProxy<HttpContext> _webHandler)
+        protected BaseWebPluginHost(WebPluginHandleProxy<HttpContext> _webHandler)
         {
             this.WebHandler = _webHandler;
         }
@@ -116,8 +116,13 @@ namespace AtNet.DevFw.PluginKernel.Web
             }
             catch (PluginException exc)
             {
-                Logger.Println("[ Request][Error]:" + exc.Message + ";url :" + context.Request.RawUrl);
+                Logger.Println("[ Request][ Error]" + exc.Message + ";url :" + context.Request.RawUrl);
                 throw exc.InnerException ?? exc;
+            }
+            catch (Exception exc)
+            {
+                Logger.PrintException(context.Request.RawUrl, exc);
+                throw;
             }
         }
     }

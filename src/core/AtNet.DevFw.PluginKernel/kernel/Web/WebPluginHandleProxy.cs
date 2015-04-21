@@ -5,11 +5,15 @@ using System.Web;
 
 namespace AtNet.DevFw.PluginKernel.Web
 {
-    public class PluginWebHandleProxy<T> : PluginHandleProxy<T>
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class WebPluginHandleProxy<T> : PluginHandleProxy<T>
     {
-        private static IDictionary<string, PluginHandler<T>> postHandlers;
+        private static readonly IDictionary<string, PluginHandler<T>> postHandlers;
 
-        static PluginWebHandleProxy()
+        static WebPluginHandleProxy()
         {
             postHandlers = new Dictionary<string, PluginHandler<T>>();
         }
