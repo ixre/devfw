@@ -64,7 +64,7 @@ namespace AtNet.DevFw.PluginKernel
         }
 
 
-        public object HandleRequestUse<HandleClass>(HandleClass t, T context, string action, string source)
+        public object HandleRequestUse<THandleClass>(THandleClass t, T context, string action, string source)
         {
             Type type = t.GetType();
             MethodInfo method = type.GetMethod(
@@ -73,25 +73,13 @@ namespace AtNet.DevFw.PluginKernel
 
             if (method != null)
             {
-                try
-                {
-                    return method.Invoke(t, new object[] { context });
-                }
-                catch (Exception exc)
-                {
-                    if (exc.InnerException != null)
-                    {
-                        exc = exc.InnerException;
-                    }
-                    throw new PluginException(exc.Message + "\n" +
-                        (source ?? "application:" + type.FullName + "." + action));
-                }
+                return method.Invoke(t, new object[] { context });
             }
             throw new PluginException("无效请求:" + action);
         }
 
-        public object HandleRequestUse<HandleClass>(
-            HandleClass t,
+        public object HandleRequestUse<THandleClass>(
+            THandleClass t,
             T context,
             string action)
         {

@@ -66,9 +66,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PluginHostAttribute.cs" />
     <Compile Include="PluginUtil.cs" />
-    <Compile Include="Web\BaseExtendPluginHost.cs" />
-    <Compile Include="Web\IExtendPluginHost.cs" />
-    <Compile Include="Web\PluginWebHandleProxy.cs" />
+    <Compile Include="Web\BaseWebPluginHost.cs" />
+    <Compile Include="Web\IWebPluginHost.cs" />
+    <Compile Include="Web\WebPluginHandleProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="pluginKernel.snk" />

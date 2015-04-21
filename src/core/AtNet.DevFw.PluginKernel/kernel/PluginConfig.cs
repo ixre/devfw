@@ -24,7 +24,7 @@
         /// 插件异常日志格式,默认为：<{time}>:{message}\r\nSource:{source}\r\nAddress:{addr}\r\nStack:{stack}\r\n\r\n
         /// </summary>
         public static string PLUGIN_LOG_EXCEPT_FORMAT =
-            "{time} - [Exeption]:{message}\r\nSource:{source}\r\nAddress:{addr}\r\nStack:{stack}\r\n\r\n";
+            "**{time}** [Exeption] -{message}\r\nSource:{source} - Addr:{addr}\r\nStack:{stack}\r\n\r\n";
 
         /// <summary>
         /// 插件文件后缀,多个后缀用","隔开
