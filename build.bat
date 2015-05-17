@@ -1,32 +1,57 @@
 @echo off
 
+
+
 color 66
 
-echo =======================================
 
-echo = ´úÂëºÏ²¢¹¤¾ß github.com/atnet/devfw =
 
 echo =======================================
+
+
+
+echo = ä»£ç åˆå¹¶å·¥å…· github.com/atnet/devfw =
+
+
+
+echo =======================================
+
+
 
 set dir=%~dp0
 
 set megdir=%dir%\dll\
 
+
+
 if exist "%megdir%merge.exe" (
 
-  echo Éú³ÉÖĞ,ÇëÉÔµÈ...
+  
+
+  echo ç”Ÿæˆä¸­,è¯·ç¨ç­‰...
+  
   cd %dir%dist\dll\
 
+
+
 echo  /keyfile:%dir%ops.cms.snk>nul
+
+
 
 "%megdir%merge.exe" /closed /log:%dir%dist\build_log.txt /ndebug /targetplatform:v4 /target:dll /out:%dir%dist\atnet.devfw.dll^
  AtNet.DevFw.Core.dll AtNet.DevFw.PluginKernel.dll AtNet.DevFw.Data.dll AtNet.DevFw.Template.dll AtNet.DevFw.Web.dll AtNet.DevFw.Toolkit.Data.dll
   
 
 
-  echo Íê³É!Êä³öµ½:%dir%dist\atnet.devfw.dll
+  
+
+  echo å®Œæˆ!è¾“å‡ºåˆ°:%dir%dist\atnet.devfw.dll
+
+
 
 )
+
+
 
 
 pause
