@@ -1,30 +1,31 @@
 @echo off
-
 color 66
 
 echo =======================================
-
-echo = ´úÂëºÏ²¢¹¤¾ß github.com/atnet/devfw =
-
+echo = AtNet Cms .NET ! æ ¸å¿ƒç¨‹åºé›†ç”Ÿæˆå·¥å…· =
 echo =======================================
 
-set dir=%~dp0
 
-set megdir=%dir%\dll\
+set dir=%~dp0
+set megdir=%dir%\refrence.dll\
 
 if exist "%megdir%merge.exe" (
 
-  echo Éú³ÉÖĞ,ÇëÉÔµÈ...
-  cd %dir%dist\dll\
+  echo ç”Ÿæˆä¸­,è¯·ç¨ç­‰...
+  cd %dir%bin\
 
-echo  /keyfile:%dir%ops.cms.snk>nul
+echo  /keyfile:%dir%\Source_Code\AtNet.Cms.Core\atnet.cms.snk>nul
 
-"%megdir%merge.exe" /closed /log:%dir%dist\build_log.txt /ndebug /targetplatform:v4 /target:dll /out:%dir%dist\atnet.devfw.dll^
- AtNet.DevFw.Core.dll AtNet.DevFw.PluginKernel.dll AtNet.DevFw.Data.dll AtNet.DevFw.Template.dll AtNet.DevFw.Web.dll AtNet.DevFw.Toolkit.Data.dll
-  
+"%megdir%merge.exe" /closed /ndebug /targetplatform:v4 /target:dll /out:%dir%dist\atnet.cms.dll^
+ AtNet.Cms.Core.dll AtNet.Cms.BLL.dll AtNet.Cms.DAL.dll AtNet.Cms.Domain.Interface.dll^
+ AtNet.Cms.CacheService.dll AtNet.Cms.DataTransfer.dll AtNet.Cms.Domain.Implement.Content.dll^
+ AtNet.Cms.DB.dll AtNet.Cms.Cache.dll AtNet.Cms.Domain.Implement.Site.dll AtNet.Cms.Infrastructure.dll ^
+ AtNet.Cms.Service.dll AtNet.Cms.ServiceContract.dll^
+ AtNet.Cms.ServiceUtil.dll AtNet.Cms.ServiceRepository.dll AtNet.Cms.IDAL.dll^
+ AtNet.Cms.Sql.dll AtNet.Cms.Utility.dll StructureMap.dll AtNet.Cms.Web.dll
 
 
-  echo Íê³É!Êä³öµ½:%dir%dist\atnet.devfw.dll
+  echo å®Œæˆ!è¾“å‡ºåˆ°:%dir%dist\atnet.cms.dll
 
 )
 
