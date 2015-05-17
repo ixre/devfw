@@ -8,7 +8,7 @@ namespace AtNet.DevFw.Web.Plugins
     /// <summary>
     /// 插件应用
     /// </summary>
-    public interface IExtendApp : IExtendPluginHost
+    public interface IExtendApp : IWebPluginHost
     {
         TemplatePage GetPage<T>(string filePath) where T : IPlugin;
         TemplatePage GetPage(IPlugin plugin, string filePath);

@@ -80,7 +80,7 @@ namespace Com.Plugin
             bool isChanged = false;
             if (!attr.Settings.Contains("WeixinPay_PartnerId"))
             {
-                attr.Settings.Add("WeixinPay_PartnerId", "", true);
+                attr.Settings.Add("WeixinPay_PartnerId", "");
                 isChanged = true;
             }
             if (!attr.Settings.Contains("WeixinPay_Key"))

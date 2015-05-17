@@ -102,7 +102,7 @@ namespace AtNet.DevFw.Web
             {
                 if (_extends == null)
                 {
-                    var handler = new PluginWebHandleProxy<System.Web.HttpContext>();
+                    var handler = new WebPluginHandleProxy<System.Web.HttpContext>();
                     _extends = new ExtendsPluginApp(handler);
                 }
                 return _extends;

@@ -17,7 +17,7 @@ namespace AtNet.DevFw.Web.Plugins
     /// CMS插件
     /// </summary>
     [PluginHost("扩展模块插件", "使用{module}.sh/{action}访问自定义扩展")]
-    internal class ExtendsPluginApp : BaseExtendPluginHost,IExtendApp
+    internal class ExtendsPluginApp : BaseWebPluginHost,IExtendApp
     {
         private bool _loaded;
         private string _fpath;
@@ -26,7 +26,7 @@ namespace AtNet.DevFw.Web.Plugins
         private string _pluginPath;
 
 
-        internal ExtendsPluginApp(PluginWebHandleProxy<HttpContext> webHandler)
+        internal ExtendsPluginApp(WebPluginHandleProxy<HttpContext> webHandler)
             : base(webHandler)
         {
             SavePluginMetadataToXml();
