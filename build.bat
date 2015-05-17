@@ -1,33 +1,57 @@
 @echo off
+
+
+
 color 66
 
+
+
 echo =======================================
-echo = AtNet Cms .NET ! 核心程序集生成工具 =
+
+
+
+echo = 代码合并工具 github.com/atnet/devfw =
+
+
+
 echo =======================================
+
 
 
 set dir=%~dp0
-set megdir=%dir%\refrence.dll\
+
+set megdir=%dir%\dll\
+
+
 
 if exist "%megdir%merge.exe" (
 
+  
+
   echo 生成中,请稍等...
-  cd %dir%bin\
-
-echo  /keyfile:%dir%\Source_Code\AtNet.Cms.Core\atnet.cms.snk>nul
-
-"%megdir%merge.exe" /closed /ndebug /targetplatform:v4 /target:dll /out:%dir%dist\atnet.cms.dll^
- AtNet.Cms.Core.dll AtNet.Cms.BLL.dll AtNet.Cms.DAL.dll AtNet.Cms.Domain.Interface.dll^
- AtNet.Cms.CacheService.dll AtNet.Cms.DataTransfer.dll AtNet.Cms.Domain.Implement.Content.dll^
- AtNet.Cms.DB.dll AtNet.Cms.Cache.dll AtNet.Cms.Domain.Implement.Site.dll AtNet.Cms.Infrastructure.dll ^
- AtNet.Cms.Service.dll AtNet.Cms.ServiceContract.dll^
- AtNet.Cms.ServiceUtil.dll AtNet.Cms.ServiceRepository.dll AtNet.Cms.IDAL.dll^
- AtNet.Cms.Sql.dll AtNet.Cms.Utility.dll StructureMap.dll AtNet.Cms.Web.dll
+  
+  cd %dir%dist\dll\
 
 
-  echo 完成!输出到:%dir%dist\atnet.cms.dll
+
+echo  /keyfile:%dir%ops.cms.snk>nul
+
+
+
+"%megdir%merge.exe" /closed /log:%dir%dist\build_log.txt /ndebug /targetplatform:v4 /target:dll /out:%dir%dist\atnet.devfw.dll^
+ AtNet.DevFw.Core.dll AtNet.DevFw.PluginKernel.dll AtNet.DevFw.Data.dll AtNet.DevFw.Template.dll AtNet.DevFw.Web.dll AtNet.DevFw.Toolkit.Data.dll
+  
+
+
+  
+
+  echo 完成!输出到:%dir%dist\atnet.devfw.dll
+
+
 
 )
+
+
 
 
 pause
