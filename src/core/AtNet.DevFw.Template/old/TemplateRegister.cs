@@ -59,12 +59,13 @@ namespace AtNet.DevFw.Template
         //递归方式注册模板
         private static void RegisterTemplates(DirectoryInfo dir, TemplateNames nametype)
         {
-            Regex allowExt = new Regex("(.html|.phtml)$", RegexOptions.IgnoreCase);
+            // tml 为模板文件，防止可以被直接浏览
+            Regex allowExt = new Regex("(.html|.tml|.phtml)$", RegexOptions.IgnoreCase);
             foreach (FileInfo file in dir.GetFiles())
             {
                 if (allowExt.IsMatch(file.Extension))
                 {
-                    TemplateCache.RegisterTemplate(TemplateUtility.GetTemplateID(file.FullName, nametype), file.FullName);
+                    TemplateCache.RegisterTemplate(TemplateUtility.GetTemplateId(file.FullName, nametype), file.FullName);
                 }
             }
             foreach (DirectoryInfo _dir in dir.GetDirectories())

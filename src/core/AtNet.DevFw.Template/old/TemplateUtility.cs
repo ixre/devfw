@@ -51,7 +51,7 @@ namespace AtNet.DevFw.Template
             return html;
         }
 
-        internal static string GetTemplateID(string filePath, TemplateNames nametype)
+        internal static string GetTemplateId(string filePath, TemplateNames nametype)
         {
             Match match = Regex.Match(filePath, "templates(/|\\\\)+#*(.+?)$", RegexOptions.IgnoreCase);
             if (String.IsNullOrEmpty(match.Value)) throw new Exception("模版页文件名:" + filePath + "不合法");
