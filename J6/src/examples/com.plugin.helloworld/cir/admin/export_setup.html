@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>导出数据</title>
+    <link rel="Stylesheet" type="text/css" href="${page.domain}/admin?res=c3R5bGU=&amp;${os.version}.css" />
+    <link href="${page.domain}${os.ppath}/css.css" rel="stylesheet" type="text/css" /><style type="text/css">
+    .ui-export {
+        padding: 15px;
+    }
+
+        .ui-export ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .ui-export input, .ui-export label {
+            vertical-align: middle;
+        }
+
+        .ui-export li {
+            float: left;
+            margin-right: 10px;
+            line-height: 30px;
+            white-space: nowrap;
+        }
+
+    .btn_export {
+        margin-left: 16px;
+    }
+
+    strong {
+        color: #333;
+    }
+</style>
+
+</head>
+    <body>
+       ${export.setup}
+        <script type="text/javascript" src="${page.domain}/admin?res=c2NyaXB0&amp;${os.version}.js"></script>
+        <script src="${page.domain}${os.ppath}/js/export.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            wbexp.config.jsonHandler = $JS.json;
+            wbexp.config.urlHandler = "Export_processExport";
+        </script>
+    </body>
+</html>

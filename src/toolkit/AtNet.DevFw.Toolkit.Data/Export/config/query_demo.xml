@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<item>
+  <column mapping="ID:枪支编号;Name:枪支名称; ModelName:枪支型号;RFID_NO:RFID编号;ZRW:责任人; TEL:电话;SEX:性别;TIME:录入时间;" />
+  <query><![CDATA[]]></query>
+  <import><![CDATA[]]></import>
+  <total><![CDATA[]]></total>
+</item>

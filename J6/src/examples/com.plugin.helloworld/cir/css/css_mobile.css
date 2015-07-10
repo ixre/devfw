@@ -1,0 +1,23 @@
+﻿/*.page-header{ background: url(top_bg.gif) repeat-x;height: 230px;}
+.page-header .cent{margin: 0 auto;position: relative;}
+
+.page-header .cent .l1{ width: 603px;height: 141px;position: absolute;left: 0;top: 47px;background: url(header_l1.gif) no-repeat;}
+.page-header .cent .l2{ width: 284px;height: 184px;position: absolute;right: 10px;top: 47px;background: url(header_l2.gif) no-repeat;}
+*/
+body{ margin: 0;}
+html{font-size:100%;overflow-y:scroll;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+.container{margin: 0px auto;overflow: hidden;}
+.clearfix{ clear: both;}
+.hidden{ display: none;}
+
+.partner_ctrl{ background: #ddd;border:solid 0px #333}
+.main{border-top: solid 5px #ddd;border-bottom: solid 5px #f0f0f0;overflow: hidden;padding: 10px 0;}
+
+/*.partner_ctrl,.main{ padding-bottom: 1000px;margin-bottom: -1000px;}*/
+
+div.form table{ margin: 10px 20px;line-height: 40px;}
+.tipbox{padding: 30px 0;background: url(tip.png) 80px 50px no-repeat;height: 100px;
+       line-height: 100px;font-size: 14px;padding-left: 180px;color:#666;font-weight: bold;}
+
+ul
+

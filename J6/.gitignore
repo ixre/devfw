@@ -1,0 +1,11 @@
+*.pdb
+*.txt
+*.cache
+*.suo
+Debug
+obj
+bin/*
+chunk/Source_Code/*.dll
+bin
+tmp
+/dist/dll

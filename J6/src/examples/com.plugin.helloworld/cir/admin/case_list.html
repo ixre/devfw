@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>订单列表</title>
+    <link rel="Stylesheet" type="text/css" href="${page.domain}/admin?res=c3R5bGU=&amp;${os.version}.css" />
+    <link href="${page.domain}${os.ppath}/css.css" rel="stylesheet" type="text/css" />
+    <link href="${page.domain}${os.ppath}/js/EasyUi/themes/default/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="${page.domain}${os.ppath}/js/EasyUi/themes/icon.css" rel="stylesheet" type="text/css" />
+    <style>
+        .searchBar ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 20px;
+        }
+
+            .searchBar ul li {
+                float: left;
+                padding-right: 10px;
+                margin: 2px 0;
+               white-space:nowrap
+            }
+
+        .sf-2 {
+            color: #333;
+        }
+
+        .sf-1, .sf-3 {
+            color: red;
+        }
+
+        .sf0 {
+            color: #ff6600;
+        }
+
+        .sf1, .sf2 {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div id="gd">
+    </div>
+
+
+    <div class="toolBar">
+        <div class="searchBar padding5" id="searchbar">
+            <ul style="width:60%">
+                <!--<li><b>搜索条件：</b></li>-->
+                <li>
+                    <span class="title">案件状态：</span>
+                    <select field="state">
+                        <option value="-1">一 不限状态 一</option>
+                        <option value="0">未上传资料</option>
+                        <option value="1">已上传资料</option>
+                        <option value="-2">已删除</option>
+                    </select>
+                </li>
+                <li>
+                    <span class="title">财务号：</span>
+                    <input type="text" field="cashNo" style="width:100px" />
+                </li>
+                <li>
+                    <span class="title">供应商编码：</span>
+                    <input type="text" field="partnerCode" style="width:100px" />
+                </li>
+                <li>
+                    <span class="title">合同：</span>
+                    <input type="text" field="contract" style="width:100px" />
+                </li>
+                <li>
+                    <span class="title">省份：</span>
+                    <select field="province">
+                        <option value="">一所有省份一</option>
+                        <option value="北京">北京市</option>
+<option value="浙江省">浙江省</option>
+<option value="天津市">天津市</option>
+<option value="安徽省">安徽省</option>
+<option value="上海市">上海市</option>
+<option value="福建省">福建省</option> 
+<option value="重庆市">重庆市</option>
+<option value="江西省">江西省</option>
+<option value="山东省">山东省</option>
+<option value="河南省">河南省</option>
+<option value="湖北省">湖北省</option>
+<option value="湖南省">湖南省</option>
+<option value="广东省">广东省</option>
+<option value="海南省">海南省</option>
+<option value="山西省">山西省</option>
+<option value="青海省">青海省</option>
+<option value="江苏省">江苏省</option>
+<option value="辽宁省">辽宁省</option>
+<option value="吉林省">吉林省</option>
+<option value="台湾省">台湾省</option>
+<option value="河北省">河北省</option>
+<option value="贵州省">贵州省</option>
+<option value="四川省">四川省</option>
+<option value="云南省">云南省</option>
+<option value="陕西省">陕西省</option>
+<option value="甘肃省">甘肃省</option>
+<option value="黑龙江省">黑龙江省</option>
+<option value="香港特别行政区">香港特别行政区</option>
+<option value="澳门特别行政区">澳门特别行政区</option>
+<option value="广西壮族自治区">广西壮族自治区</option>
+<option value="宁夏回族自治区">宁夏回族自治区</option>
+<option value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+<option value="内蒙古自治区">内蒙古自治区</option>
+<option value="西藏自治区">西藏自治区</option>
+</select>
+                    </select>
+                </li>
+                <li>
+                    <span class="title">案件时间：</span>
+                    <input type="text" field="startTime" style="width:100px" onfocus="WdatePicker({ startDate: '%y-%M-01', dateFmt: 'yyyy-MM-dd', alwaysUseStartDate: true })" />
+                    ~
+                    <input type="text" field="endTime" style="width:100px" onfocus="WdatePicker({ startDate: '%y-%M-01', dateFmt: 'yyyy-MM-dd', alwaysUseStartDate: true })" />
+                </li>
+                <li>
+                    <a class="easyui-linkbutton" id="btnSearch">搜索</a>
+                    <a class="easyui-linkbutton" id="btnClear">清空条件</a>
+                </li>
+            </ul>
+
+            <div class="clearfix"></div>
+
+            <div style="text-align: right;position:absolute;right:50px;top:10px">
+                <a class="easyui-linkbutton" id="btnImport">导入</a>
+                <a class="easyui-linkbutton" id="btnExport">导出</a>
+                <a class="easyui-linkbutton" id="btnDownloadPli">pli下载</a>
+                <a class="easyui-linkbutton" id="btnDownloadPhoto">photo下载</a>
+                <a class="easyui-linkbutton" id="btnDownloadAll">全部下载</a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="${page.domain}/admin?res=c2NyaXB0&amp;${os.version}.js"></script>
+    <script src="${page.domain}${os.ppath}/js/EasyUi/jquery.min.js" type="text/javascript"></script>
+    <script src="${page.domain}${os.ppath}/js/EasyUi/jquery.easyui.min.js" type="text/javascript"></script>
+    <script src="${page.domain}${os.ppath}/js/EasyUi/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+    <script src="${page.domain}${os.ppath}/js/export.js" type="text/javascript"></script>
+    <script src="${page.domain}${os.ppath}/js/DatePicker/WdatePicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        expr.ele = 'searchbar';
+        expr.portal = 'CaseList';   //配置导出的入口
+        expr.checkParams = function (data) {
+            return true;
+        };
+
+        var Search = function () { expr.search('gd'); };
+        var refresh = function () { expr.reload('gd'); };
+
+        $JS.$('gd').style.height = $JS.screen.height() + 'px';
+
+        $(function () {
+
+            //导出
+            $('#btnExport').click(
+                function () {
+                    //alert('提示：\n建议导出选择【csv格式】,兼容性更好，可以用各种版本excel打开！');
+                    expr.showExportDialog();
+                });
+
+            $('#btnClear').click(
+                function () {
+                    J.json.bind('searchbar', {state:-1,province:'',cashNo: '', caseNo: '', partnerCode: '', contract: '', startTime: '', endTime: '' });
+                });
+
+            $('#btnSearch').click(
+                function () {
+                    var data = J.json.toObject('searchbar');
+                    if (new Date(data.startTime.replace(' ', 'T')) > new Date()
+                        || new Date(data.endTime.replace(' ', 'T')) < new Date(data.startTime.replace(' ', 'T'))) {
+                        $.messager.alert('提示', '时间选择不正确!');
+                    } else {
+                        expr.search('gd');
+                    }
+                });
+
+            $("#btnImport").click(
+                function () {
+                    var dia = $JS.dialog.create2('导入数据', 600, 400);
+                    dia.open('/cir.sh.aspx/export_import', 400, 250);
+                });
+
+
+            //下载文件
+            var dl = function (type) {
+                var rows = $('#gd').datagrid('getSelections');
+                if (rows.length == 0) {
+                    $.messager.alert('提示', '请选择要下载的图片');
+                } else {
+                    //var data = $JS.json.toQueryString(expr.ele);
+                    var data = 'caseIds=';
+                    for (var i = 0; i < rows.length; i++) {
+                        if (i != 0) data += ',';
+                        data += rows[i].id;
+                    }
+                    location.href = '/cir.sh.aspx/dl_gallery2?imgType=' + type + '&' + data;
+                }
+            };
+
+            $('#btnDownloadPli').click(function () {
+                dl('1');
+            });
+            $('#btnDownloadPhoto').click(function () {
+                dl('2');
+            });
+            $('#btnDownloadAll').click(function () {
+                dl('0');
+            });
+
+
+            //编辑
+            window.showDetail = function (id) {
+                openPage('查看订单详情', 'MerchantQuery/ShowOrderDetail?source=OfflineShop&orderNo=' + id);
+                //PW.getWindow("ShowOrderDetail?source=OfflineShop&orderNo=" + id, "查看订单详情", 600, 400);
+            };
+
+
+            //格式化操作
+            window.opFormat = function (value, row) {
+                return "<a href=\"javascript:void(0)\" onclick=\"showDetail('" + row.ID + "')\">详情</a>";
+            };
+
+            //加载数据
+            $('#gd').datagrid({
+                toolbar: '.toolBar',
+                pageList: [15, 20, 30, 50],
+                pageSize: 15,
+                singleSelect: false,
+                pagination: true,
+                rownumbers: true,
+                idField: 'id',
+                url: expr.getDataUrl(),
+                columns: [[
+                    { field: 'id', title: '选择', checkbox: true },
+                    { field: 'contract', title: '合同', align: 'center', width: 150 },
+                    { field: 'contractNo', title: '合同编号', align: 'center', width: 150 },
+                    { field: 'caseNo', title: '案件编号', align: 'center', width: 150 },
+                     { field: 'cusCaseNo', title: '外方档案号', align: 'center', width: 150 },
+                     {
+                         field: 'createTime',
+                         title: '发生日期',
+                         align: 'center',
+                         width: 150,
+                         formatter: function (val) {
+                             return val.replace(/T|(\.)(\d+)$/g, ' ');
+                             return new Date(val).format('yyyy-MM-dd HH:mm:ss');
+                         }
+                     },
+                    { field: 'province', title: '省份', align: 'center', width: 150 },
+                    { field: 'city', title: '城市', align: 'center', width: 150 },
+                    { field: 'cashNo', title: '财务操作号', align: 'center', width: 150 },
+                    { field: 'service', title: '服务', align: 'center', width: 150 },
+                    { field: 'cw', title: '财务操作类型', align: 'center', width: 150 },
+                    { field: 'bx', title: '报销', align: 'center', width: 150 },
+                    { field: 'partnerCode', title: '供应商编码', align: 'center', width: 80 },
+                    { field: 'personName', title: '人员简称', align: 'center', width: 150 },
+                    {
+                        field: 'importTime',
+                        title: '导入时间',
+                        align: 'center',
+                        width: 140,
+                        formatter: function (val) {
+                            return val.replace(/T|(\.)(\d+)$/g, ' ');
+                            return new Date(val.replace('T', ' ')).format('yyyy-MM-dd HH:mm');
+                        }
+                    },
+                    {
+                        field: 'stateName',
+                        title: '状态',
+                        align: 'center',
+                        width: 120,
+                        formatter: function (val, row) {
+                            return '<span class="sf' + row.state + '">' + val + '</span>';
+                        }
+                    },
+
+                    { field: 'ckbCount', title: '车况表', align: 'center', width: 80 },
+                    { field: 'xcCount', title: '现场照片', align: 'center', width: 80 },
+                    //{
+                    //    field: 'state',
+                    //    title: '状态',
+                    //    sortable: true,
+                    //    align: 'center',
+                    //    width: 100,
+                    //    formatter: function(val) {
+                    //        return val == 0 ? '<span style="color:red">未上传资料</span>' : '<span style="color:green">已上传资料</span>';
+                    //    }
+                    //},
+                    {
+                        field: 'op',
+                        title: '操作',
+                        align: 'center',
+                        width: 200,
+                        formatter: function (val, row) {
+                            //return '<a href="javascript:;" onclick="$JS.tab.open(\'修改枪支信息:' + row.caseNo + '\'' +
+                            //    ',\'gun/editgun?id=' + row.Id + '\',null,true)">修改</a> | ';
+                            var html = '';
+
+                            if (row.state == 0) {
+                                html += '<a href="javascript:;" onclick="delrecord(' + row.id + ')">删除</a>';
+                            } else {
+                                //if (row.state == 1) {
+                                //    html += '<a href="javascript:;" onclick="passrecord(' + row.id + ')">通过</a> | ';
+                                //}
+
+                                if (row.state == 1) {
+                                    //html += '<a href="javascript:;" onclick="backrecord(' + row.id + ')">驳回</a> | ';
+                                    html += '<a href="javascript:;" onclick="cancelrecord(' + row.id + ')">取消</a> | ';
+                                    //if (row.state == 1) {
+                                    //    html += ' | ';
+                                    //}
+                                }
+
+                                if (row.state == -1 || row.state == 1 || row.state == 2 || row.state == -3) {
+                                    html += '<a href="javascript:;" onclick="window.parent.tab.show(\'查看图片\'' +
+                                                                   ',\'/cir.sh.aspx/case_gallery?caseid=' + row.id + '\')">查看图片</a> ';
+                                }
+
+                            }
+                            return html;
+                        }
+                    }
+                ]]
+            });
+
+            //统计汇总数量
+            // expr.bindTotalView('totalView');
+        });
+
+        function delrecord(id) {
+            if (confirm('确定要删除案件吗？')) {
+                J.xhr.jsonPost('/cir.sh.aspx/delcase', { id: id }, function (json) {
+                    if (json.result) {
+                        expr.reload('gd');
+                    }
+                    $.messager.alert('提示', json.message);
+                });
+            }
+        }
+
+        function backrecord(id) {
+            if (confirm('确定要驳回案件吗？')) {
+                J.xhr.jsonPost('/cir.sh.aspx/backcase', { id: id }, function (json) {
+                    if (json.result) {
+                        expr.reload('gd');
+                    }
+                    $.messager.alert('提示', json.message);
+                });
+            }
+        }
+
+        function passrecord(id) {
+            if (confirm('确定要通过案件吗？')) {
+                J.xhr.jsonPost('/cir.sh.aspx/passcase', { id: id }, function (json) {
+                    if (json.result) {
+                        expr.reload('gd');
+                    }
+                    $.messager.alert('提示', json.message);
+                });
+            }
+        }
+
+        function cancelrecord(id) {
+            if (confirm('确定要取消案件吗？')) {
+                J.xhr.jsonPost('/cir.sh.aspx/cancelcase', { id: id }, function (json) {
+                    if (json.result) {
+                        expr.reload('gd');
+                    }
+                    $.messager.alert('提示', json.message);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

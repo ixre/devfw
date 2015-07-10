@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>图片列表</title>
+    	<link rel="Stylesheet" type="text/css" href="${page.domain}/admin?res=c3R5bGU=&amp;${os.version}.css"/>
+        <link href="${page.domain}${os.ppath}/css.css" rel="stylesheet" type="text/css" />
+    <link href="${page.domain}${os.ppath}/js/EasyUi/themes/default/easyui.css" rel="stylesheet" type="text/css" />
+	    <link href="${page.domain}${os.ppath}/js/EasyUi/themes/icon.css" rel="stylesheet" type="text/css" />
+	    <style>
+            .searchBar ul{ list-style: none;padding: 0;margin: 10px 20px;}
+            .searchBar ul li{ float: left;padding-right: 10px;}
+    	</style>
+	</head>
+	<body>
+
+
+        <div id="gd">
+        </div>
+
+
+        <div class="toolBar">
+            <div class="searchBar padding5" id="searchbar">
+                <input type="hidden" value="${case.id}" field="CaseId"/>
+                <ul>
+                    <li><b>搜索条件：</b></li>
+                    <li>
+                        <span class="title">照片类型：</span>
+                        <select field="imgType">
+                            <option value="-1">所有照片</option>
+                            <option value="1">车况表</option>
+                            <option value="2">现场图片</option>
+                        </select>
+                    </li>
+                    <li>
+                        <a class="easyui-linkbutton" id="btnSearch">搜索</a>
+                        <a class="easyui-linkbutton" id="btnClear">清空条件</a>
+                    </li>
+                </ul>
+
+                <div class="clearfix"></div>
+
+                <div class="hidden" style="text-align: right;position:absolute;right:50px;top:10px">
+                    <a class="easyui-linkbutton" id="btnDownload">批量下载</a>
+                    <a class="easyui-linkbutton" id="btnDownloadAll">全部下载</a>
+                </div>
+
+            </div>
+        </div>
+
+
+        <script type="text/javascript" src="${page.domain}/admin?res=c2NyaXB0&amp;${os.version}.js"></script>
+        <script src="${page.domain}${os.ppath}/js/EasyUi/jquery.min.js" type="text/javascript"></script>
+        <script src="${page.domain}${os.ppath}/js/EasyUi/jquery.easyui.min.js" type="text/javascript"></script>
+        <script src="${page.domain}${os.ppath}/js/EasyUi/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+        <script src="${page.domain}${os.ppath}/js/export.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    expr.ele = 'searchbar';
+    expr.portal = 'CaseGallery';   //配置导出的入口
+    expr.checkParams = function (data) {
+        return true;
+    };
+
+    var Search = function () { expr.search('gd'); };
+    var refresh = function () { expr.reload('gd'); };
+
+    $JS.$('gd').style.height = $JS.screen.height() + 'px';
+
+    $(function () {
+
+        //导出
+        $('#btnDownload').click(
+            function () {
+                var rows = $('#gd').datagrid('getSelections');
+                if (rows.length == 0) {
+                    $.messager.alert('提示','请选择要下载的图片');
+                } else {
+                    var data = $JS.json.toQueryString(expr.ele);
+                    data += '&imgIds=';
+                    for (var i = 0; i < rows.length; i++) {
+                        if (i != 0) data += ',';
+                        data += rows[i].id;
+                    } 
+                    location.href = 'dl_gallery?' + data;
+                }
+            });
+
+        $('#btnDownloadAll').click(
+           function () {
+               var data = $JS.json.toQueryString(expr.ele);
+               location.href = 'dl_gallery?' + data;
+           });
+
+        $('#btnClear').click(
+           function () {
+               J.json.bind('searchbar', {caseNo:'',partnerCode:'',contractNo:''});
+           });
+        
+        $('#btnSearch').click(
+              function () {
+                  expr.search('gd');
+              });
+
+        //加载数据
+        $('#gd').datagrid({
+            toolbar: '.toolBar',
+            pageList: [3, 20, 30, 50],
+            pageSize:3,
+            singleSelect: false,
+            pagination: true,
+            rownumbers: true,
+            idField :'id',
+            url: expr.getDataUrl(),
+            columns: [
+                [
+                    { field: 'id', title: '选择', checkbox: true },
+                    { field: 'imgType', title: '照片类型', align: 'center', width: 150, formatter: function (val) { return val == 1 ? '车况表' : '现场照片'; } },
+                    { field: 'imgUrl', title: '照片',  align: 'center', width: 500, formatter: function(val) {
+                         return '<div style="padding:5px 0"><img src="'+val+'" style="width:160px;height:120px;border:solid 1px #ddd"/></div>';
+                    } },
+                    { field: 'createTime', title: '上传时间',  align: 'center', width: 140,formatter: function (val) {
+                        return val.replace(/T|(\.)(\d+)$/g, ' ');
+                        return new Date(val).format('yyyy-MM-dd HH:mm');
+                    } },
+                    {
+                        field: 'op', title: '详情', align: 'center', width: 200, formatter: function (val, row) {
+                            return '<a href="download?url='+row.imgUrl+ '" target="_blank">下载</a>';
+                        }
+                    }
+                ]
+            ]
+        });
+
+        //统计汇总数量
+        // expr.bindTotalView('totalView');
+    });
+</script>
+	</body>
+</html>
