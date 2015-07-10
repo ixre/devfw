@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (C) 2007-2015 S1N1.COM,All rights reseved.
+ * Copyright (C) 2007-2015 OPSoft INC,All rights reseved.
  * Get more infromation of this software,please visit site http://cms.ops.cc
  * 
  * name : DataLogic.cs
@@ -16,9 +16,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using J6.DevFw.Data;
-using J6.DevFw.Framework.Extensions;
-using J6.DevFw.Toolkit.Data.Export;
+using AtNet.DevFw.Data;
+using AtNet.DevFw.Framework.Extensions;
+using AtNet.DevFw.Toolkit.Data.Export;
 
 namespace Com.Plugin.Core.Logic
 {

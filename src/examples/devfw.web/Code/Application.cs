@@ -12,10 +12,10 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using J6.DevFw.Framework.IO;
-using J6.DevFw.PluginKernel;
+using AtNet.DevFw.Framework.IO;
+using AtNet.DevFw.PluginKernel;
 
-namespace J6.DevFw.Web.Example.Code
+namespace AtNet.DevFw.Web.Example.Code
 {
     /// <summary>
     /// Description of HttpApplicaiton.
@@ -44,7 +44,7 @@ namespace J6.DevFw.Web.Example.Code
             IoUtil.SetDirHidden("bin");
 
             //加载插件
-            WebCtx.Plugin.Connect();
+            WebCtx.Extend.Connect();
         }
 
         protected virtual void RegisterRoutes(RouteCollection routes)

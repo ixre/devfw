@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (C) 2007-2015 S1N1.COM,All rights reseved.
+ * Copyright (C) 2007-2015 OPSoft INC,All rights reseved.
  * Get more infromation of this software,please visit site http://cms.ops.cc
  * 
  * name : IocObject.cs
@@ -9,7 +9,7 @@
  * history : 
  */
 
-using J6.DevFw.Data;
+using AtNet.DevFw.Data;
 using Com.Plugin.Core.ILogic;
 using Com.Plugin.Core.Logic;
 using Com.Plugin.ILogic;

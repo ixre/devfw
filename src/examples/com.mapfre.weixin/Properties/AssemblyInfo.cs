@@ -1,17 +1,17 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using J6.DevFw.PluginKernel;
+using AtNet.DevFw.PluginKernel;
 using Com.PluginKernel;
 
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("")]
+[assembly: AssemblyTitle("OPS.CMS!NET-插件")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("S1N1.COM")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyCompany("OPS Inc")]
+[assembly: AssemblyProduct("OPS.CMS!NET-插件")]
 [assembly: AssemblyCopyright("Copyright © ops 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -48,7 +48,7 @@ using Com.PluginKernel;
 	Name = "Hello World!",
 
     //插件开发者
-    Author = "S1N1.COM",
+    Author = "ops",
 
     //插件访问入口    
     PortalUrl = "/com.mapfre.weixin.aspx",
