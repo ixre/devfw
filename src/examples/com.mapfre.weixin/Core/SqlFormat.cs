@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (C) 2007-2015 OPSoft INC,All rights reseved.
+ * Copyright (C) 2007-2015 S1N1.COM,All rights reseved.
  * Get more infromation of this software,please visit site http://cms.ops.cc
  * 
  * name : SqlFormat.cs
@@ -10,7 +10,7 @@
  */
 
 using System;
-using AtNet.DevFw.Data;
+using J6.DevFw.Data;
 
 namespace Com.Plugin.Core
 {

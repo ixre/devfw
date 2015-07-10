@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (C) 2007-2015 OPSoft INC,All rights reseved.
+ * Copyright (C) 2007-2015 S1N1.COM,All rights reseved.
  * Get more infromation of this software,please visit site http://cms.ops.cc
  * 
  * name : RequestProxry.cs
@@ -10,8 +10,8 @@
  */
 
 using System.Web;
-using AtNet.DevFw.PluginKernel;
-using AtNet.DevFw.Web.Plugins;
+using J6.DevFw.PluginKernel;
+using J6.DevFw.Web.Plugin;
 using Com.Plugin.Core;
 using Com.Plugin.WebManage;
 
@@ -22,12 +22,12 @@ namespace Com.Plugin
     /// </summary>
     public class RequestProxry
     {
-        private readonly IExtendApp _app;
+        private readonly IPluginApp _app;
         private readonly RequestHandle _handler;
 
         private readonly ManageHandle _mgHandler;
 
-        public RequestProxry(IExtendApp app, IPlugin plugin)
+        public RequestProxry(IPluginApp app, IPlugin plugin)
         {
             this._app = app;
             this._handler = new RequestHandle(plugin);

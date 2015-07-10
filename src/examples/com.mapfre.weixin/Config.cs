@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (C) 2007-2015 OPSoft INC,All rights reseved.
+ * Copyright (C) 2007-2015 S1N1.COM,All rights reseved.
  * Get more infromation of this software,please visit site http://cms.ops.cc
  * 
  * name : Config.cs
@@ -10,8 +10,8 @@
  */
 
 using System;
-using AtNet.DevFw.Framework;
-using AtNet.DevFw.PluginKernel;
+using J6.DevFw.Framework;
+using J6.DevFw.PluginKernel;
 using Senparc.Weixin.MP.TenPayLib;
 using Senparc.Weixin.MP.TenPayLibV3;
 
@@ -80,103 +80,103 @@ namespace Com.Plugin
             bool isChanged = false;
             if (!attr.Settings.Contains("WeixinPay_PartnerId"))
             {
-                attr.Settings.Add("WeixinPay_PartnerId", "");
+                attr.Settings.Set("WeixinPay_PartnerId", "");
                 isChanged = true;
             }
             if (!attr.Settings.Contains("WeixinPay_Key"))
             {
-                attr.Settings.Add("WeixinPay_Key", "");
+                attr.Settings.Set("WeixinPay_Key", "");
                 isChanged = true;
             }
             if (!attr.Settings.Contains("WeixinPay_AppId"))
             {
-                attr.Settings.Add("WeixinPay_AppId", "");
+                attr.Settings.Set("WeixinPay_AppId", "");
                 isChanged = true;
             }
             if (!attr.Settings.Contains("WeixinPay_AppKey"))
             {
-                attr.Settings.Add("WeixinPay_AppKey", "");
+                attr.Settings.Set("WeixinPay_AppKey", "");
                 isChanged = true;
             }
             if (!attr.Settings.Contains("WeixinPay_TenpayNotify"))
             {
-                attr.Settings.Add("WeixinPay_TenpayNotify", "");
+                attr.Settings.Set("WeixinPay_TenpayNotify", "");
                 isChanged = true;
             }
             if (!attr.Settings.Contains("TenPayV3_MchId"))
             {
-                attr.Settings.Add("TenPayV3_MchId", "");
+                attr.Settings.Set("TenPayV3_MchId", "");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("TenPayV3_Key"))
             {
-                attr.Settings.Add("TenPayV3_Key", "");
+                attr.Settings.Set("TenPayV3_Key", "");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("TenPayV3_AppId"))
             {
-                attr.Settings.Add("TenPayV3_AppId", "");
+                attr.Settings.Set("TenPayV3_AppId", "");
                 isChanged = true;
             }
             if (!attr.Settings.Contains("TenPayV3_AppSecret"))
             {
-                attr.Settings.Add("TenPayV3_AppSecret", "");
+                attr.Settings.Set("TenPayV3_AppSecret", "");
                 isChanged = true;
             }
             if (!attr.Settings.Contains("TenPayV3_TenpayNotify"))
             {
-                attr.Settings.Add("TenPayV3_TenpayNotify", "");
+                attr.Settings.Set("TenPayV3_TenpayNotify", "");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("Weixin_AppId"))
             {
-                attr.Settings.Add("Weixin_AppId", "填写微信AppId");
+                attr.Settings.Set("Weixin_AppId", "填写微信AppId");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("Weixin_AppSecret"))
             {
-                attr.Settings.Add("Weixin_AppSecret", "填写微信AppSecret");
+                attr.Settings.Set("Weixin_AppSecret", "填写微信AppSecret");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("Weixin_AppEncodeString"))
             {
-                attr.Settings.Add("Weixin_AppEncodeString", "填写微信App解密字符串");
+                attr.Settings.Set("Weixin_AppEncodeString", "填写微信App解密字符串");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("Weixin_Token"))
             {
-                attr.Settings.Add("Weixin_Token", "填写微信token");
+                attr.Settings.Set("Weixin_Token", "填写微信token");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("Weixin_ApiDomain"))
             {
-                attr.Settings.Add("Weixin_ApiDomain", "填写用于对接微信的域名：如http://www.ops.cc/weixin/。");
+                attr.Settings.Set("Weixin_ApiDomain", "填写用于对接微信的域名：如http://www.ops.cc/weixin/。");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("Weixin_WelcomeMessage"))
             {
-                attr.Settings.Add("Weixin_WelcomeMessage", "欢迎来到微信！");
+                attr.Settings.Set("Weixin_WelcomeMessage", "欢迎来到微信！");
                 isChanged = true;
             }
 
             if (!attr.Settings.Contains("Weixin_EnterMessage"))
             {
-                attr.Settings.Add("Weixin_EnterMessage", "");
+                attr.Settings.Set("Weixin_EnterMessage", "");
                 isChanged = true;
             }
 
 
             if (!attr.Settings.Contains("Weixin_MenuButtons"))
             {
-                attr.Settings.Add("Weixin_MenuButtons", "填写微信自定义按钮");
+                attr.Settings.Set("Weixin_MenuButtons", "填写微信自定义按钮");
                 isChanged = true;
             }
 

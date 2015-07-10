@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web;
-using AtNet.DevFw.Framework.Extensions;
-using AtNet.DevFw.PluginKernel;
-using AtNet.DevFw.Template;
-using AtNet.DevFw.Web.Plugins;
+using J6.DevFw.Framework.Extensions;
+using J6.DevFw.PluginKernel;
+using J6.DevFw.Template;
+using J6.DevFw.Web.Plugin;
 using Com.Plugin.Core;
 using Com.Plugin.Entity;
 using Com.Plugin.Weixin;
@@ -16,9 +16,9 @@ namespace Com.Plugin.WebManage
     {
         private IPlugin _plugin;
         private readonly BaseHandle _baseHandle;
-        private IExtendApp _app;
+        private IPluginApp _app;
 
-        public ManageHandle(IExtendApp app,IPlugin plugin)
+        public ManageHandle(IPluginApp app,IPlugin plugin)
         {
             this._app = app;
             this._plugin = plugin;

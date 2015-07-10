@@ -1,57 +1,32 @@
 @echo off
 
-
-
 color 66
 
-
-
 echo =======================================
 
-
-
-echo = ä»£ç åˆå¹¶å·¥å…· github.com/atnet/devfw =
-
-
+echo = ´úÂëºÏ²¢¹¤¾ß github.com/atnet/devfw =
 
 echo =======================================
-
-
 
 set dir=%~dp0
 
 set megdir=%dir%\dll\
 
-
-
 if exist "%megdir%merge.exe" (
 
-  
-
-  echo ç”Ÿæˆä¸­,è¯·ç¨ç­‰...
-  
+  echo Éú³ÉÖĞ,ÇëÉÔµÈ...
   cd %dir%dist\dll\
 
+echo  /keyfile:%dir%j6.devfw.snk>nul
 
-
-echo  /keyfile:%dir%ops.cms.snk>nul
-
-
-
-"%megdir%merge.exe" /closed /log:%dir%dist\build_log.txt /ndebug /targetplatform:v4 /target:dll /out:%dir%dist\atnet.devfw.dll^
- AtNet.DevFw.Core.dll AtNet.DevFw.PluginKernel.dll AtNet.DevFw.Data.dll AtNet.DevFw.Template.dll AtNet.DevFw.Web.dll AtNet.DevFw.Toolkit.Data.dll
+"%megdir%merge.exe" /closed /keyfile:%dir%/src/core/J6.DevFw.Core/j6.devfw.snk /ndebug /targetplatform:v4 /target:dll /out:%dir%dist\j6.devfw.dll^
+ J6.DevFw.Core.dll J6.DevFw.PluginKernel.dll J6.DevFw.Data.dll J6.DevFw.Template.dll J6.DevFw.Web.dll J6.DevFw.Toolkit.Data.dll
   
 
 
-  
-
-  echo å®Œæˆ!è¾“å‡ºåˆ°:%dir%dist\atnet.devfw.dll
-
-
+  echo Íê³É!Êä³öµ½:%dir%dist\j6.devfw.dll
 
 )
-
-
 
 
 pause
