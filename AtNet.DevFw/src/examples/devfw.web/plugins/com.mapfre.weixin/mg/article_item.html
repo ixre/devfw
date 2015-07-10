@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>文本素材</title>
+    <link rel="Stylesheet" type="text/css" href="${os.mcss}" />
+</head>
+<body>
+
+    <div class="tabarea1">
+        <div id="area" class="area" style="overflow-y:auto;margin:10px 0">
+            <form action="" method="post">
+                <div class="form" id="form1">
+                    <input type="hidden" field="Id" />
+                    <input type="hidden" field="ResId" value="${resId}"/>
+                    <div class="fl">
+                        <div class="label"><span class="red">*</span>标题：</div>
+                        <div class="in">
+                            <input type="text" class="tb_normal ui-validate" required="true" summary="{required:'不能为空!'}" field="Title"/>
+                        </div>
+                    </div>
+
+                    <div class="fl">
+                        <div class="label"><span class="red">*</span>图片：</div>
+                        <div class="in" style="position: relative;height:100px;">
+                            <img id="upload_img" src="${os.ppath}/img/no_photo.gif" style="float:left;margin-right:10px;width: 160px; height: 90px;border:solid 1px #aaa;padding:1px;" />
+                            <input class="ui-validate" length="[0,150]" type="hidden" field="Pic" id="upload_path" />
+                            <span id="upload_btn"><button>选择图片上传</button></span>
+                        </div>
+                    </div>
+
+                    <div class="fl">
+                        <div class="label"><span class="red">*</span>排序：
+                        </div>
+                        <div class="in left" style="margin-left: 0">
+                            <input class="ui-validate" type="text" field="Sort" required="num" style="width: 50px" value="1"/>
+                        </div>
+                        <div class="label left">启用：</div>
+                        <div class="in">
+                            <input class="ui-validate" type="radio" name="Enabled" field="Enabled" id="enabled1" checked="checked" value="1"/>
+                            <label for="enabled1">启用</label>
+                            <input class="ui-validate" type="radio" name="Enabled" field="Enabled" id="enabled2" value="0"/>
+                            <label for="enabled2">停用</label>
+                        </div>
+                    </div>
+
+                    <div class="fl">
+                        <div class="label">备注：</div>
+                        <div class="in">
+                            <div id="contentinfo" style="width: 300px;">
+                                <textarea field="Description" style="overflow: hidden; width: 300px; height: 100px;">${description}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fl">
+                        <div class="label"><span class="red">*</span>链接：</div>
+                        <div class="in">
+                            <input type="text" class="tb_normal ui-validate" style="width:300px" required="true" summary="{required:'不能为空!'}" field="Url" />
+                        </div>
+                    </div>
+
+                    <div class="fl hidden">
+                        <div class="label">内容：</div>
+                        <div class="in">
+                            <div id="contentinfo" style="width: 620px;">
+                                <textarea id="editor" style="overflow: hidden; width: 620px; height: 300px;">${content}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fl">
+                        <div class="label"></div>
+                        <div class="in">
+                            <a id="btn" class="btn" href="javascript:;">保存</a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="${os.mjs}"></script>
+<!-- 编辑器 -->
+    
+    <script type="text/javascript" src="/framework/assets/editor/minpack.js"></script>
+    <script type="text/javascript" src="/framework/assets/editor/plugins/code/prettify.js"></script>
+    <script type="text/javascript">
+        var editor = null;
+        function initEditor() {
+            editor = KindEditor.create('#editor', {
+                cssPath: '/framework/assets/editor/plugins/code/prettify.css',
+                uploadJson: '/framework/assets/editor/handler/upload_json.ashx',
+                fileManagerJson: '/framework/assets/editor/handler/file_manager_json.ashx',
+                allowFileManager: true,
+                filterMode: false
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        var entity = ${entity} ||{};
+        $JS.json.bind('form1',entity);
+        if (entity.Pic) {
+            cms.$('upload_img').src = '/'+ entity.Pic;
+        }
+
+
+        $JS.upload({
+            id: 'upload_btn',
+            debug: !true,
+            url: 'UploadCgi',
+            exts: '*.gif;*.jpg;*.png;*.bmp'
+        },function (result, data) {
+            if (result) {
+                $JS.$('upload_path').value = data.url;
+                $JS.$('upload_img').src ="/"+data.url;
+            } else {
+                alert('上传失败：' + data);
+            }
+        });
+
+
+
+        window.saveData = function () {
+            if ($JS.validator.validate()) {
+                var data = $JS.json.toObject('form1');
+                data.Content = editor.html();
+                $JS.xhr.jsonPost(
+                    "SaveArticleItem", data,
+                    function(json) {
+                        if (json.result) {
+                            parent.M.alert(json.message);
+                            $JS.tab.closeAndRefresh('图文子项管理');
+                        } else {
+                            parent.M.alert(json.message);
+                        }
+                    });
+            }
+        };
+
+        cms.$('btn').onclick = window.saveData;
+        cms.validator.init('form1');
+
+        initEditor();
+    </script>
+</body>
+</html>

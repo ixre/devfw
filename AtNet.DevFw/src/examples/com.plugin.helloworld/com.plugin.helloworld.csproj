@@ -1,0 +1,676 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F7F4DF05-B2AE-4A25-80F7-A14B9CD4419A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.Plugin</RootNamespace>
+    <AssemblyName>com.plugin.helloworld</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\dll\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\..\..\dll\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpCompress.3.5">
+      <HintPath>..\..\..\dll\SharpCompress.3.5.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\..\..\dll\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Conf.cs" />
+    <Compile Include="Core\DbGenerator.cs" />
+    <Compile Include="Core\Helper.cs" />
+    <Compile Include="Core\ILogic\IDataLogic.cs" />
+    <Compile Include="Core\IocObject.cs" />
+    <Compile Include="Core\Logic\DataLogic.cs" />
+    <Compile Include="Core\SqlFormat.cs" />
+    <Compile Include="Core\Utils\DataExport.cs" />
+    <Compile Include="Core\Utils\ExcelExportProvider.cs" />
+    <Compile Include="Core\Utils\ExportHandle.cs" />
+    <Compile Include="Core\Utils\NPOIHelper.cs" />
+    <Compile Include="Core\Utils\VerifyCodeManager.cs" />
+    <Compile Include="RequestProxry.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="RequestHandle.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="cir\admin\case_gallery.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\admin\export_import.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\admin\export_setup.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\css\btn.png" />
+    <Content Include="cir\css\css.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\css\css_mobile.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\css\header_l1.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\css\header_l2.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\css\header_mobile.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\css\tip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\css\top_bg.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\js\DatePicker\calendar.js" />
+    <Content Include="cir\js\DatePicker\config.js" />
+    <Content Include="cir\js\DatePicker\DatePicker.htm" />
+    <Content Include="cir\js\DatePicker\lang\en.js" />
+    <Content Include="cir\js\DatePicker\lang\zh-cn.js" />
+    <Content Include="cir\js\DatePicker\lang\zh-tw.js" />
+    <Content Include="cir\js\DatePicker\skin\datePicker.gif" />
+    <Content Include="cir\js\DatePicker\skin\default\datepicker.css" />
+    <Content Include="cir\js\DatePicker\skin\default\img.gif" />
+    <Content Include="cir\js\DatePicker\skin\WdatePicker.css" />
+    <Content Include="cir\js\DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="cir\js\DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="cir\js\DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="cir\js\DatePicker\WdatePicker.js" />
+    <Content Include="cir\js\easyui\changelog.txt" />
+    <Content Include="cir\js\easyui\demo\accordion\actions.html" />
+    <Content Include="cir\js\easyui\demo\accordion\ajax.html" />
+    <Content Include="cir\js\easyui\demo\accordion\basic.html" />
+    <Content Include="cir\js\easyui\demo\accordion\tools.html" />
+    <Content Include="cir\js\easyui\demo\accordion\_content.html" />
+    <Content Include="cir\js\easyui\demo\calendar\basic.html" />
+    <Content Include="cir\js\easyui\demo\calendar\firstday.html" />
+    <Content Include="cir\js\easyui\demo\combobox\actions.html" />
+    <Content Include="cir\js\easyui\demo\combobox\basic.html" />
+    <Content Include="cir\js\easyui\demo\combobox\customformat.html" />
+    <Content Include="cir\js\easyui\demo\combobox\dynamicdata.html" />
+    <Content Include="cir\js\easyui\demo\combobox\group.html" />
+    <Content Include="cir\js\easyui\demo\combobox\multiple.html" />
+    <Content Include="cir\js\easyui\demo\combobox\navigation.html" />
+    <Content Include="cir\js\easyui\demo\combobox\remotedata.html" />
+    <Content Include="cir\js\easyui\demo\combobox\remotejsonp.html" />
+    <Content Include="cir\js\easyui\demo\combogrid\actions.html" />
+    <Content Include="cir\js\easyui\demo\combogrid\basic.html" />
+    <Content Include="cir\js\easyui\demo\combogrid\initvalue.html" />
+    <Content Include="cir\js\easyui\demo\combogrid\multiple.html" />
+    <Content Include="cir\js\easyui\demo\combogrid\navigation.html" />
+    <Content Include="cir\js\easyui\demo\combotree\actions.html" />
+    <Content Include="cir\js\easyui\demo\combotree\basic.html" />
+    <Content Include="cir\js\easyui\demo\combotree\initvalue.html" />
+    <Content Include="cir\js\easyui\demo\combotree\multiple.html" />
+    <Content Include="cir\js\easyui\demo\combo\basic.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\aligncolumns.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\basic.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\cellediting.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\cellstyle.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\checkbox.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\clientpagination.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\columngroup.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\complextoolbar.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\contextmenu.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\custompager.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\footer.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\formatcolumns.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\frozencolumns.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\frozenrows.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\mergecells.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\multisorting.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\rowborder.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\rowediting.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\rowstyle.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\selection.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\simpletoolbar.html" />
+    <Content Include="cir\js\easyui\demo\datagrid\transform.html" />
+    <Content Include="cir\js\easyui\demo\datebox\basic.html" />
+    <Content Include="cir\js\easyui\demo\datebox\dateformat.html" />
+    <Content Include="cir\js\easyui\demo\datebox\events.html" />
+    <Content Include="cir\js\easyui\demo\datebox\validate.html" />
+    <Content Include="cir\js\easyui\demo\datetimebox\basic.html" />
+    <Content Include="cir\js\easyui\demo\datetimebox\initvalue.html" />
+    <Content Include="cir\js\easyui\demo\datetimebox\showseconds.html" />
+    <Content Include="cir\js\easyui\demo\demo.css" />
+    <Content Include="cir\js\easyui\demo\dialog\basic.html" />
+    <Content Include="cir\js\easyui\demo\dialog\complextoolbar.html" />
+    <Content Include="cir\js\easyui\demo\dialog\toolbarbuttons.html" />
+    <Content Include="cir\js\easyui\demo\draggable\basic.html" />
+    <Content Include="cir\js\easyui\demo\draggable\constain.html" />
+    <Content Include="cir\js\easyui\demo\draggable\snap.html" />
+    <Content Include="cir\js\easyui\demo\droppable\accept.html" />
+    <Content Include="cir\js\easyui\demo\droppable\basic.html" />
+    <Content Include="cir\js\easyui\demo\droppable\sort.html" />
+    <Content Include="cir\js\easyui\demo\easyloader\basic.html" />
+    <Content Include="cir\js\easyui\demo\form\basic.html" />
+    <Content Include="cir\js\easyui\demo\form\load.html" />
+    <Content Include="cir\js\easyui\demo\layout\addremove.html" />
+    <Content Include="cir\js\easyui\demo\layout\autoheight.html" />
+    <Content Include="cir\js\easyui\demo\layout\basic.html" />
+    <Content Include="cir\js\easyui\demo\layout\complex.html" />
+    <Content Include="cir\js\easyui\demo\layout\full.html" />
+    <Content Include="cir\js\easyui\demo\layout\nestedlayout.html" />
+    <Content Include="cir\js\easyui\demo\layout\nocollapsible.html" />
+    <Content Include="cir\js\easyui\demo\layout\_content.html" />
+    <Content Include="cir\js\easyui\demo\linkbutton\basic.html" />
+    <Content Include="cir\js\easyui\demo\linkbutton\group.html" />
+    <Content Include="cir\js\easyui\demo\linkbutton\iconalign.html" />
+    <Content Include="cir\js\easyui\demo\linkbutton\plain.html" />
+    <Content Include="cir\js\easyui\demo\linkbutton\toggle.html" />
+    <Content Include="cir\js\easyui\demo\menubutton\actions.html" />
+    <Content Include="cir\js\easyui\demo\menubutton\basic.html" />
+    <Content Include="cir\js\easyui\demo\menu\basic.html" />
+    <Content Include="cir\js\easyui\demo\menu\customitem.html" />
+    <Content Include="cir\js\easyui\demo\menu\events.html" />
+    <Content Include="cir\js\easyui\demo\messager\alert.html" />
+    <Content Include="cir\js\easyui\demo\messager\basic.html" />
+    <Content Include="cir\js\easyui\demo\messager\interactive.html" />
+    <Content Include="cir\js\easyui\demo\messager\position.html" />
+    <Content Include="cir\js\easyui\demo\numberbox\basic.html" />
+    <Content Include="cir\js\easyui\demo\numberbox\format.html" />
+    <Content Include="cir\js\easyui\demo\numberbox\range.html" />
+    <Content Include="cir\js\easyui\demo\numberspinner\basic.html" />
+    <Content Include="cir\js\easyui\demo\numberspinner\increment.html" />
+    <Content Include="cir\js\easyui\demo\numberspinner\range.html" />
+    <Content Include="cir\js\easyui\demo\pagination\basic.html" />
+    <Content Include="cir\js\easyui\demo\pagination\custombuttons.html" />
+    <Content Include="cir\js\easyui\demo\pagination\simple.html" />
+    <Content Include="cir\js\easyui\demo\panel\basic.html" />
+    <Content Include="cir\js\easyui\demo\panel\customtools.html" />
+    <Content Include="cir\js\easyui\demo\panel\loadcontent.html" />
+    <Content Include="cir\js\easyui\demo\panel\nestedpanel.html" />
+    <Content Include="cir\js\easyui\demo\panel\paneltools.html" />
+    <Content Include="cir\js\easyui\demo\panel\_content.html" />
+    <Content Include="cir\js\easyui\demo\progressbar\basic.html" />
+    <Content Include="cir\js\easyui\demo\propertygrid\basic.html" />
+    <Content Include="cir\js\easyui\demo\propertygrid\customcolumns.html" />
+    <Content Include="cir\js\easyui\demo\propertygrid\groupformat.html" />
+    <Content Include="cir\js\easyui\demo\resizable\basic.html" />
+    <Content Include="cir\js\easyui\demo\searchbox\basic.html" />
+    <Content Include="cir\js\easyui\demo\searchbox\category.html" />
+    <Content Include="cir\js\easyui\demo\slider\basic.html" />
+    <Content Include="cir\js\easyui\demo\slider\formattip.html" />
+    <Content Include="cir\js\easyui\demo\slider\rule.html" />
+    <Content Include="cir\js\easyui\demo\slider\vertical.html" />
+    <Content Include="cir\js\easyui\demo\splitbutton\actions.html" />
+    <Content Include="cir\js\easyui\demo\splitbutton\basic.html" />
+    <Content Include="cir\js\easyui\demo\tabs\autoheight.html" />
+    <Content Include="cir\js\easyui\demo\tabs\basic.html" />
+    <Content Include="cir\js\easyui\demo\tabs\fixedwidth.html" />
+    <Content Include="cir\js\easyui\demo\tabs\hover.html" />
+    <Content Include="cir\js\easyui\demo\tabs\images\modem.png" />
+    <Content Include="cir\js\easyui\demo\tabs\images\pda.png" />
+    <Content Include="cir\js\easyui\demo\tabs\images\scanner.png" />
+    <Content Include="cir\js\easyui\demo\tabs\images\tablet.png" />
+    <Content Include="cir\js\easyui\demo\tabs\nestedtabs.html" />
+    <Content Include="cir\js\easyui\demo\tabs\striptools.html" />
+    <Content Include="cir\js\easyui\demo\tabs\tabimage.html" />
+    <Content Include="cir\js\easyui\demo\tabs\tabposition.html" />
+    <Content Include="cir\js\easyui\demo\tabs\tabstools.html" />
+    <Content Include="cir\js\easyui\demo\tabs\_content.html" />
+    <Content Include="cir\js\easyui\demo\timespinner\actions.html" />
+    <Content Include="cir\js\easyui\demo\timespinner\basic.html" />
+    <Content Include="cir\js\easyui\demo\timespinner\range.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\ajax.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\basic.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\customcontent.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\customstyle.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\position.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\toolbar.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\tooltipdialog.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\_content.html" />
+    <Content Include="cir\js\easyui\demo\tooltip\_dialog.html" />
+    <Content Include="cir\js\easyui\demo\treegrid\actions.html" />
+    <Content Include="cir\js\easyui\demo\treegrid\basic.html" />
+    <Content Include="cir\js\easyui\demo\treegrid\clientpagination.html" />
+    <Content Include="cir\js\easyui\demo\treegrid\contextmenu.html" />
+    <Content Include="cir\js\easyui\demo\treegrid\editable.html" />
+    <Content Include="cir\js\easyui\demo\treegrid\footer.html" />
+    <Content Include="cir\js\easyui\demo\treegrid\reports.html" />
+    <Content Include="cir\js\easyui\demo\tree\actions.html" />
+    <Content Include="cir\js\easyui\demo\tree\animation.html" />
+    <Content Include="cir\js\easyui\demo\tree\basic.html" />
+    <Content Include="cir\js\easyui\demo\tree\checkbox.html" />
+    <Content Include="cir\js\easyui\demo\tree\contextmenu.html" />
+    <Content Include="cir\js\easyui\demo\tree\dnd.html" />
+    <Content Include="cir\js\easyui\demo\tree\editable.html" />
+    <Content Include="cir\js\easyui\demo\tree\icons.html" />
+    <Content Include="cir\js\easyui\demo\tree\lines.html" />
+    <Content Include="cir\js\easyui\demo\validatebox\basic.html" />
+    <Content Include="cir\js\easyui\demo\validatebox\customtooltip.html" />
+    <Content Include="cir\js\easyui\demo\window\basic.html" />
+    <Content Include="cir\js\easyui\demo\window\customtools.html" />
+    <Content Include="cir\js\easyui\demo\window\inlinewindow.html" />
+    <Content Include="cir\js\easyui\demo\window\modalwindow.html" />
+    <Content Include="cir\js\easyui\demo\window\windowlayout.html" />
+    <Content Include="cir\js\easyui\dgloader.js" />
+    <Content Include="cir\js\easyui\easyloader.js" />
+    <Content Include="cir\js\easyui\jquery.easyui.min.js" />
+    <Content Include="cir\js\easyui\jquery.min.js" />
+    <Content Include="cir\js\easyui\locale\easyui-lang-zh_CN.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.accordion.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.calendar.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.combo.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.combobox.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.combogrid.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.combotree.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.datagrid.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.datebox.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.datetimebox.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.dialog.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.draggable.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.droppable.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.form.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.layout.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.linkbutton.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.menu.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.menubutton.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.messager.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.numberbox.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.numberspinner.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.pagination.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.panel.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.parser.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.progressbar.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.propertygrid.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.resizable.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.searchbox.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.slider.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.spinner.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.splitbutton.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.tabs.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.timespinner.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.tooltip.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.tree.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.treegrid.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.validatebox.js" />
+    <Content Include="cir\js\easyui\plugins\jquery.window.js" />
+    <Content Include="cir\js\easyui\themes\black\accordion.css" />
+    <Content Include="cir\js\easyui\themes\black\calendar.css" />
+    <Content Include="cir\js\easyui\themes\black\combo.css" />
+    <Content Include="cir\js\easyui\themes\black\combobox.css" />
+    <Content Include="cir\js\easyui\themes\black\datagrid.css" />
+    <Content Include="cir\js\easyui\themes\black\datebox.css" />
+    <Content Include="cir\js\easyui\themes\black\dialog.css" />
+    <Content Include="cir\js\easyui\themes\black\easyui.css" />
+    <Content Include="cir\js\easyui\themes\black\images\accordion_arrows.png" />
+    <Content Include="cir\js\easyui\themes\black\images\blank.gif" />
+    <Content Include="cir\js\easyui\themes\black\images\calendar_arrows.png" />
+    <Content Include="cir\js\easyui\themes\black\images\combo_arrow.png" />
+    <Content Include="cir\js\easyui\themes\black\images\datagrid_icons.png" />
+    <Content Include="cir\js\easyui\themes\black\images\datebox_arrow.png" />
+    <Content Include="cir\js\easyui\themes\black\images\layout_arrows.png" />
+    <Content Include="cir\js\easyui\themes\black\images\linkbutton_bg.png" />
+    <Content Include="cir\js\easyui\themes\black\images\loading.gif" />
+    <Content Include="cir\js\easyui\themes\black\images\menu_arrows.png" />
+    <Content Include="cir\js\easyui\themes\black\images\messager_icons.png" />
+    <Content Include="cir\js\easyui\themes\black\images\pagination_icons.png" />
+    <Content Include="cir\js\easyui\themes\black\images\panel_tools.png" />
+    <Content Include="cir\js\easyui\themes\black\images\searchbox_button.png" />
+    <Content Include="cir\js\easyui\themes\black\images\slider_handle.png" />
+    <Content Include="cir\js\easyui\themes\black\images\spinner_arrows.png" />
+    <Content Include="cir\js\easyui\themes\black\images\tabs_icons.png" />
+    <Content Include="cir\js\easyui\themes\black\images\tree_icons.png" />
+    <Content Include="cir\js\easyui\themes\black\images\validatebox_warning.png" />
+    <Content Include="cir\js\easyui\themes\black\layout.css" />
+    <Content Include="cir\js\easyui\themes\black\linkbutton.css" />
+    <Content Include="cir\js\easyui\themes\black\menu.css" />
+    <Content Include="cir\js\easyui\themes\black\menubutton.css" />
+    <Content Include="cir\js\easyui\themes\black\messager.css" />
+    <Content Include="cir\js\easyui\themes\black\pagination.css" />
+    <Content Include="cir\js\easyui\themes\black\panel.css" />
+    <Content Include="cir\js\easyui\themes\black\progressbar.css" />
+    <Content Include="cir\js\easyui\themes\black\propertygrid.css" />
+    <Content Include="cir\js\easyui\themes\black\searchbox.css" />
+    <Content Include="cir\js\easyui\themes\black\slider.css" />
+    <Content Include="cir\js\easyui\themes\black\spinner.css" />
+    <Content Include="cir\js\easyui\themes\black\splitbutton.css" />
+    <Content Include="cir\js\easyui\themes\black\tabs.css" />
+    <Content Include="cir\js\easyui\themes\black\tooltip.css" />
+    <Content Include="cir\js\easyui\themes\black\tree.css" />
+    <Content Include="cir\js\easyui\themes\black\validatebox.css" />
+    <Content Include="cir\js\easyui\themes\black\window.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\accordion.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\calendar.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\combo.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\combobox.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\datagrid.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\datebox.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\dialog.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\easyui.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\accordion_arrows.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\blank.gif" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\calendar_arrows.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\combo_arrow.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\datagrid_icons.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\datebox_arrow.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\layout_arrows.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\linkbutton_bg.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\loading.gif" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\menu_arrows.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\messager_icons.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\pagination_icons.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\panel_tools.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\searchbox_button.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\slider_handle.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\spinner_arrows.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\tabs_icons.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\tree_icons.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\images\validatebox_warning.png" />
+    <Content Include="cir\js\easyui\themes\bootstrap\layout.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\linkbutton.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\menu.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\menubutton.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\messager.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\pagination.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\panel.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\progressbar.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\propertygrid.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\searchbox.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\slider.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\spinner.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\splitbutton.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\tabs.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\tooltip.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\tree.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\validatebox.css" />
+    <Content Include="cir\js\easyui\themes\bootstrap\window.css" />
+    <Content Include="cir\js\easyui\themes\default\accordion.css" />
+    <Content Include="cir\js\easyui\themes\default\calendar.css" />
+    <Content Include="cir\js\easyui\themes\default\combo.css" />
+    <Content Include="cir\js\easyui\themes\default\combobox.css" />
+    <Content Include="cir\js\easyui\themes\default\datagrid.css" />
+    <Content Include="cir\js\easyui\themes\default\datebox.css" />
+    <Content Include="cir\js\easyui\themes\default\dialog.css" />
+    <Content Include="cir\js\easyui\themes\default\easyui.css" />
+    <Content Include="cir\js\easyui\themes\default\images\accordion_arrows.png" />
+    <Content Include="cir\js\easyui\themes\default\images\blank.gif" />
+    <Content Include="cir\js\easyui\themes\default\images\calendar_arrows.png" />
+    <Content Include="cir\js\easyui\themes\default\images\combo_arrow.png" />
+    <Content Include="cir\js\easyui\themes\default\images\datagrid_icons.png" />
+    <Content Include="cir\js\easyui\themes\default\images\datebox_arrow.png" />
+    <Content Include="cir\js\easyui\themes\default\images\layout_arrows.png" />
+    <Content Include="cir\js\easyui\themes\default\images\linkbutton_bg.png" />
+    <Content Include="cir\js\easyui\themes\default\images\loading.gif" />
+    <Content Include="cir\js\easyui\themes\default\images\menu_arrows.png" />
+    <Content Include="cir\js\easyui\themes\default\images\messager_icons.png" />
+    <Content Include="cir\js\easyui\themes\default\images\pagination_icons.png" />
+    <Content Include="cir\js\easyui\themes\default\images\panel_tools.png" />
+    <Content Include="cir\js\easyui\themes\default\images\searchbox_button.png" />
+    <Content Include="cir\js\easyui\themes\default\images\slider_handle.png" />
+    <Content Include="cir\js\easyui\themes\default\images\spinner_arrows.png" />
+    <Content Include="cir\js\easyui\themes\default\images\tabs_icons.png" />
+    <Content Include="cir\js\easyui\themes\default\images\tree_icons.png" />
+    <Content Include="cir\js\easyui\themes\default\images\validatebox_warning.png" />
+    <Content Include="cir\js\easyui\themes\default\layout.css" />
+    <Content Include="cir\js\easyui\themes\default\linkbutton.css" />
+    <Content Include="cir\js\easyui\themes\default\menu.css" />
+    <Content Include="cir\js\easyui\themes\default\menubutton.css" />
+    <Content Include="cir\js\easyui\themes\default\messager.css" />
+    <Content Include="cir\js\easyui\themes\default\pagination.css" />
+    <Content Include="cir\js\easyui\themes\default\panel.css" />
+    <Content Include="cir\js\easyui\themes\default\progressbar.css" />
+    <Content Include="cir\js\easyui\themes\default\propertygrid.css" />
+    <Content Include="cir\js\easyui\themes\default\searchbox.css" />
+    <Content Include="cir\js\easyui\themes\default\slider.css" />
+    <Content Include="cir\js\easyui\themes\default\spinner.css" />
+    <Content Include="cir\js\easyui\themes\default\splitbutton.css" />
+    <Content Include="cir\js\easyui\themes\default\tabs.css" />
+    <Content Include="cir\js\easyui\themes\default\tooltip.css" />
+    <Content Include="cir\js\easyui\themes\default\tree.css" />
+    <Content Include="cir\js\easyui\themes\default\validatebox.css" />
+    <Content Include="cir\js\easyui\themes\default\window.css" />
+    <Content Include="cir\js\easyui\themes\gray\accordion.css" />
+    <Content Include="cir\js\easyui\themes\gray\calendar.css" />
+    <Content Include="cir\js\easyui\themes\gray\combo.css" />
+    <Content Include="cir\js\easyui\themes\gray\combobox.css" />
+    <Content Include="cir\js\easyui\themes\gray\datagrid.css" />
+    <Content Include="cir\js\easyui\themes\gray\datebox.css" />
+    <Content Include="cir\js\easyui\themes\gray\dialog.css" />
+    <Content Include="cir\js\easyui\themes\gray\easyui.css" />
+    <Content Include="cir\js\easyui\themes\gray\images\accordion_arrows.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\blank.gif" />
+    <Content Include="cir\js\easyui\themes\gray\images\calendar_arrows.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\combo_arrow.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\datagrid_icons.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\datebox_arrow.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\layout_arrows.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\linkbutton_bg.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\loading.gif" />
+    <Content Include="cir\js\easyui\themes\gray\images\menu_arrows.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\messager_icons.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\pagination_icons.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\panel_tools.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\searchbox_button.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\slider_handle.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\spinner_arrows.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\tabs_icons.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\tree_icons.png" />
+    <Content Include="cir\js\easyui\themes\gray\images\validatebox_warning.png" />
+    <Content Include="cir\js\easyui\themes\gray\layout.css" />
+    <Content Include="cir\js\easyui\themes\gray\linkbutton.css" />
+    <Content Include="cir\js\easyui\themes\gray\menu.css" />
+    <Content Include="cir\js\easyui\themes\gray\menubutton.css" />
+    <Content Include="cir\js\easyui\themes\gray\messager.css" />
+    <Content Include="cir\js\easyui\themes\gray\pagination.css" />
+    <Content Include="cir\js\easyui\themes\gray\panel.css" />
+    <Content Include="cir\js\easyui\themes\gray\progressbar.css" />
+    <Content Include="cir\js\easyui\themes\gray\propertygrid.css" />
+    <Content Include="cir\js\easyui\themes\gray\searchbox.css" />
+    <Content Include="cir\js\easyui\themes\gray\slider.css" />
+    <Content Include="cir\js\easyui\themes\gray\spinner.css" />
+    <Content Include="cir\js\easyui\themes\gray\splitbutton.css" />
+    <Content Include="cir\js\easyui\themes\gray\tabs.css" />
+    <Content Include="cir\js\easyui\themes\gray\tooltip.css" />
+    <Content Include="cir\js\easyui\themes\gray\tree.css" />
+    <Content Include="cir\js\easyui\themes\gray\validatebox.css" />
+    <Content Include="cir\js\easyui\themes\gray\window.css" />
+    <Content Include="cir\js\easyui\themes\icon.css" />
+    <Content Include="cir\js\easyui\themes\icons\back.png" />
+    <Content Include="cir\js\easyui\themes\icons\blank.gif" />
+    <Content Include="cir\js\easyui\themes\icons\cancel.png" />
+    <Content Include="cir\js\easyui\themes\icons\cut.png" />
+    <Content Include="cir\js\easyui\themes\icons\edit_add.png" />
+    <Content Include="cir\js\easyui\themes\icons\edit_remove.png" />
+    <Content Include="cir\js\easyui\themes\icons\filesave.png" />
+    <Content Include="cir\js\easyui\themes\icons\help.png" />
+    <Content Include="cir\js\easyui\themes\icons\mini_add.png" />
+    <Content Include="cir\js\easyui\themes\icons\mini_edit.png" />
+    <Content Include="cir\js\easyui\themes\icons\mini_refresh.png" />
+    <Content Include="cir\js\easyui\themes\icons\no.png" />
+    <Content Include="cir\js\easyui\themes\icons\ok.png" />
+    <Content Include="cir\js\easyui\themes\icons\pencil.png" />
+    <Content Include="cir\js\easyui\themes\icons\print.png" />
+    <Content Include="cir\js\easyui\themes\icons\redo.png" />
+    <Content Include="cir\js\easyui\themes\icons\reload.png" />
+    <Content Include="cir\js\easyui\themes\icons\search.png" />
+    <Content Include="cir\js\easyui\themes\icons\sum.png" />
+    <Content Include="cir\js\easyui\themes\icons\tip.png" />
+    <Content Include="cir\js\easyui\themes\icons\undo.png" />
+    <Content Include="cir\js\easyui\themes\metro\accordion.css" />
+    <Content Include="cir\js\easyui\themes\metro\calendar.css" />
+    <Content Include="cir\js\easyui\themes\metro\combo.css" />
+    <Content Include="cir\js\easyui\themes\metro\combobox.css" />
+    <Content Include="cir\js\easyui\themes\metro\datagrid.css" />
+    <Content Include="cir\js\easyui\themes\metro\datebox.css" />
+    <Content Include="cir\js\easyui\themes\metro\dialog.css" />
+    <Content Include="cir\js\easyui\themes\metro\easyui.css" />
+    <Content Include="cir\js\easyui\themes\metro\images\accordion_arrows.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\blank.gif" />
+    <Content Include="cir\js\easyui\themes\metro\images\calendar_arrows.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\combo_arrow.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\datagrid_icons.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\datebox_arrow.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\layout_arrows.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\linkbutton_bg.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\loading.gif" />
+    <Content Include="cir\js\easyui\themes\metro\images\menu_arrows.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\messager_icons.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\pagination_icons.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\panel_tools.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\searchbox_button.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\slider_handle.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\spinner_arrows.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\tabs_icons.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\tree_icons.png" />
+    <Content Include="cir\js\easyui\themes\metro\images\validatebox_warning.png" />
+    <Content Include="cir\js\easyui\themes\metro\layout.css" />
+    <Content Include="cir\js\easyui\themes\metro\linkbutton.css" />
+    <Content Include="cir\js\easyui\themes\metro\menu.css" />
+    <Content Include="cir\js\easyui\themes\metro\menubutton.css" />
+    <Content Include="cir\js\easyui\themes\metro\messager.css" />
+    <Content Include="cir\js\easyui\themes\metro\pagination.css" />
+    <Content Include="cir\js\easyui\themes\metro\panel.css" />
+    <Content Include="cir\js\easyui\themes\metro\progressbar.css" />
+    <Content Include="cir\js\easyui\themes\metro\propertygrid.css" />
+    <Content Include="cir\js\easyui\themes\metro\searchbox.css" />
+    <Content Include="cir\js\easyui\themes\metro\slider.css" />
+    <Content Include="cir\js\easyui\themes\metro\spinner.css" />
+    <Content Include="cir\js\easyui\themes\metro\splitbutton.css" />
+    <Content Include="cir\js\easyui\themes\metro\tabs.css" />
+    <Content Include="cir\js\easyui\themes\metro\tooltip.css" />
+    <Content Include="cir\js\easyui\themes\metro\tree.css" />
+    <Content Include="cir\js\easyui\themes\metro\validatebox.css" />
+    <Content Include="cir\js\easyui\themes\metro\window.css" />
+    <Content Include="cir\js\export.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\query\CaseList.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="cir\admin\save_case.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="cir\watermark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\js\DatePicker\lang\vssver2.scc" />
+    <Content Include="cir\js\DatePicker\skin\default\vssver2.scc" />
+    <Content Include="cir\js\DatePicker\skin\vssver2.scc" />
+    <Content Include="cir\js\DatePicker\skin\whyGreen\vssver2.scc" />
+    <Content Include="cir\js\DatePicker\vssver2.scc" />
+    <Content Include="cir\query\CaseGallery.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cir\admin\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="cir\admin\case_list.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="cir\db\cir.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="cir\js\easyui\demo\accordion\datagrid_data1.json" />
+    <None Include="cir\js\easyui\demo\combobox\combobox_data1.json" />
+    <None Include="cir\js\easyui\demo\combobox\combobox_data2.json" />
+    <None Include="cir\js\easyui\demo\combogrid\datagrid_data1.json" />
+    <None Include="cir\js\easyui\demo\combotree\tree_data1.json" />
+    <None Include="cir\js\easyui\demo\datagrid\datagrid_data1.json" />
+    <None Include="cir\js\easyui\demo\datagrid\datagrid_data2.json" />
+    <None Include="cir\js\easyui\demo\datagrid\products.json" />
+    <None Include="cir\js\easyui\demo\form\form_data1.json" />
+    <None Include="cir\js\easyui\demo\layout\datagrid_data1.json" />
+    <None Include="cir\js\easyui\demo\layout\propertygrid_data1.json" />
+    <None Include="cir\js\easyui\demo\layout\tree_data1.json" />
+    <None Include="cir\js\easyui\demo\propertygrid\propertygrid_data1.json" />
+    <None Include="cir\js\easyui\demo\tabs\tree_data1.json" />
+    <None Include="cir\js\easyui\demo\treegrid\treegrid_data1.json" />
+    <None Include="cir\js\easyui\demo\treegrid\treegrid_data2.json" />
+    <None Include="cir\js\easyui\demo\treegrid\treegrid_data3.json" />
+    <None Include="cir\js\easyui\demo\tree\tree_data1.json" />
+    <None Include="cir\js\easyui\demo\tree\tree_data2.json" />
+    <None Include="cir\js\easyui\themes\black\images\Thumbs.db" />
+    <None Include="cir\js\easyui\themes\bootstrap\images\Thumbs.db" />
+    <None Include="cir\js\easyui\themes\default\images\Thumbs.db" />
+    <None Include="cir\js\easyui\themes\gray\images\Thumbs.db" />
+    <None Include="cir\js\easyui\themes\metro\images\Thumbs.db" />
+    <None Include="cir\plugin.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AtNet.DevFw.Core\AtNet.DevFw.Core.csproj">
+      <Project>{44e05d6c-5b0a-453a-913f-00124d1bf435}</Project>
+      <Name>AtNet.DevFw.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AtNet.DevFw.Data\AtNet.DevFw.Data.csproj">
+      <Project>{1d053644-937a-4d8e-9740-43823183a39a}</Project>
+      <Name>AtNet.DevFw.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AtNet.DevFw.PluginKernel\kernel\AtNet.DevFw.PluginKernel.csproj">
+      <Project>{cad14dcc-112c-4b28-98eb-1ce143d09033}</Project>
+      <Name>AtNet.DevFw.PluginKernel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AtNet.DevFw.Template\AtNet.DevFw.Template.csproj">
+      <Project>{275cae3e-a9e0-4de0-8031-e9137bbdd693}</Project>
+      <Name>AtNet.DevFw.Template</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\core\AtNet.DevFw.Toolkit.Data\AtNet.DevFw.Toolkit.Data.csproj">
+      <Project>{8a5b5504-8d72-4f30-a50e-5856be419dea}</Project>
+      <Name>AtNet.DevFw.Toolkit.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\core\AtNet.DevFw.Web\AtNet.DevFw.Web.csproj">
+      <Project>{4f756ead-0c41-499c-ae91-660892b444ac}</Project>
+      <Name>AtNet.DevFw.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath)  $(SolutionDir)../web/bin/$(TargetName).so
+move $(TargetPath)  $(SolutionDir)$(OutDir)$(TargetName).so</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

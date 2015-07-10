@@ -1,0 +1,97 @@
+﻿@using NPOI.SS.Formula.Functions
+@using U1City.UPos.Server.DataTransferObject.Order
+@{
+    ViewBag.Title = "ShowOrderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    OrderDTO order = ViewBag.order;
+}
+
+
+    <div id="OrderDetails" class="ord_tab">
+        <table class="boxtable">
+            <tr>
+                <td>
+                    <b>订单基本信息</b>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <span>订 单 号：</span>@order.OrderCode
+                    <span>生 成 时 间：</span>@String.Format("{0:yyyy-MM-dd HH:mm:ss}",order.SaleTime)
+
+                </td>
+                <td></td>
+            </tr>
+        </table>
+        <table class="boxtable">
+            <tr>
+                <th>
+                    <b>商品清单</b>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <table class="protable">
+                        <tr>
+                            <td style="text-align: center; width: 300px; background-color: #E9E9E9">商品
+                            </td>
+                            <td style="text-align: center; width: 150px; background-color: #E9E9E9" class="disPrice">分销价
+                            </td>
+                            <td style="text-align: center; width: 150px; background-color: #E9E9E9">网上零售价
+                            </td>
+                            <td style="text-align: center; width: 150px; background-color: #E9E9E9">数量
+                            </td>
+                            <td style="text-align: center; width: 250px; background-color: #E9E9E9">规格
+                            </td>
+                        </tr>
+                        
+                        @foreach (OrderItemDTO item in order.Items)
+                        {
+                            <tr>
+                                <td align="left">
+                                    <table class="innerTable">
+                                        <tr>
+                                            <td>
+                                                <img src="@item.Snapshot.Image" width="80" height="80" />
+                                            </td>
+                                            <td>@item.Snapshot.Name
+                                                <br />
+                                                货号：@item.Snapshot.ProductCode
+                                                <br />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td align="center" class="disPrice">
+                                    <div style="color: Red">
+                                        ￥@String.Format("{0.00}",item.TotalPrice)
+                                    </div>
+                                </td>
+                                <td align="center">
+                                    <div style="color: Red">
+                                        ￥ @String.Format("{0.00}",item.Snapshot.Price)
+                                    </div>
+
+                                </td>
+                                <td align="center">@item.Num
+                                </td>
+                                <td align="center">@item.Snapshot.Sku
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <div class="tip">
+            <div style="padding: 10px;">
+                <span class="red">提示：</span>该订单商品数量：<span class="red">@order.TotalNum</span>件，                                                                公斤） </span>，
+                网店销售金额：<span class="red">￥@order.TotalPrice</span>（不含运费）
+                ，顾客实付金额：<span class="red">￥@order.TotalFee</span>
+            </div>
+        </div>
+    </div>

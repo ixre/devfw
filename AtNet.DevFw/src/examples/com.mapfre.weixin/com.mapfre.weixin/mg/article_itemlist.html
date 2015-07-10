@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>订单列表</title>
+    <link rel="Stylesheet" type="text/css" href="${os.mcss}" />
+    <link href="${os.ppath}/css.css" rel="stylesheet" type="text/css" />
+    <link href="${os.ppath}/js/EasyUi/themes/default/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="${os.ppath}/js/EasyUi/themes/icon.css" rel="stylesheet" type="text/css" />
+    <style>
+        .searchBar ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 20px;
+        }
+
+            .searchBar ul li {
+                float: left;
+                padding-right: 10px;
+                margin: 2px 0;
+                white-space: nowrap;
+            }
+
+        .sf-2 {
+            color: #333;
+        }
+
+        .sf-1, .sf-3 {
+            color: red;
+        }
+
+        .sf0 {
+            color: #ff6600;
+        }
+
+        .sf1, .sf2 {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div id="gd">
+    </div>
+
+
+    <div class="toolBar">
+        <div class="searchBar padding5" id="searchbar">
+            <ul style="width:60%">
+                <!--<li><b>搜索条件：</b></li>-->
+                <li>
+                    <span class="title">标题：</span>
+                    <input type="text" field="title" style="width:100px" />
+                    <input type="hidden" field="sort" value="Sort"/>
+                    <input type="hidden" field="resId" value="${resId}"/>
+                </li>
+               
+                <li>
+                    <a class="easyui-linkbutton" id="btnSearch">搜索</a>
+                </li>
+            </ul>
+
+            <div class="clearfix"></div>
+
+            <div style="text-align: right;position:absolute;right:50px;top:10px">
+                <a class="easyui-linkbutton" onclick="add(1)">添加子项</a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="${os.mjs}"></script>
+    <script src="${os.ppath}/js/EasyUi/jquery.min.js" type="text/javascript"></script>
+    <script src="${os.ppath}/js/EasyUi/jquery.easyui.min.js" type="text/javascript"></script>
+    <script src="${os.ppath}/js/EasyUi/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+    <script src="${os.ppath}/js/export.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        expr.ele = 'searchbar';
+        expr.portal = 'ArticleItemList';   //配置导出的入口
+        expr.checkParams = function (data) {
+            return true;
+        };
+
+        var Search = function () { expr.search('gd'); };
+        var refresh = function () {$('#gd').datagrid('clearSelections'); expr.reload('gd');
+        };
+
+        $JS.$('gd').style.height = $JS.screen.height() + 'px';
+
+        $(function () {
+
+            //导出
+            $('#btnExport').click(
+                function () {
+                    //alert('提示：\n建议导出选择【csv格式】,兼容性更好，可以用各种版本excel打开！');
+                    expr.showExportDialog();
+                });
+
+            $('#btnClear').click(
+                function () {
+                    J.json.bind('searchbar', { state: -1, province: '', cashNo: '', caseNo: '', partnerCode: '', contract: '', startTime: '', endTime: '' });
+                });
+
+            $('#btnSearch').click(
+                function () {
+                    $('#gd').datagrid('clearSelections');
+                     expr.search('gd');
+                });
+
+            //加载数据
+            $('#gd').datagrid({
+                toolbar: '.toolBar',
+                pageList: [15, 20, 30, 50],
+                pageSize: 15,
+                singleSelect: !false,
+                pagination: true,
+                rownumbers: true,
+                idField: 'id',
+                fitColumns: true,
+                url: expr.getDataUrl(),
+                columns: [[
+                   // { field: 'id', title: '选择', checkbox: true },
+                    { field: 'Pic', title: '缩略图', align: 'center', width: 180,formatter:function(v) {
+                        return '<img src="/' + v + '" style="width:160px;height:90px;margin:10px 0;border:solid 1px #ddd;padding:1px;"/>';
+                    }},
+                    { field: 'Title', title: '标题', align: 'center', width: 150 },
+                    { field: 'Enabled', title: '启用', align: 'center', width: 150 ,formatter:function(v) {
+                        return v ? '<span style="color:green">启用</span>' : '<span style="color:red">停用</span>';
+                    }},
+                    { field: 'Sort', title: '排序', align: 'center', width: 150 },
+                    { field: 'Url', title: '链接', align: 'center', width: 150,formatter:function(v) {
+                        return '<a href="'+v+'" target="_blank">'+v+'</a>';
+                    } },
+                    {
+                        field: 'op',
+                        title: '操作',
+                        align: 'center',
+                        width: 200,
+                        formatter: function(v, r) {
+                            return '<a href="javascript:;" onclick="edit(' + r.Id + ',' + r.TypeId + ')">修改</a> |' +
+                                ' <a href="javascript:;" onclick="del(' + r.Id + ')">删除</a>';
+                        }
+                    }
+                ]]
+            });
+
+            //统计汇总数量
+            // expr.bindTotalView('totalView');
+        });
+
+        function add(type) {
+            $JS.tab.open('添加图文子项', '/wxm/createArticleItem?res_id=${resId}', true);
+        }
+
+        function edit(id)
+        {
+            $JS.tab.open('修改图文子项', '/wxm/editArticleItem?res_id=${resId}&id='+id, true);
+        }
+
+        function item(id) {
+           $JS.tab.open('图文子项管理', '/wxm/ArticleItems?id=' + id, true);
+        }
+
+        function del(id) {
+            if (confirm('确定要删除案件吗？')) {
+                J.xhr.jsonPost('/cir.sh.aspx/delcase', { id: id }, function (json) {
+                    if (json.result) {
+                        expr.reload('gd');
+                    }
+                    $.messager.alert('提示', json.message);
+                });
+            }
+        }
+
+    </script>
+</body>
+</html>
