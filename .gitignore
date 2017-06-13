@@ -9,3 +9,4 @@ chunk/Source_Code/*.dll
 bin
 tmp
 /dist/dll
+src/packages

@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (C) 2007-2015 OPSoft INC,All rights reseved.
+ * Copyright (C) 2007-2015 S1N1.COM,All rights reseved.
  * Get more infromation of this software,please visit site http://cms.ops.cc
  * 
  * name : RequestHandle.cs
@@ -17,11 +17,11 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
-using AtNet.DevFw;
-using AtNet.DevFw.Framework.Extensions;
-using AtNet.DevFw.Framework.Graphic;
-using AtNet.DevFw.Framework.Web.UI;
-using AtNet.DevFw.PluginKernel;
+using JR.DevFw;
+using JR.DevFw.Framework.Extensions;
+using JR.DevFw.Framework.Graphic;
+using JR.DevFw.Framework.Web.UI;
+using JR.DevFw.PluginKernel;
 using Com.Plugin.Core.Utils;
 using Com.Plugin.Weixin;
 using Senparc.Weixin;

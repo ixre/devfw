@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using AtNet.DevFw.Data;
-using AtNet.DevFw.Data.Extensions;
+using JR.DevFw.Data;
+using JR.DevFw.Data.Extensions;
 using Com.Plugin.Core;
 using Com.Plugin.Entity;
 using Com.Plugin.ILogic;

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6DFC3F5F-8B0D-4826-8FB0-5FA565E9E886}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>J6.DevFw.WebResource</RootNamespace>
+    <AssemblyName>J6.DevFw.WebResource</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="JS_Lib\animation.js" />
+    <Content Include="JS_Lib\aui\Index.html" />
+    <Content Include="JS_Lib\aui\ui\ajax-loader.gif" />
+    <Content Include="JS_Lib\aui\ui\avatar.gif" />
+    <Content Include="JS_Lib\aui\ui\avatar_bg.png" />
+    <Content Include="JS_Lib\aui\ui\blank.png" />
+    <Content Include="JS_Lib\aui\ui\columns.png" />
+    <Content Include="JS_Lib\aui\ui\drop_arraw.gif" />
+    <Content Include="JS_Lib\aui\ui\icon_chart.png" />
+    <Content Include="JS_Lib\aui\ui\icon_config.png" />
+    <Content Include="JS_Lib\aui\ui\icon_pass.png" />
+    <Content Include="JS_Lib\aui\ui\icon_plugin.png" />
+    <Content Include="JS_Lib\aui\ui\icon_secret.png" />
+    <Content Include="JS_Lib\aui\ui\icon_server.png" />
+    <Content Include="JS_Lib\aui\ui\icon_user.png" />
+    <Content Include="JS_Lib\aui\ui\js\component.js" />
+    <Content Include="JS_Lib\aui\ui\js\core.js" />
+    <Content Include="JS_Lib\aui\ui\js\menu_json.js" />
+    <Content Include="JS_Lib\aui\ui\left_menu_current.gif" />
+    <Content Include="JS_Lib\aui\ui\loading_box.gif" />
+    <Content Include="JS_Lib\aui\ui\logo.gif" />
+    <Content Include="JS_Lib\aui\ui\menu_bar_bg.gif" />
+    <Content Include="JS_Lib\aui\ui\menu_icon.gif" />
+    <Content Include="JS_Lib\aui\ui\style.css" />
+    <Content Include="JS_Lib\aui\ui\tab_bg.gif" />
+    <Content Include="JS_Lib\aui\ui\tab_bg_hover.gif" />
+    <Content Include="JS_Lib\aui\ui\tab_close.gif" />
+    <Content Include="JS_Lib\aui\ui\tab_close.png" />
+    <Content Include="JS_Lib\aui\ui\top_bg.gif" />
+    <Content Include="JS_Lib\aui\ui\top_hover_split.gif" />
+    <Content Include="JS_Lib\autoCompletion.js" />
+    <Content Include="JS_Lib\calender.js" />
+    <Content Include="JS_Lib\jr.core.js" />
+    <Content Include="JS_Lib\datagrid.js" />
+    <Content Include="JS_Lib\demo\1.html" />
+    <Content Include="JS_Lib\demo\className.html" />
+    <Content Include="JS_Lib\demo\dialog.html" />
+    <Content Include="JS_Lib\demo\上传.htm" />
+    <Content Include="JS_Lib\demo\右键.html" />
+    <Content Include="JS_Lib\dialog.js" />
+    <Content Include="JS_Lib\dialog.normal.js" />
+    <Content Include="JS_Lib\exchange.js" />
+    <Content Include="JS_Lib\export.js" />
+    <Content Include="JS_Lib\form.js" />
+    <Content Include="JS_Lib\json.js" />
+    <Content Include="JS_Lib\roller.js" />
+    <Content Include="JS_Lib\scrollbar.js" />
+    <Content Include="JS_Lib\scroller.js" />
+    <Content Include="JS_Lib\table.js" />
+    <Content Include="JS_Lib\tree.js" />
+    <Content Include="JS_Lib\ui.js" />
+    <Content Include="JS_Lib\upload.js" />
+    <Content Include="JS_Lib\validate.js" />
+    <Content Include="js_release\j6.min.js" />
+    <Content Include="js_release\j6.min_src.js" />
+    <Content Include="js_release\j6.ui.js" />
+    <Content Include="js_release\j6.ui.min_src.js" />
+    <Content Include="js_release\respond.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

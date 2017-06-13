@@ -1,4 +1,4 @@
-﻿# JR.DevFw #
+﻿# J6's .Net Development framework #
 
 It's a .net development framework,contains plugin kernel,template engine,database util,orm and some base library.
 it's come from my other project "cms",http://github.com/atnet/cms
@@ -20,7 +20,7 @@ StructureMap.dll
 Newtonsoft.Json.dll
 
 ## 插件开发 ##
-见：http://github.com/jsix/cms/tree/master/plugin
+见：http://github.com/atnet/cms/tree/master/plugin
 
 ## 示例 ##
 见examples目录，包含一个微信功能的插件和一个MVC站点，

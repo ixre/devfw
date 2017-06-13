@@ -1,1 +1,1 @@
-﻿<%@ Application Language="C#" Inherits="AtNet.DevFw.Web.Example.Code.Application" %>
+﻿<%@ Application Language="C#" Inherits="JR.DevFw.Web.Example.Code.Application" %>

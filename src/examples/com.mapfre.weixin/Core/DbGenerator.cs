@@ -1,5 +1,5 @@
 ﻿
-using AtNet.DevFw.Data;
+using JR.DevFw.Data;
 
 namespace Com.Plugin.Core
 {

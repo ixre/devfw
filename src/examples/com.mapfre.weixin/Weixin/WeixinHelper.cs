@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Net.Configuration;
 using System.Text.RegularExpressions;
 using System.Web;
-using AtNet.DevFw.Framework;
-using AtNet.DevFw.Framework.Net;
-using AtNet.DevFw.PluginKernel;
-using AtNet.DevFw.Web;
+using JR.DevFw.Framework;
+using JR.DevFw.Framework.Net;
+using JR.DevFw.PluginKernel;
+using JR.DevFw.Web;
 using Newtonsoft.Json;
 using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.CommonAPIs;
@@ -175,7 +175,7 @@ namespace Com.Plugin.Weixin
         {
             if (_hostPath == null)
             {
-                _hostPath =WebCtx.Domain;
+                _hostPath =WebCtx.Current.Domain;
             }
             return _hostPath;;
         }
@@ -196,14 +196,14 @@ namespace Com.Plugin.Weixin
         {
             if (_authUrlPrefix == null)
             {
-                String overrideIndent =  Config.PluginAttr.Settings[DefaultSettingKeys.OverrideUrlIndent];
+                String overrideIndent =  Config.PluginAttr.Settings[PluginSettingKeys.OverrideUrlIndent];
                 if (overrideIndent == null || overrideIndent.Trim() == "")
                 {
-                    _authUrlPrefix = WebCtx.Domain + "/" + Config.PluginAttr.WorkIndent + ".sh.aspx/";
+                    _authUrlPrefix = WebCtx.Current.Domain + "/" + Config.PluginAttr.WorkIndent + ".sh.aspx/";
                 }
                 else
                 {
-                    _authUrlPrefix = WebCtx.Domain + "/" + overrideIndent + "/";
+                    _authUrlPrefix = WebCtx.Current.Domain + "/" + overrideIndent + "/";
                 }
             }
             return _authUrlPrefix;

@@ -2,23 +2,23 @@
 using System.Data;
 using System.IO;
 using System.Web;
-using AtNet.DevFw.Data;
-using AtNet.DevFw.Framework.Extensions;
-using AtNet.DevFw.Template;
+using JR.DevFw.Data;
+using JR.DevFw.Framework.Extensions;
+using JR.DevFw.Template;
 using Com.Plugin.Core.Utils;
-using AtNet.DevFw.Framework.Web.UI;
-using AtNet.DevFw.PluginKernel;
-using AtNet.DevFw.Web;
-using AtNet.DevFw.Web.Plugins;
+using JR.DevFw.Framework.Web.UI;
+using JR.DevFw.PluginKernel;
+using JR.DevFw.Web;
+using JR.DevFw.Web.Plugin;
 
 namespace Com.Plugin.Core
 {
     internal class BaseHandle
     {
-        private IExtendApp _app;
+        private IPluginApp _app;
         private IPlugin _plugin;
 
-        public BaseHandle(IExtendApp app, IPlugin plugin)
+        public BaseHandle(IPluginApp app, IPlugin plugin)
         {
             this._app = app;
             this._plugin = plugin;
