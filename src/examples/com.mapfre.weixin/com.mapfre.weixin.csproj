@@ -33,17 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\dll\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NPOI, Version=2.0.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\dll\NPOI.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpCompress.3.5, Version=0.8.2.0, Culture=neutral, PublicKeyToken=beaf6f427e128133, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\dll\SharpCompress.3.5.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\..\dll\StructureMap.dll</HintPath>
@@ -97,6 +92,7 @@
     <None Include="com.mapfre.weixin\plugin.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
@@ -114,29 +110,29 @@
     <Content Include="com.mapfre.weixin\mg\text_res.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\core\AtNet.DevFw.Core\AtNet.DevFw.Core.csproj">
+    <ProjectReference Include="..\..\core\J6.DevFw.Core\JR.DevFw.Core.csproj">
       <Project>{44e05d6c-5b0a-453a-913f-00124d1bf435}</Project>
-      <Name>AtNet.DevFw.Core</Name>
+      <Name>JR.DevFw.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\core\AtNet.DevFw.Data\AtNet.DevFw.Data.csproj">
+    <ProjectReference Include="..\..\core\J6.DevFw.Data\JR.DevFw.Data.csproj">
       <Project>{1d053644-937a-4d8e-9740-43823183a39a}</Project>
-      <Name>AtNet.DevFw.Data</Name>
+      <Name>JR.DevFw.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\core\AtNet.DevFw.PluginKernel\kernel\AtNet.DevFw.PluginKernel.csproj">
+    <ProjectReference Include="..\..\core\J6.DevFw.PluginKernel\kernel\JR.DevFw.PluginKernel.csproj">
       <Project>{cad14dcc-112c-4b28-98eb-1ce143d09033}</Project>
-      <Name>AtNet.DevFw.PluginKernel</Name>
+      <Name>JR.DevFw.PluginKernel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\core\AtNet.DevFw.Template\AtNet.DevFw.Template.csproj">
+    <ProjectReference Include="..\..\core\J6.DevFw.Template\JR.DevFw.Template.csproj">
       <Project>{275cae3e-a9e0-4de0-8031-e9137bbdd693}</Project>
-      <Name>AtNet.DevFw.Template</Name>
+      <Name>JR.DevFw.Template</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\core\AtNet.DevFw.Web\AtNet.DevFw.Web.csproj">
+    <ProjectReference Include="..\..\core\J6.DevFw.Web\JR.DevFw.Web.csproj">
       <Project>{4f756ead-0c41-499c-ae91-660892b444ac}</Project>
-      <Name>AtNet.DevFw.Web</Name>
+      <Name>JR.DevFw.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\toolkit\AtNet.DevFw.Toolkit.Data\AtNet.DevFw.Toolkit.Data.csproj">
+    <ProjectReference Include="..\..\toolkit\J6.DevFw.Toolkit.Data\J6.DevFw.Toolkit.Data.csproj">
       <Project>{8a5b5504-8d72-4f30-a50e-5856be419dea}</Project>
-      <Name>AtNet.DevFw.Toolkit.Data</Name>
+      <Name>J6.DevFw.Toolkit.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (C) 2007-2015 OPSoft INC,All rights reseved.
+ * Copyright (C) 2007-2015 S1N1.COM,All rights reseved.
  * Get more infromation of this software,please visit site http://cms.ops.cc
  * 
  * name : Helper.cs
@@ -11,7 +11,7 @@
 
 using System.Data;
 using System.Web;
-using AtNet.DevFw.Framework.Extensions;
+using JR.DevFw.Framework.Extensions;
 using Newtonsoft.Json;
 
 namespace Com.Plugin.Core

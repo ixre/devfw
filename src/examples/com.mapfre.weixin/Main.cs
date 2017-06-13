@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (C) 2007-2015 OPSoft INC,All rights reseved.
+ * Copyright (C) 2007-2015 S1N1.COM,All rights reseved.
  * Get more infromation of this software,please visit site http://cms.ops.cc
  * 
  * name : Main.cs
@@ -9,8 +9,8 @@
  * history : 
  */
 using System;
-using AtNet.DevFw.PluginKernel;
-using AtNet.DevFw.Web.Plugins;
+using JR.DevFw.PluginKernel;
+using JR.DevFw.Web.Plugin;
 using Senparc.Weixin.MP.CommonAPIs;
 
 namespace Com.Plugin
@@ -23,15 +23,15 @@ namespace Com.Plugin
         private PluginPackAttribute _attr;
 		public PluginConnectionResult Connect(IPluginHost app)
 		{
-			IExtendApp _app = app as IExtendApp;
+			IPluginApp _app = app as IPluginApp;
 			if(_app!=null)
             {
                 Config.Init(this);
 
 				RequestProxry req=new RequestProxry(_app,this);
 				_app.Register(this,req.HandleGet,req.HandlePost);
-                _app.MapExtendPluginRoute(this);
-                _app.MapExtendPluginRoute(this,"wxm");
+                _app.MapPluginRoute(this);
+                _app.MapPluginRoute(this,"wxm");
                 this.init();
 			}
 

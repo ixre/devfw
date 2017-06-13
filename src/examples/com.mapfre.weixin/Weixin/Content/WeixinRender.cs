@@ -1,8 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using AtNet.DevFw.Web;
+using JR.DevFw.Web;
 using Com.Plugin.Core;
 using Com.Plugin.Entity;
-using Ops.Cms;
 using Senparc.Weixin.MP.Entities;
 
 namespace Com.Plugin.Weixin.Content
@@ -149,7 +148,7 @@ namespace Com.Plugin.Weixin.Content
                 ArticleRes ares = res as ArticleRes;
                 var items = ares.Items;
 
-                string domain = WebCtx.Domain;
+                string domain = WebCtx.Current.Domain;
 
                 foreach (var item in items)
                 {

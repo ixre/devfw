@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace AtNet.DevFw.Web.Example.Code.Controllers
+namespace JR.DevFw.Web.Example.Code.Controllers
 {
     public class HomeController:Controller
     {
