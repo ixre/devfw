@@ -16,11 +16,13 @@ using System.Data;
 using System.Data.Common;
 using System.Text.RegularExpressions;
 using JR.DevFw.Data.Extensions;
+using System.Threading;
 
 namespace JR.DevFw.Data
 {
     public class DataBaseAccess
     {
+        private static readonly Object locker = new object();
         private readonly IDataBase dbFactory;
         private static readonly Regex procedureRegex = new Regex("\\s");
         private IList<String> _totalSqls;
@@ -164,7 +166,7 @@ namespace JR.DevFw.Data
         {
             if (this._totalOpen) this.AddTotalSql(commandText);
             DbParameter[] parameters = null;
-            return ExecuteNonQuery(commandText, parameters);
+            return this.ExecuteNonQuery(commandText, parameters);
         }
 
         /// <summary>
@@ -176,19 +178,25 @@ namespace JR.DevFw.Data
         public int ExecuteNonQuery(string commandText, params DbParameter[] parameters)
         {
             if (this._totalOpen) this.AddTotalSql(commandText);
-
             int result = 0;
             using (DbConnection conn = this.CreateOpenedConnection())
             {
                 DbCommand cmd = this.CreateCommand(commandText);
-
+                cmd.Connection = conn;
                 //自动判断是T-SQL还是存储过程
                 cmd.CommandType = procedureRegex.IsMatch(commandText) ? CommandType.Text : CommandType.StoredProcedure;
-
-                cmd.Connection = conn;
                 if (parameters != null) cmd.Parameters.AddRange(parameters);
-
+                // SQLite不支持并发的写入
+                if (this.DbType == DataBaseType.SQLite)
+                {
+                    Monitor.Enter(locker);
+                    result = cmd.ExecuteNonQuery();
+                    cmd.Dispose();
+                    Monitor.Exit(locker);
+                    return result;
+                }
                 result = cmd.ExecuteNonQuery();
+                cmd.Dispose();
             }
             return result;
         }
@@ -219,13 +227,11 @@ namespace JR.DevFw.Data
             {
                 DbCommand cmd = this.CreateCommand(commandText);
                 cmd.Connection = conn;
-
                 //自动判断是T-SQL还是存储过程
                 cmd.CommandType = procedureRegex.IsMatch(commandText) ? CommandType.Text : CommandType.StoredProcedure;
-
                 if (parameters != null) cmd.Parameters.AddRange(parameters);
-
                 obj = cmd.ExecuteScalar();
+                cmd.Dispose();
             }
             return obj;
         }
@@ -235,20 +241,19 @@ namespace JR.DevFw.Data
         /// </summary>
         /// <param name="commandText"></param>
         /// <param name="parameters"></param>
-        public DbDataReader ExecuteReader(string commandText, params DbParameter[] parameters)
+        private DbDataReader ExecuteReader(string commandText, params DbParameter[] parameters)
         {
             if (this._totalOpen) this.AddTotalSql(commandText);
             using (DbConnection conn = this.CreateOpenedConnection())
             {
                 DbCommand cmd = this.CreateCommand(commandText);
                 cmd.Connection = conn;
-
                 //自动判断是T-SQL还是存储过程
                 cmd.CommandType = procedureRegex.IsMatch(commandText) ? CommandType.Text : CommandType.StoredProcedure;
-
                 if (parameters != null) cmd.Parameters.AddRange(parameters);
-
-                return cmd.ExecuteReader();
+                DbDataReader rd = cmd.ExecuteReader();
+                cmd.Dispose();
+                return rd;
             }
         }
 
@@ -277,15 +282,14 @@ namespace JR.DevFw.Data
             {
                 DbCommand cmd = this.CreateCommand(commandText);
                 cmd.Connection = conn;
-
                 //自动判断是T-SQL还是存储过程
                 cmd.CommandType = procedureRegex.IsMatch(commandText)
                     ? CommandType.Text
                     : CommandType.StoredProcedure;
-
                 if (parameters != null) cmd.Parameters.AddRange(parameters);
-
-                func(cmd.ExecuteReader());
+                DbDataReader rd = cmd.ExecuteReader();
+                func(rd);
+                cmd.Dispose();
             }
         }
 
@@ -315,8 +319,6 @@ namespace JR.DevFw.Data
             using (DbConnection conn = this.CreateOpenedConnection())
             {
                 DbDataAdapter adapter = dbFactory.CreateDataAdapter(conn, commandText);
-
-
                 if (parameters != null)
                 {
                     adapter.SelectCommand.Parameters.AddRange(parameters);
@@ -325,7 +327,6 @@ namespace JR.DevFw.Data
                         ? CommandType.Text
                         : CommandType.StoredProcedure;
                 }
-
                 adapter.Fill(ds);
             }
             return ds;
@@ -441,7 +442,6 @@ namespace JR.DevFw.Data
                 //创建Command,并设置连接
                 cmd = this.CreateCommand(s.Sql);
                 cmd.Connection = conn;
-
                 //自动判断是T-SQL还是存储过程
                 cmd.CommandType = procedureRegex.IsMatch(s.Sql)
                     ? CommandType.Text
@@ -449,12 +449,19 @@ namespace JR.DevFw.Data
 
                 //添加参数
                 if (s.Parameters != null) cmd.Parameters.AddRange(s.ToParams(dbFactory));
-
                 //使用事务
-
                 cmd.Transaction = trans;
-
+                //SQLite不支持并发写入
+                if (this.DbType == DataBaseType.SQLite)
+                {
+                    Monitor.Enter(locker);
+                    result += cmd.ExecuteNonQuery();
+                    Monitor.Exit(locker);
+                    cmd.Dispose();
+                    return;
+                }
                 result += cmd.ExecuteNonQuery();
+                cmd.Dispose();
             };
 
             try
@@ -463,7 +470,6 @@ namespace JR.DevFw.Data
                 {
                     sh(sql);
                 }
-
                 //提交事务
 
                 trans.Commit();
@@ -504,8 +510,8 @@ namespace JR.DevFw.Data
 
                 if (sql.Parameters != null)
                     cmd.Parameters.AddRange(sql.ToParams(dbFactory));
-
                 func(cmd.ExecuteReader());
+                cmd.Dispose();
             }
         }
 
@@ -531,7 +537,6 @@ namespace JR.DevFw.Data
                         ? CommandType.Text
                         : CommandType.StoredProcedure;
                 }
-
                 adapter.Fill(ds);
             }
 
@@ -561,6 +566,7 @@ namespace JR.DevFw.Data
 
                 if (sql.Parameters != null) cmd.Parameters.AddRange(sql.ToParams(dbFactory));
                 obj = cmd.ExecuteScalar();
+                cmd.Dispose();
             }
 
             return obj;
