@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "J6.DevFw.WebResource", "too
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JR.DevFw.Web.Example", "examples\JR.DevFw.Web.Example\JR.DevFw.Web.Example.csproj", "{876E3277-D7D6-4DF6-811F-03D741DF11C4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2D8DC918-E3D2-42BA-9BBB-DB66C5BB34FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JR.DevFw.UnitTest", "test\JR.DevFw.UnitTest\JR.DevFw.UnitTest.csproj", "{40A40E34-281E-4055-BD2B-33EF29DD9641}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +171,18 @@ Global
 		{876E3277-D7D6-4DF6-811F-03D741DF11C4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{876E3277-D7D6-4DF6-811F-03D741DF11C4}.Release|x86.ActiveCfg = Release|Any CPU
 		{876E3277-D7D6-4DF6-811F-03D741DF11C4}.Release|x86.Build.0 = Release|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Debug|x86.Build.0 = Debug|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Release|x86.ActiveCfg = Release|Any CPU
+		{40A40E34-281E-4055-BD2B-33EF29DD9641}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +200,7 @@ Global
 		{D1FBD275-BF29-4823-970A-0F341BF99A9F} = {BCF72535-6C75-4DFB-BCDC-5242AAF7FE5D}
 		{6DFC3F5F-8B0D-4826-8FB0-5FA565E9E886} = {BCF72535-6C75-4DFB-BCDC-5242AAF7FE5D}
 		{876E3277-D7D6-4DF6-811F-03D741DF11C4} = {33331172-4E47-4F42-920E-9D4497C1988D}
+		{40A40E34-281E-4055-BD2B-33EF29DD9641} = {2D8DC918-E3D2-42BA-9BBB-DB66C5BB34FC}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = OPS.BaseLib.vsmdi

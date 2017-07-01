@@ -70,6 +70,7 @@
     <Compile Include="SqlServerFactory.cs" />
     <Compile Include="MySqlFactory.cs" />
     <Compile Include="MonoSQLiteFactory.cs" />
+    <Compile Include="DataUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
@@ -86,7 +87,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite">
+    <Reference Include="System.Data.SQLite, Version=1.0.105.2, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\dll\System.Data.SQLite.dll</HintPath>
     </Reference>
   </ItemGroup>

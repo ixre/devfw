@@ -65,7 +65,7 @@ namespace JR.DevFw.Data.Orm
                     if (col.Name == null) col.Name = p.Name;
                     filedStr += col.Name + ",";
                     paramStr += "@" + col.Name + ",";
-                    parameters.Add(db.DataBaseAdapter.CreateParameter("@" + col.Name, p.GetValue(entity, null)));
+                    parameters.Add(db.GetAdapter().CreateParameter("@" + col.Name, p.GetValue(entity, null)));
                 }
             }
             db.ExecuteNonQuery("insert into " + tableName + " (" + filedStr.Remove(filedStr.Length - 1) +
@@ -105,7 +105,7 @@ namespace JR.DevFw.Data.Orm
                 {
                     if (col.Name == null) col.Name = p.Name;
                     sb.Append(col.Name).Append("=@").Append(col.Name).Append(",");
-                    parameters.Add(db.DataBaseAdapter.CreateParameter("@" + col.Name, p.GetValue(entity, null)));
+                    parameters.Add(db.GetAdapter().CreateParameter("@" + col.Name, p.GetValue(entity, null)));
                 }
             }
 
@@ -114,7 +114,7 @@ namespace JR.DevFw.Data.Orm
 
             // fieldName = primaryField.GetFieldName();
             sb.Append(" where " + primaryKey + "=@" + primaryKey);
-            parameters.Add(db.DataBaseAdapter.CreateParameter("@" + primaryKey, primaryValue));
+            parameters.Add(db.GetAdapter().CreateParameter("@" + primaryKey, primaryValue));
             db.ExecuteNonQuery(sb.ToString(), parameters.ToArray());
         }
 
@@ -127,7 +127,7 @@ namespace JR.DevFw.Data.Orm
         {
             string fieldName = field.GetFieldName();
             db.ExecuteNonQuery("delete from " + tableName + " where " + fieldName +
-                               "=@" + fieldName, db.DataBaseAdapter.CreateParameter("@" + fieldName, field.Value));
+                               "=@" + fieldName, db.GetAdapter().CreateParameter("@" + fieldName, field.Value));
         }
 
         /// <summary>
@@ -146,12 +146,12 @@ namespace JR.DevFw.Data.Orm
             {
                 fieldName = f.GetFieldName();
                 sb.Append(fieldName + "=@" + fieldName + ",");
-                parameters.Add(db.DataBaseAdapter.CreateParameter("@" + fieldName, f.Value));
+                parameters.Add(db.GetAdapter().CreateParameter("@" + fieldName, f.Value));
             }
             sb.Remove(sb.Length - 1, 1); //删除最后的,
             fieldName = primaryField.GetFieldName();
             sb.Append(" where " + fieldName + "=@" + fieldName);
-            parameters.Add(db.DataBaseAdapter.CreateParameter("@" + fieldName, primaryField.Value));
+            parameters.Add(db.GetAdapter().CreateParameter("@" + fieldName, primaryField.Value));
 
             db.ExecuteNonQuery(sb.ToString(), parameters.ToArray());
         }
@@ -252,8 +252,7 @@ namespace JR.DevFw.Data.Orm
                         sb.Append("AND ");
                     }
                     sb.Append(fieldName + "=@" + fieldName).Append(" ");
-
-                    parameters.Add(db.DataBaseAdapter.CreateParameter("@" + fieldName, field.Value));
+                    parameters.Add(db.GetAdapter().CreateParameter("@" + fieldName, field.Value));
                     ++i;
                 }
             }

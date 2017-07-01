@@ -42,7 +42,7 @@ namespace JR.DevFw.Data
         }
 
 
-        public override int ExecuteScript(DbConnection conn, string sql, string delimiter)
+        public override int ExecuteScript(DbConnection conn, RowAffer r, string sql, string delimiter)
         {
             MySqlScript script = new MySqlScript((MySqlConnection) conn, sql);
 
