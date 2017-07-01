@@ -41,9 +41,15 @@ namespace JR.DevFw.Data
             return new SqliteDataAdapter(sql, (SqliteConnection) connection);
         }
 
-        public override int ExecuteScript(DbConnection conn, string sql, string delimiter)
+        public override int ExecuteScript(DbConnection conn, RowAffer r, string sql, string delimiter)
         {
-            throw new System.NotImplementedException();
+            int result = 0;
+            string[] array = sql.Split(';');
+            foreach (string s in array)
+            {
+                result += r(s);
+            }
+            return result;
         }
     }
 }

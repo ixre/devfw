@@ -11,3 +11,8 @@ tmp
 /dist/dll
 src/packages
 .vs
+/src/DataTester
+/src/Tester
+/src/TestResults
+/src/.idea
+/src/.vs

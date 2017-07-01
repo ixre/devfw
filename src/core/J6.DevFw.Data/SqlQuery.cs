@@ -17,28 +17,30 @@ namespace JR.DevFw.Data
     /// <summary>
     /// SQL查询实体
     /// </summary>
-    public class SqlQuery
+    public struct SqlQuery
     {
-        private object[,] _parameters;
-
+        private DbParameter[] parameters;
+        private Object[,] dataArray;
 
         public SqlQuery(string sql)
         {
             this.Sql = sql;
+            this.parameters = new DbParameter[0] { };
+            this.dataArray = null;
         }
 
-        public SqlQuery(string sql, object[,] parameters)
+        public SqlQuery(string sql,Object[,] data)
         {
-            if (parameters != null)
-            {
-                if (parameters.GetLength(0) != 0 && parameters.GetLength(1) != 2)
-                {
-                    throw new ArgumentOutOfRangeException("Parameters", "多纬数组的二维长度必须为2");
-                }
-            }
-            this._parameters = parameters;
-
             this.Sql = sql;
+            this.parameters = null;
+            this.dataArray = data;
+        }
+
+        public SqlQuery(string sql, DbParameter[] parameters)
+        {
+            this.Sql = sql;
+            this.parameters = parameters;
+            this.dataArray = null;
         }
 
         /// <summary>
@@ -48,33 +50,26 @@ namespace JR.DevFw.Data
 
         /// <summary>
         /// 参数
-        /// 
-        ///    this.Parameters = new object[,]{
-        ///         {"@age","age"},
-        ///        {"@name","name"}
-        ///    };
         /// </summary>
-        public object[,] Parameters
+        public DbParameter[] Parameters
         {
-            get { return this._parameters; }
+            get { return this.parameters; }
         }
 
 
         /// <summary>
-        /// 转换为参数
+        /// 转换参数
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
-        public DbParameter[] ToParams(IDataBase db)
+        public bool Parse(IDataBase db)
         {
-            DbParameter[] parameters = new DbParameter[this.Parameters.GetLength(0)];
-
-            for (int i = 0; i < parameters.Length; i++)
+            if(this.parameters == null && this.dataArray != null)
             {
-                parameters[i] = db.CreateParameter(this.Parameters[i, 0].ToString(), this.Parameters[i, 1]);
+                this.parameters = DataUtil.ToParams(db, this.dataArray);
+                return true;
             }
-
-            return parameters;
+            return false;
         }
     }
 }

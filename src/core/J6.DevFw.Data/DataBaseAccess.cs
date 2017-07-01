@@ -20,6 +20,11 @@ using System.Threading;
 
 namespace JR.DevFw.Data
 {
+   
+
+    /// <summary>
+    /// DatabaseAccess
+    /// </summary>
     public class DataBaseAccess
     {
         private static readonly Object locker = new object();
@@ -28,6 +33,7 @@ namespace JR.DevFw.Data
         private IList<String> _totalSqls;
         private bool _totalOpen;
         private int _commandTimeout = 30000;
+        private IList<Middleware> mwList = new List<Middleware>();
 
         /// <summary>
         /// 实例化数据库访问对象
@@ -64,6 +70,11 @@ namespace JR.DevFw.Data
         }
 
         /// <summary>
+        /// 数据库类型
+        /// </summary>
+        public DataBaseType DbType { get; private set; }
+
+        /// <summary>
         /// 执行命令超时时间，默认为30000(30秒)
         /// </summary>
         public int CommandTimeout
@@ -79,12 +90,45 @@ namespace JR.DevFw.Data
             }
         }
 
-        private DbConnection CreateOpenedConnection()
+        /// <summary>
+        /// Use a bew middleware and append to list of middleware.
+        /// </summary>
+        /// <param name="mw"></param>
+        public void Use(Middleware mw)
+        {
+            if(mw != null) this.mwList.Add(mw);
+        }
+
+        /// <summary>
+        /// call middlewares
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <param name="exc"></param>
+        /// <returns></returns>
+        private bool callMiddleware(String action,String sql,DbParameter[] parameters,Exception exc)
+        {
+            foreach (Middleware w in this.mwList)
+            {
+                if (!w(action,sql, parameters, exc)) return false;
+
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// create new database connection
+        /// </summary>
+        /// <returns></returns>
+        private DbConnection createNewConnection()
         {
             DbConnection connection = dbFactory.GetConnection();
             connection.Open();
             return connection;
         }
+
+
 
         /// <summary>
         /// 重设统计
@@ -112,29 +156,16 @@ namespace JR.DevFw.Data
         }
 
 
-        /// <summary>
-        /// 数据库类型
-        /// </summary>
-        public DataBaseType DbType { get; private set; }
 
         /// <summary>
         /// 数据库适配器
         /// </summary>
-        public IDataBase DataBaseAdapter
+        public IDataBase GetAdapter()
         {
-            get { return this.dbFactory; }
+            return this.dbFactory;
         }
 
-        /// <summary>
-        /// 返回一个参数
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public DbParameter NewParameter(string name, object value)
-        {
-            return dbFactory.CreateParameter(name, value);
-        }
+      
 
         private DbCommand CreateCommand(string sql)
         {
@@ -144,29 +175,13 @@ namespace JR.DevFw.Data
         }
 
         /// <summary>
-        /// 返回一个参数,可指定参数的类型为输出参数或者输入参数
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        public DbParameter NewParameter(string name, object value, ParameterDirection direction)
-        {
-            DbParameter parameter = dbFactory.CreateParameter(name, value);
-            parameter.Direction = direction;
-            return parameter;
-        }
-
-        /// <summary>
         /// 执行查询
         /// </summary>
         /// <param name="commandText"></param>
         /// <returns></returns>
         public int ExecuteNonQuery(string commandText)
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-            DbParameter[] parameters = null;
-            return this.ExecuteNonQuery(commandText, parameters);
+            return this.ExecuteNonQuery(new SqlQuery(commandText));
         }
 
         /// <summary>
@@ -177,28 +192,7 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public int ExecuteNonQuery(string commandText, params DbParameter[] parameters)
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-            int result = 0;
-            using (DbConnection conn = this.CreateOpenedConnection())
-            {
-                DbCommand cmd = this.CreateCommand(commandText);
-                cmd.Connection = conn;
-                //自动判断是T-SQL还是存储过程
-                cmd.CommandType = procedureRegex.IsMatch(commandText) ? CommandType.Text : CommandType.StoredProcedure;
-                if (parameters != null) cmd.Parameters.AddRange(parameters);
-                // SQLite不支持并发的写入
-                if (this.DbType == DataBaseType.SQLite)
-                {
-                    Monitor.Enter(locker);
-                    result = cmd.ExecuteNonQuery();
-                    cmd.Dispose();
-                    Monitor.Exit(locker);
-                    return result;
-                }
-                result = cmd.ExecuteNonQuery();
-                cmd.Dispose();
-            }
-            return result;
+            return this.ExecuteNonQuery(new SqlQuery(commandText, parameters));
         }
 
         /// <summary>
@@ -208,9 +202,7 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public object ExecuteScalar(string commandText)
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-            DbParameter[] parameters = null;
-            return ExecuteScalar(commandText, parameters);
+            return this.ExecuteScalar(new SqlQuery(commandText));
         }
 
         /// <summary>
@@ -221,40 +213,7 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public object ExecuteScalar(string commandText, params DbParameter[] parameters)
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-            object obj;
-            using (DbConnection conn = this.CreateOpenedConnection())
-            {
-                DbCommand cmd = this.CreateCommand(commandText);
-                cmd.Connection = conn;
-                //自动判断是T-SQL还是存储过程
-                cmd.CommandType = procedureRegex.IsMatch(commandText) ? CommandType.Text : CommandType.StoredProcedure;
-                if (parameters != null) cmd.Parameters.AddRange(parameters);
-                obj = cmd.ExecuteScalar();
-                cmd.Dispose();
-            }
-            return obj;
-        }
-
-        /// <summary>
-        /// 读取DataReader中的数据
-        /// </summary>
-        /// <param name="commandText"></param>
-        /// <param name="parameters"></param>
-        private DbDataReader ExecuteReader(string commandText, params DbParameter[] parameters)
-        {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-            using (DbConnection conn = this.CreateOpenedConnection())
-            {
-                DbCommand cmd = this.CreateCommand(commandText);
-                cmd.Connection = conn;
-                //自动判断是T-SQL还是存储过程
-                cmd.CommandType = procedureRegex.IsMatch(commandText) ? CommandType.Text : CommandType.StoredProcedure;
-                if (parameters != null) cmd.Parameters.AddRange(parameters);
-                DbDataReader rd = cmd.ExecuteReader();
-                cmd.Dispose();
-                return rd;
-            }
+            return this.ExecuteScalar(new SqlQuery(commandText,parameters));
         }
 
         /// <summary>
@@ -264,9 +223,7 @@ namespace JR.DevFw.Data
         /// <param name="func"></param>
         public void ExecuteReader(string commandText, DataReaderFunc func)
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-            DbParameter[] parameters = null;
-            ExecuteReader(commandText, func, parameters);
+            this.ExecuteReader(new SqlQuery(commandText), func);
         }
 
         /// <summary>
@@ -277,20 +234,7 @@ namespace JR.DevFw.Data
         /// <param name="parameters"></param>
         public void ExecuteReader(string commandText, DataReaderFunc func, params DbParameter[] parameters)
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-            using (DbConnection conn = this.CreateOpenedConnection())
-            {
-                DbCommand cmd = this.CreateCommand(commandText);
-                cmd.Connection = conn;
-                //自动判断是T-SQL还是存储过程
-                cmd.CommandType = procedureRegex.IsMatch(commandText)
-                    ? CommandType.Text
-                    : CommandType.StoredProcedure;
-                if (parameters != null) cmd.Parameters.AddRange(parameters);
-                DbDataReader rd = cmd.ExecuteReader();
-                func(rd);
-                cmd.Dispose();
-            }
+            this.ExecuteReader(new SqlQuery(commandText, parameters), func);
         }
 
         /// <summary>
@@ -300,9 +244,7 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public DataSet GetDataSet(string commandText)
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-            DbParameter[] parameters = null;
-            return GetDataSet(commandText, parameters);
+            return this.GetDataSet(new SqlQuery(commandText));
         }
 
         /// <summary>
@@ -313,30 +255,19 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public DataSet GetDataSet(string commandText, params DbParameter[] parameters)
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-
-            DataSet ds = new DataSet();
-            using (DbConnection conn = this.CreateOpenedConnection())
-            {
-                DbDataAdapter adapter = dbFactory.CreateDataAdapter(conn, commandText);
-                if (parameters != null)
-                {
-                    adapter.SelectCommand.Parameters.AddRange(parameters);
-                    //自动判断是T-SQL还是存储过程
-                    adapter.SelectCommand.CommandType = procedureRegex.IsMatch(commandText)
-                        ? CommandType.Text
-                        : CommandType.StoredProcedure;
-                }
-                adapter.Fill(ds);
-            }
-            return ds;
+            return this.GetDataSet(new SqlQuery(commandText, parameters));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="commandText"></param>
+        /// <returns></returns>
         public T ToEntity<T>(string commandText) where T : new()
         {
             return ToEntity<T>(commandText, null);
         }
-
 
         /// <summary>
         /// 将查询结果转换为实体对象
@@ -347,16 +278,14 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public T ToEntity<T>(string commandText, params DbParameter[] parameters) where T : new()
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-
             T t = default(T);
-            ExecuteReader(commandText, (reader) =>
+            ExecuteReader(new SqlQuery(commandText,parameters), (reader) =>
             {
                 if (reader.HasRows)
                 {
                     t = reader.ToEntity<T>();
                 }
-            }, parameters);
+            });
             return t;
         }
 
@@ -380,20 +309,18 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public IList<T> ToEntityList<T>(string commandText, params DbParameter[] parameters) where T : new()
         {
-            if (this._totalOpen) this.AddTotalSql(commandText);
-
             IList<T> list = null;
-
-            ExecuteReader(commandText, (reader) =>
+            ExecuteReader(new SqlQuery(commandText,parameters), (reader) =>
             {
                 if (reader.HasRows)
                 {
                     list = reader.ToEntityList<T>();
                 }
-            }, parameters);
-
+            });
             return list ?? new List<T>();
         }
+
+        #region  新的连结方式
 
         /// <summary>
         /// 执行脚本(仅Mysql)
@@ -404,15 +331,22 @@ namespace JR.DevFw.Data
         public int ExecuteScript(string sql, string delimiter)
         {
             int result = -1;
-            using (DbConnection conn = this.CreateOpenedConnection())
+            using (DbConnection conn = this.createNewConnection())
             {
-                result = dbFactory.ExecuteScript(conn, sql, delimiter);
+                try
+                {
+                    result = dbFactory.ExecuteScript(conn,this.ExecuteNonQuery, sql, delimiter);
+                    this.callMiddleware("ExecuteScript", sql, null, null);
+                }
+                catch (Exception ex)
+                {
+                    this.callMiddleware("ExecuteScript", sql, null, ex);
+                    throw ex;
+                }
             }
-
             return result;
         }
 
-        #region  新的连结方式
 
         /// <summary>
         /// 执行查询
@@ -421,17 +355,13 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public int ExecuteNonQuery(params SqlQuery[] sqls)
         {
-            if (this._totalOpen)
-                foreach (SqlQuery sql in sqls)
-                    this.AddTotalSql(sql.Sql);
-
             if (sqls.Length == 0) throw new ArgumentOutOfRangeException("sqls", "SQLEntity至少应指定一个!");
 
             DbTransaction trans = null;
             DbCommand cmd;
             int result = 0;
 
-            DbConnection conn = this.CreateOpenedConnection();
+            DbConnection conn = this.createNewConnection();
 
             //打开连接并设置事务
             trans = conn.BeginTransaction();
@@ -441,37 +371,49 @@ namespace JR.DevFw.Data
             {
                 //创建Command,并设置连接
                 cmd = this.CreateCommand(s.Sql);
+
                 cmd.Connection = conn;
                 //自动判断是T-SQL还是存储过程
                 cmd.CommandType = procedureRegex.IsMatch(s.Sql)
                     ? CommandType.Text
                     : CommandType.StoredProcedure;
-
                 //添加参数
-                if (s.Parameters != null) cmd.Parameters.AddRange(s.ToParams(dbFactory));
+                if (s.Parameters != null) cmd.Parameters.AddRange(s.Parameters);
                 //使用事务
                 cmd.Transaction = trans;
-                //SQLite不支持并发写入
-                if (this.DbType == DataBaseType.SQLite)
+
+                try
                 {
-                    Monitor.Enter(locker);
-                    result += cmd.ExecuteNonQuery();
-                    Monitor.Exit(locker);
+                    //SQLite不支持并发写入
+                    if (this.DbType == DataBaseType.SQLite)
+                    {
+                        Monitor.Enter(locker);
+                        result += cmd.ExecuteNonQuery();
+                        Monitor.Exit(locker);
+                    }
+                    else
+                    {
+                        result += cmd.ExecuteNonQuery();
+                    }
                     cmd.Dispose();
-                    return;
+                    this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, null);
                 }
-                result += cmd.ExecuteNonQuery();
-                cmd.Dispose();
+                catch (Exception ex)
+                {
+                    this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, ex);
+                    cmd.Dispose();
+                    throw ex;
+                }
             };
 
             try
             {
                 foreach (SqlQuery sql in sqls)
                 {
+                    sql.Parse(this.GetAdapter());
                     sh(sql);
                 }
                 //提交事务
-
                 trans.Commit();
             }
             catch (DbException ex)
@@ -487,8 +429,6 @@ namespace JR.DevFw.Data
                 //关闭连接
                 conn.Close();
             }
-
-
             return result;
         }
 
@@ -499,18 +439,26 @@ namespace JR.DevFw.Data
         /// <param name="func"></param>
         public void ExecuteReader(SqlQuery sql, DataReaderFunc func)
         {
-            if (this._totalOpen) this.AddTotalSql(sql.Sql);
-            using (DbConnection conn = this.CreateOpenedConnection())
+            sql.Parse(this.GetAdapter());
+            using (DbConnection conn = this.createNewConnection())
             {
                 DbCommand cmd = this.CreateCommand(sql.Sql);
                 cmd.Connection = conn;
-
                 //自动判断是T-SQL还是存储过程
                 cmd.CommandType = procedureRegex.IsMatch(sql.Sql) ? CommandType.Text : CommandType.StoredProcedure;
-
-                if (sql.Parameters != null)
-                    cmd.Parameters.AddRange(sql.ToParams(dbFactory));
-                func(cmd.ExecuteReader());
+                if (sql.Parameters != null)cmd.Parameters.AddRange(sql.Parameters);
+                DbDataReader rd = null;
+                try
+                {
+                    rd = cmd.ExecuteReader();
+                    this.callMiddleware("ExecuteReader", sql.Sql, sql.Parameters, null);
+                }catch(Exception ex)
+                {
+                    this.callMiddleware("ExecuteReader", sql.Sql, sql.Parameters, ex);
+                    cmd.Dispose();
+                    throw ex;
+                }
+                func(rd);
                 cmd.Dispose();
             }
         }
@@ -523,21 +471,29 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public DataSet GetDataSet(SqlQuery sql)
         {
-            if (this._totalOpen) this.AddTotalSql(sql.Sql);
+            sql.Parse(this.GetAdapter());
             DataSet ds = new DataSet();
-            using (DbConnection conn = this.CreateOpenedConnection())
+            using (DbConnection conn = this.createNewConnection())
             {
                 DbDataAdapter adapter = dbFactory.CreateDataAdapter(conn, sql.Sql);
-
                 if (sql.Parameters != null)
                 {
-                    adapter.SelectCommand.Parameters.AddRange(sql.ToParams(dbFactory));
+                    adapter.SelectCommand.Parameters.AddRange(sql.Parameters);
                     //自动判断是T-SQL还是存储过程
                     adapter.SelectCommand.CommandType = procedureRegex.IsMatch(sql.Sql)
                         ? CommandType.Text
                         : CommandType.StoredProcedure;
                 }
-                adapter.Fill(ds);
+                try
+                {
+                    adapter.Fill(ds);
+                    this.callMiddleware("GetDataSet", sql.Sql, sql.Parameters, null);
+                }
+                catch (Exception ex)
+                {
+                    this.callMiddleware("GetDataSet", sql.Sql, sql.Parameters, ex);
+                    throw ex;
+                }
             }
 
             return ds;
@@ -551,10 +507,8 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public object ExecuteScalar(SqlQuery sql)
         {
-            if (this._totalOpen) this.AddTotalSql(sql.Sql);
-
-            object obj;
-            using (DbConnection conn = this.CreateOpenedConnection())
+            sql.Parse(this.GetAdapter());
+            using (DbConnection conn = this.createNewConnection())
             {
                 DbCommand cmd = this.CreateCommand(sql.Sql);
                 cmd.Connection = conn;
@@ -564,12 +518,21 @@ namespace JR.DevFw.Data
                     ? CommandType.Text
                     : CommandType.StoredProcedure;
 
-                if (sql.Parameters != null) cmd.Parameters.AddRange(sql.ToParams(dbFactory));
-                obj = cmd.ExecuteScalar();
-                cmd.Dispose();
+                if (sql.Parameters != null) cmd.Parameters.AddRange(sql.Parameters);
+                try
+                {
+                    Object obj = cmd.ExecuteScalar();
+                    this.callMiddleware("ExecuteScalar", sql.Sql, sql.Parameters,null);
+                    cmd.Dispose();
+                    return obj;
+                }
+                catch (Exception ex)
+                {
+                    this.callMiddleware("ExecuteScalar", sql.Sql, sql.Parameters, ex);
+                    cmd.Dispose();
+                    throw ex;
+                }
             }
-
-            return obj;
         }
 
         /// <summary>
@@ -581,8 +544,6 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public T ToEntity<T>(SqlQuery sql) where T : new()
         {
-            if (this._totalOpen) this.AddTotalSql(sql.Sql);
-
             T t = default(T);
             this.ExecuteReader(sql, (reader) =>
             {
@@ -591,8 +552,6 @@ namespace JR.DevFw.Data
                     t = reader.ToEntity<T>();
                 }
             });
-
-
             return t;
         }
 
@@ -604,10 +563,7 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public IList<T> ToEntityList<T>(SqlQuery sql) where T : new()
         {
-            if (this._totalOpen) this.AddTotalSql(sql.Sql);
-
             IList<T> list = null;
-
             this.ExecuteReader(sql, (reader) =>
             {
                 if (reader.HasRows)
@@ -615,7 +571,6 @@ namespace JR.DevFw.Data
                     list = reader.ToEntityList<T>();
                 }
             });
-
             return list ?? new List<T>();
         }
 
@@ -651,7 +606,7 @@ namespace JR.DevFw.Data
             int i = 0;
             foreach (DictionaryEntry d in data)
             {
-                parameters[i++] = this.NewParameter("@" + d.Key, d.Value);
+                parameters[i++] = this.GetAdapter().CreateParameter("@" + d.Key, d.Value);
             }
             return parameters;
         }
