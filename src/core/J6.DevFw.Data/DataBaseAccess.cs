@@ -338,8 +338,7 @@ namespace JR.DevFw.Data
             if (s.Parameters != null) cmd.Parameters.AddRange(s.Parameters);
 
             int result = 0;
-            try
-            {
+            try {
                 //SQLite不支持并发写入
                 if (this.DbType == DataBaseType.SQLite)
                 {
@@ -370,12 +369,20 @@ namespace JR.DevFw.Data
         {
             if (sqls.Length == 0) throw new ArgumentOutOfRangeException("sqls", "SQLEntity至少应指定一个!");
             int result = 0;
-
             DbConnection conn = this.createNewConnection();
-            DbTransaction trans = conn.BeginTransaction();
             DbCommand cmd = this.CreateCommand("");
             cmd.Connection = conn;
+            //如果只执行一条命令则不使用事务
+            if (sqls.Length == 1)
+            {
+                sqls[0].Parse(this.GetAdapter());
+                result = this.executeNonQuery(cmd, sqls[0]);
+                cmd.Dispose();
+                conn.Close();
+                return result;
+            }
             //使用事务
+            DbTransaction trans = conn.BeginTransaction();
             cmd.Transaction = trans;
             try
             {
@@ -384,18 +391,26 @@ namespace JR.DevFw.Data
                     sql.Parse(this.GetAdapter());
                     result += this.executeNonQuery(cmd,sql);
                 }
+                //this.callMiddleware("提交事务", "", null, null);
                 //提交事务
                 trans.Commit();
+                //this.callMiddleware("提交事务成功,关闭CMD", "", null, null);
                 //关闭连接
                 cmd.Dispose();
+                //this.callMiddleware("关闭CMD成功,关闭CONN", "", null, null);
                 conn.Close();
+                //this.callMiddleware("关闭CONN成功", "", null, null);
             }
             catch (DbException ex)
             {
+                //this.callMiddleware("回滚事务", "", null, null);
                 //如果用事务执行,则回滚
                 trans.Rollback();
+                //this.callMiddleware("回滚事务成功,关闭CMD", "", null, null);
                 cmd.Dispose();
+                //this.callMiddleware("回滚关闭CMD成功,关闭CONN", "", null, null);
                 conn.Close();
+                //this.callMiddleware("回滚关闭CONN在功", "", null, null);
                 //重新抛出异常
                 throw ex;
             }

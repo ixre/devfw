@@ -6,7 +6,8 @@
 //  @ File Name : IDataBase.cs
 //  @ Date : 8/18/2011
 //  @ Author : ????
-//
+//  @ Description : 
+//       SQLite仅适合单机
 //
 
 using System;
