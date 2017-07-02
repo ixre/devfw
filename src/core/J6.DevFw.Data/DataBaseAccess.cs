@@ -30,8 +30,6 @@ namespace JR.DevFw.Data
         private static readonly Object locker = new object();
         private readonly IDataBase dbFactory;
         private static readonly Regex procedureRegex = new Regex("\\s");
-        private IList<String> _totalSqls;
-        private bool _totalOpen;
         private int _commandTimeout = 30000;
         private IList<Middleware> mwList = new List<Middleware>();
 
@@ -124,37 +122,12 @@ namespace JR.DevFw.Data
         private DbConnection createNewConnection()
         {
             DbConnection connection = dbFactory.GetConnection();
-            connection.Open();
+            if (connection.State == ConnectionState.Closed || connection.State == ConnectionState.Broken)
+            {
+                connection.Open();
+            }
             return connection;
         }
-
-
-
-        /// <summary>
-        /// 重设统计
-        /// </summary>
-        public void StartNewTotal()
-        {
-            if (!_totalOpen)
-                _totalOpen = true;
-            if (_totalSqls == null)
-                _totalSqls = new List<String>();
-            else
-                _totalSqls.Clear();
-        }
-
-        public IList<string> GetTotalSqls()
-        {
-            if (this._totalSqls == null)
-                throw new Exception("请使用StartNewTotal()开始统计");
-            return this._totalSqls;
-        }
-
-        private void AddTotalSql(string sql)
-        {
-            _totalSqls.Add(sql);
-        }
-
 
 
         /// <summary>
@@ -395,13 +368,14 @@ namespace JR.DevFw.Data
                     {
                         result += cmd.ExecuteNonQuery();
                     }
-                    cmd.Dispose();
                     this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, null);
+                    cmd.Dispose();
                 }
                 catch (Exception ex)
                 {
                     this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, ex);
                     cmd.Dispose();
+                    conn.Close();
                     throw ex;
                 }
             };
@@ -415,19 +389,16 @@ namespace JR.DevFw.Data
                 }
                 //提交事务
                 trans.Commit();
+                //关闭连接
+                conn.Close();
             }
             catch (DbException ex)
             {
                 //如果用事务执行,则回滚
                 trans.Rollback();
-
+                conn.Close();
                 //重新抛出异常
                 throw ex;
-            }
-            finally
-            {
-                //关闭连接
-                conn.Close();
             }
             return result;
         }
@@ -440,27 +411,28 @@ namespace JR.DevFw.Data
         public void ExecuteReader(SqlQuery sql, DataReaderFunc func)
         {
             sql.Parse(this.GetAdapter());
-            using (DbConnection conn = this.createNewConnection())
+            DbConnection conn = this.createNewConnection();
+            DbCommand cmd = this.CreateCommand(sql.Sql);
+            cmd.Connection = conn;
+            //自动判断是T-SQL还是存储过程
+            cmd.CommandType = procedureRegex.IsMatch(sql.Sql) ? CommandType.Text : CommandType.StoredProcedure;
+            if (sql.Parameters != null) cmd.Parameters.AddRange(sql.Parameters);
+            DbDataReader rd = null;
+            try
             {
-                DbCommand cmd = this.CreateCommand(sql.Sql);
-                cmd.Connection = conn;
-                //自动判断是T-SQL还是存储过程
-                cmd.CommandType = procedureRegex.IsMatch(sql.Sql) ? CommandType.Text : CommandType.StoredProcedure;
-                if (sql.Parameters != null)cmd.Parameters.AddRange(sql.Parameters);
-                DbDataReader rd = null;
-                try
-                {
-                    rd = cmd.ExecuteReader();
-                    this.callMiddleware("ExecuteReader", sql.Sql, sql.Parameters, null);
-                }catch(Exception ex)
-                {
-                    this.callMiddleware("ExecuteReader", sql.Sql, sql.Parameters, ex);
-                    cmd.Dispose();
-                    throw ex;
-                }
-                func(rd);
-                cmd.Dispose();
+                rd = cmd.ExecuteReader();
+                this.callMiddleware("ExecuteReader", sql.Sql, sql.Parameters, null);
             }
+            catch (Exception ex)
+            {
+                this.callMiddleware("ExecuteReader", sql.Sql, sql.Parameters, ex);
+                cmd.Dispose();
+                conn.Close();
+                throw ex;
+            }
+            func(rd);
+            cmd.Dispose();
+            conn.Close();
         }
 
 
@@ -508,30 +480,30 @@ namespace JR.DevFw.Data
         public object ExecuteScalar(SqlQuery sql)
         {
             sql.Parse(this.GetAdapter());
-            using (DbConnection conn = this.createNewConnection())
+            DbConnection conn = this.createNewConnection();
+            DbCommand cmd = this.CreateCommand(sql.Sql);
+            cmd.Connection = conn;
+
+            //自动判断是T-SQL还是存储过程
+            cmd.CommandType = procedureRegex.IsMatch(sql.Sql)
+                ? CommandType.Text
+                : CommandType.StoredProcedure;
+
+            if (sql.Parameters != null) cmd.Parameters.AddRange(sql.Parameters);
+            try
             {
-                DbCommand cmd = this.CreateCommand(sql.Sql);
-                cmd.Connection = conn;
-
-                //自动判断是T-SQL还是存储过程
-                cmd.CommandType = procedureRegex.IsMatch(sql.Sql)
-                    ? CommandType.Text
-                    : CommandType.StoredProcedure;
-
-                if (sql.Parameters != null) cmd.Parameters.AddRange(sql.Parameters);
-                try
-                {
-                    Object obj = cmd.ExecuteScalar();
-                    this.callMiddleware("ExecuteScalar", sql.Sql, sql.Parameters,null);
-                    cmd.Dispose();
-                    return obj;
-                }
-                catch (Exception ex)
-                {
-                    this.callMiddleware("ExecuteScalar", sql.Sql, sql.Parameters, ex);
-                    cmd.Dispose();
-                    throw ex;
-                }
+                Object obj = cmd.ExecuteScalar();
+                this.callMiddleware("ExecuteScalar", sql.Sql, sql.Parameters, null);
+                cmd.Dispose();
+                conn.Close();
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                this.callMiddleware("ExecuteScalar", sql.Sql, sql.Parameters, ex);
+                cmd.Dispose();
+                conn.Close();
+                throw ex;
             }
         }
 

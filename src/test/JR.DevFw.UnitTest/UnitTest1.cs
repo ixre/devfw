@@ -18,19 +18,22 @@ namespace JR.DevFw.UnitTest
         [TestMethod]
         public void TestMethod1()
         {
-            Test_SQLite();
+            var db = repareDB();
+            Test_SQLite(db);
 
            // Test_OLEDB();
 
             //Test_SQLServer();
         }
 
-        static void Test_SQLite()
+        static DataBaseAccess repareDB()
         {
             const string dbfile = "../../test.db";
+           return new DataBaseAccess(DataBaseType.SQLite, String.Format("Data Source={0}", dbfile));
+        }
 
-            DataBaseAccess db = new DataBaseAccess(DataBaseType.SQLite, String.Format("Data Source={0}", dbfile));
-
+        static void Test_SQLite(DataBaseAccess db)
+        {
             db.Use((a, b, c, d) =>
             {
                 if (d == null)
@@ -52,16 +55,12 @@ namespace JR.DevFw.UnitTest
             int i = 0;
             do
             {
-                try
-                {
-                    db.ExecuteNonQuery(String.Format("INSERT INTO [test_table] values({0},'{1}')",
-                        rd.Next(1, 30) * rd.Next(1, 10),
-                        Guid.NewGuid().ToString()));
-                }
-                catch
-                {
-                }
-
+                int id = rd.Next(1, 30) * rd.Next(1, 10);
+                string guid = Guid.NewGuid().ToString();
+                db.ExecuteNonQuery(String.Format("INSERT INTO [test_table] values({0},'{1}')",
+                    id, guid));
+                String guid2 = db.ExecuteScalar("SELECT max(id) FROM [test_table]").ToString();
+                db.ExecuteNonQuery(String.Format("UPDATE [test_table] SET [name] = '{0}' WHERE id= '{1}'", id,guid2+"-"+ guid.Substring(0, 6)));
                 i++;
 
             } while (i < 5);
@@ -71,7 +70,7 @@ namespace JR.DevFw.UnitTest
 
             for (int j = 0; j < sql.Length; j++)
             {
-                sql[j] = new SqlQuery("INSERT INTO [test_table] values(@id,@name)", new object[,]{
+                sql[j] = new SqlQuery("INSERT INTO [test_table] ([id],[name]) values(@id,@name)", new object[,]{
                     {"@id",j.ToString()},
                     {"@name","user"+j.ToString()}
                 });
