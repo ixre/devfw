@@ -31,6 +31,12 @@ namespace JR.DevFw.Data
     /// <returns></returns>
     public delegate int RowAffer(string sql);
 
+    /// <summary>
+    /// 数据读取器函数
+    /// </summary>
+    /// <param name="reader"></param>
+    public delegate void DataReaderFunc(DbDataReader reader);
+
     public interface IDataBase
     {
         string ConnectionString { get; }

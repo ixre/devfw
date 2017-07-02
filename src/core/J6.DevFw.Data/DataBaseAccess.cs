@@ -320,6 +320,46 @@ namespace JR.DevFw.Data
             return result;
         }
 
+        /// <summary>
+        /// 执行查询操作
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private int executeNonQuery(DbCommand cmd,SqlQuery s)
+        {
+            //创建Command,并设置连接
+            cmd.CommandText = s.Sql;
+            //自动判断是T-SQL还是存储过程
+            cmd.CommandType = procedureRegex.IsMatch(s.Sql)
+                ? CommandType.Text
+                : CommandType.StoredProcedure;
+            //添加参数
+            if (s.Parameters != null) cmd.Parameters.AddRange(s.Parameters);
+
+            int result = 0;
+            try
+            {
+                //SQLite不支持并发写入
+                if (this.DbType == DataBaseType.SQLite)
+                {
+                    Monitor.Enter(locker);
+                    result = cmd.ExecuteNonQuery();
+                    Monitor.Exit(locker);
+                }
+                else
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+                this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, null);
+            }
+            catch (Exception ex)
+            {
+                this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, ex);
+                throw ex;
+            }
+            return result;
+        }
 
         /// <summary>
         /// 执行查询
@@ -329,73 +369,32 @@ namespace JR.DevFw.Data
         public int ExecuteNonQuery(params SqlQuery[] sqls)
         {
             if (sqls.Length == 0) throw new ArgumentOutOfRangeException("sqls", "SQLEntity至少应指定一个!");
-
-            DbTransaction trans = null;
-            DbCommand cmd;
             int result = 0;
 
             DbConnection conn = this.createNewConnection();
-
-            //打开连接并设置事务
-            trans = conn.BeginTransaction();
-
-
-            SqlEntityHandler sh = s =>
-            {
-                //创建Command,并设置连接
-                cmd = this.CreateCommand(s.Sql);
-
-                cmd.Connection = conn;
-                //自动判断是T-SQL还是存储过程
-                cmd.CommandType = procedureRegex.IsMatch(s.Sql)
-                    ? CommandType.Text
-                    : CommandType.StoredProcedure;
-                //添加参数
-                if (s.Parameters != null) cmd.Parameters.AddRange(s.Parameters);
-                //使用事务
-                cmd.Transaction = trans;
-
-                try
-                {
-                    //SQLite不支持并发写入
-                    if (this.DbType == DataBaseType.SQLite)
-                    {
-                        Monitor.Enter(locker);
-                        result += cmd.ExecuteNonQuery();
-                        Monitor.Exit(locker);
-                    }
-                    else
-                    {
-                        result += cmd.ExecuteNonQuery();
-                    }
-                    this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, null);
-                    cmd.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, ex);
-                    cmd.Dispose();
-                    conn.Close();
-                    throw ex;
-                }
-            };
-
+            DbTransaction trans = conn.BeginTransaction();
+            DbCommand cmd = this.CreateCommand("");
+            cmd.Connection = conn;
+            //使用事务
+            cmd.Transaction = trans;
             try
             {
                 foreach (SqlQuery sql in sqls)
                 {
                     sql.Parse(this.GetAdapter());
-                    sh(sql);
+                    result += this.executeNonQuery(cmd,sql);
                 }
                 //提交事务
                 trans.Commit();
                 //关闭连接
+                cmd.Dispose();
                 conn.Close();
             }
             catch (DbException ex)
             {
                 //如果用事务执行,则回滚
                 trans.Rollback();
+                cmd.Dispose();
                 conn.Close();
                 //重新抛出异常
                 throw ex;
