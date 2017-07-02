@@ -10,6 +10,9 @@
 //
 
 // https://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki
+// Œ»∂®∞Ê£∫
+// http://system.data.sqlite.org/downloads/1.0.95.0/sqlite-netFx40-binary-bundle-Win32-2010-1.0.95.0.zip
+// http://system.data.sqlite.org/downloads/1.0.95.0/sqlite-netFx40-binary-bundle-x64-2010-1.0.95.0.zip
 using System.Data.Common;
 using System.Data.SQLite;
 
