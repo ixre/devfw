@@ -69,7 +69,6 @@
     <Compile Include="DataUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="ops.data.snk" />
   </ItemGroup>

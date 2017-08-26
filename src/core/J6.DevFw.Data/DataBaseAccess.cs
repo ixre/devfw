@@ -169,6 +169,27 @@ namespace JR.DevFw.Data
         }
 
         /// <summary>
+        /// 创建参数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public DbParameter CreateParameter(String name,object value)
+        {
+            return this.GetAdapter().CreateParameter(name, value);
+        }
+
+        /// <summary>
+        /// 将多纬数组转换为参数
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public DbParameter[] CreateParametersFromArray(object[,] parameters)
+        {
+            return DataUtil.ToParams(this.GetAdapter(), parameters);
+        }
+
+        /// <summary>
         /// 返回查询的第一行第一列值
         /// </summary>
         /// <param name="commandText"></param>
@@ -335,7 +356,10 @@ namespace JR.DevFw.Data
                 ? CommandType.Text
                 : CommandType.StoredProcedure;
             //添加参数
-            if (s.Parameters != null) cmd.Parameters.AddRange(s.Parameters);
+            if (s.Parameters != null && cmd.Parameters.Count == 0)
+            {
+                cmd.Parameters.AddRange(s.Parameters);
+            }
 
             int result = 0;
             try {
