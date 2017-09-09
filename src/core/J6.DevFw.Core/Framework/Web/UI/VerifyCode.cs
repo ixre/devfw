@@ -7,9 +7,12 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Text;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Web;
+using JR.DevFw.Utils;
 
 namespace JR.DevFw.Framework.Web.UI
 {
@@ -40,11 +43,13 @@ namespace JR.DevFw.Framework.Web.UI
     }
 
     /// <summary>
-    /// 验证码
+    /// 验证码生成器
     /// </summary>
-    public class VerifyCode
+    public class VerifyCodeGenerator
     {
         private delegate bool TestCondition(int number, int[] array);
+        private static FontFamily _letterFont;
+        private static object _locker = new object();
 
         private const int _n_s = 48; //数字开始
         private const int _n_e = 57; //数字结束
@@ -58,7 +63,7 @@ namespace JR.DevFw.Framework.Web.UI
 
         private bool allowRepeat = true;
 
-        static VerifyCode()
+        static VerifyCodeGenerator()
         {
             //初始化，将0-9,A-Z,a-z添加到数组中去
             for (int i = 0; i < 10; i++)
@@ -108,11 +113,18 @@ namespace JR.DevFw.Framework.Web.UI
         }
          */
 
-        /// <summary>
-        /// 获取默认字体
-        /// </summary>
-        /// <returns></returns>
-        public Font GetDefaultFont()
+            /// <summary>
+            /// 设置字体
+            /// </summary>
+            /// <param name="path"></param>
+            /// <returns></returns>
+        public static FontFamily SetFontFamily(String path)
+        {
+            _letterFont = Util.LoadFontFamily(path);
+            return _letterFont;
+        }
+
+        private static FontFamily loadDefaultFont()
         {
             FontFamily fontFamily;
             try
@@ -130,7 +142,33 @@ namespace JR.DevFw.Framework.Web.UI
                     throw new Exception("计算机上找不到字体!");
                 }
             }
-            return new Font(fontFamily, 14, FontStyle.Bold, GraphicsUnit.Pixel);
+            return fontFamily;
+        }
+
+
+        /// <summary>
+        /// 获取字体
+        /// </summary>
+        /// <returns></returns>
+        public static FontFamily GetFontFamily()
+        {
+            if (_letterFont == null)
+            {
+                lock (_locker)
+                {
+                    _letterFont = loadDefaultFont();
+                }
+            }
+            return _letterFont;
+        }
+
+        /// <summary>
+        /// 获取默认字体
+        /// </summary>
+        /// <returns></returns>
+        private Font GetDefaultFont()
+        {
+            return new Font(GetFontFamily(), 14, FontStyle.Bold, GraphicsUnit.Pixel);
         }
 
         /// <summary>

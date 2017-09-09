@@ -213,7 +213,7 @@ namespace JR.DevFw.Framework.Web.UI
             string _pageCount = (this.PageCount == 0 ? 1 : this.PageCount).ToString();
 
             //Div Wrap
-            sb.Append("<div class=\"pager\">");
+            sb.Append("<div class=\"pagination mod-pagination\">");
 
             //输出上一页
             if (this.CurrentPageIndex > 1)
