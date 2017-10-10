@@ -344,22 +344,21 @@ namespace JR.DevFw.Data
         /// <summary>
         /// 执行查询操作
         /// </summary>
-        /// <param name="cmd"></param>
+        /// <param name="conn"></param>
+        /// <param name="trans"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        private int executeNonQuery(DbCommand cmd,SqlQuery s)
+        private int executeNonQuery(DbConnection conn,DbTransaction trans, SqlQuery s)
         {
             //创建Command,并设置连接
-            cmd.CommandText = s.Sql;
+            DbCommand cmd = this.CreateCommand(s.Sql);
+            cmd.Connection = conn;
+            //绑定事务
+            cmd.Transaction = trans;
             //自动判断是T-SQL还是存储过程
-            cmd.CommandType = procedureRegex.IsMatch(s.Sql)
-                ? CommandType.Text
-                : CommandType.StoredProcedure;
+            cmd.CommandType = procedureRegex.IsMatch(s.Sql)? CommandType.Text: CommandType.StoredProcedure;
             //添加参数
-            if (s.Parameters != null && cmd.Parameters.Count == 0)
-            {
-                cmd.Parameters.AddRange(s.Parameters);
-            }
+            cmd.Parameters.AddRange(s.Parameters);
 
             int result = 0;
             try {
@@ -381,6 +380,10 @@ namespace JR.DevFw.Data
                 this.callMiddleware("ExecuteNonQuery", s.Sql, s.Parameters, ex);
                 throw ex;
             }
+            finally
+            {
+                cmd.Dispose();
+            }
             return result;
         }
 
@@ -394,33 +397,20 @@ namespace JR.DevFw.Data
             if (sqls.Length == 0) throw new ArgumentOutOfRangeException("sqls", "SQLEntity至少应指定一个!");
             int result = 0;
             DbConnection conn = this.createNewConnection();
-            DbCommand cmd = this.CreateCommand("");
-            cmd.Connection = conn;
-            //如果只执行一条命令则不使用事务
-            if (sqls.Length == 1)
-            {
-                sqls[0].Parse(this.GetAdapter());
-                result = this.executeNonQuery(cmd, sqls[0]);
-                cmd.Dispose();
-                conn.Close();
-                return result;
-            }
+          
             //使用事务
             DbTransaction trans = conn.BeginTransaction();
-            cmd.Transaction = trans;
             try
             {
                 foreach (SqlQuery sql in sqls)
                 {
                     sql.Parse(this.GetAdapter());
-                    result += this.executeNonQuery(cmd,sql);
+                    result += this.executeNonQuery(conn,trans,sql);
                 }
                 //this.callMiddleware("提交事务", "", null, null);
                 //提交事务
                 trans.Commit();
                 //this.callMiddleware("提交事务成功,关闭CMD", "", null, null);
-                //关闭连接
-                cmd.Dispose();
                 //this.callMiddleware("关闭CMD成功,关闭CONN", "", null, null);
                 conn.Close();
                 //this.callMiddleware("关闭CONN成功", "", null, null);
@@ -430,8 +420,6 @@ namespace JR.DevFw.Data
                 //this.callMiddleware("回滚事务", "", null, null);
                 //如果用事务执行,则回滚
                 trans.Rollback();
-                //this.callMiddleware("回滚事务成功,关闭CMD", "", null, null);
-                cmd.Dispose();
                 //this.callMiddleware("回滚关闭CMD成功,关闭CONN", "", null, null);
                 conn.Close();
                 //this.callMiddleware("回滚关闭CONN在功", "", null, null);
