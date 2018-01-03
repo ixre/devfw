@@ -382,6 +382,7 @@ namespace JR.DevFw.Data
             }
             finally
             {
+                cmd.Parameters.Clear(); // 相同的参数数组只能给一个SqlCommand使用
                 cmd.Dispose();
             }
             return result;
@@ -457,6 +458,7 @@ namespace JR.DevFw.Data
                 throw ex;
             }
             func(rd);
+            cmd.Parameters.Clear(); // 相同的参数数组只能给一个SqlCommand使用
             cmd.Dispose();
             conn.Close();
         }
@@ -519,6 +521,7 @@ namespace JR.DevFw.Data
             try
             {
                 Object obj = cmd.ExecuteScalar();
+                cmd.Parameters.Clear(); // 相同的参数数组只能给一个SqlCommand使用
                 this.callMiddleware("ExecuteScalar", sql.Sql, sql.Parameters, null);
                 cmd.Dispose();
                 conn.Close();
