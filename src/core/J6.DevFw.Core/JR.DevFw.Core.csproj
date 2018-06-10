@@ -56,6 +56,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Framework\Security\AESCryptoImpl.cs" />
+    <Compile Include="Framework\TypeResolver.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Variable.cs" />
     <Compile Include="FwCtx.cs" />

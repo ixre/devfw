@@ -540,8 +540,8 @@ namespace JR.DevFw.Data
         /// 将查询结果转换为实体对象
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="commandText"></param>
-        /// <param name="parameters"></param>
+        /// <param name="commandText">命令</param>
+        /// <param name="parameters">参数</param>
         /// <returns></returns>
         public T ToEntity<T>(SqlQuery sql) where T : new()
         {

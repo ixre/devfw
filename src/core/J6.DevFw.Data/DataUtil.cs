@@ -96,12 +96,12 @@ namespace JR.DevFw.Data
         /// </summary>
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="obj"></param>
-        /// <param name="db">数据库类型</param>
+        /// <param name="dbType">数据库类型</param>
         /// <param name="fields">字段，用空格隔开多个字段。参数名称需与字段名称一致！</param>
         /// <returns></returns>
-        public static DbParameter[] GetDbParameter<T>(T obj, DataBaseType dbtype, String fields)
+        public static DbParameter[] GetDbParameter<T>(T obj, DataBaseType dbType, String fields)
         {
-            return obj.GetDbParameter(dbtype, fields);
+            return obj.GetDbParameter(dbType, fields);
         }
     }
 }

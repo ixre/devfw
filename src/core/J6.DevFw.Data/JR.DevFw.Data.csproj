@@ -12,7 +12,8 @@
     <AssemblyName>JR.DevFw.Data</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -87,6 +88,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\dll\System.Data.SQLite.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\J6.DevFw.Core\JR.DevFw.Core.csproj">
+      <Project>{44e05d6c-5b0a-453a-913f-00124d1bf435}</Project>
+      <Name>JR.DevFw.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -51,12 +51,17 @@
   <ItemGroup>
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTest2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="files\test.db" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\core\J6.DevFw.Core\JR.DevFw.Core.csproj">
+      <Project>{44e05d6c-5b0a-453a-913f-00124d1bf435}</Project>
+      <Name>JR.DevFw.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\core\J6.DevFw.Data\JR.DevFw.Data.csproj">
       <Project>{1D053644-937A-4D8E-9740-43823183A39A}</Project>
       <Name>JR.DevFw.Data</Name>

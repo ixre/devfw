@@ -13,10 +13,16 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection;
 using System.Text;
+using System.Collections;
+using JR.DevFw.Data;
+using JR.DevFw.Framework;
 
-namespace JR.DevFw.Data.Extensions
+namespace System.Data
 {
-    public static class DataTableExtensions
+    /// <summary>
+    /// 数据转换扩展
+    /// </summary>
+    public static class DataParserExtensions
     {
         /// <summary>
         ///将当前DataTable中的行转换成实体集合(仅拷贝实体与数据表列名相同的数据)
@@ -27,8 +33,11 @@ namespace JR.DevFw.Data.Extensions
             T t;
             object rowData;
 
+
+
+
             //获取各自的属性
-            PropertyInfo[] props = GetTSetterProperties<T>();
+            TypeResolver r = TypeRegistry.Create<T>();
             PropertyInfo _p;
 
 
@@ -42,7 +51,7 @@ namespace JR.DevFw.Data.Extensions
                 t = new T();
                 foreach (DataColumn c in table.Columns)
                 {
-                    _p = Array.Find(props, a => string.Compare(a.Name, c.ColumnName, true) == 0);
+                    _p = r.FindPropertyByNameOrAlias(c.ColumnName);
                     if (_p == null) continue;
 
                     rowData = dr[c.ColumnName];
@@ -105,8 +114,9 @@ namespace JR.DevFw.Data.Extensions
             //表结构列名
             string columnName;
 
+
             //获取泛型的的所有属性
-            PropertyInfo[] props = GetTSetterProperties<T>();
+            TypeResolver r = TypeRegistry.Create<T>();
             PropertyInfo pro;
             object rowData;
 
@@ -121,7 +131,7 @@ namespace JR.DevFw.Data.Extensions
                 foreach (DataRow dr in schemaTable.Rows)
                 {
                     columnName = dr["ColumnName"].ToString();
-                    pro = Array.Find(props, a => string.Compare(a.Name, columnName, true) == 0);
+                    pro = r.FindPropertyByNameOrAlias(columnName);
                     if (pro == null) continue;
 
                     //如果数据库中的值不为空，则赋值
@@ -182,7 +192,7 @@ namespace JR.DevFw.Data.Extensions
         public static void CopyToEntity<T>(this DataRow row, T t)
         {
             //获取各自的属性
-            PropertyInfo[] props = GetTSetterProperties<T>();
+            TypeResolver r = TypeRegistry.Create<T>();
             PropertyInfo _p;
             object rowData;
             int enumValue;
@@ -190,7 +200,7 @@ namespace JR.DevFw.Data.Extensions
 
             foreach (DataColumn c in row.Table.Columns)
             {
-                _p = Array.Find(props, a => string.Compare(a.Name, c.ColumnName, true) == 0);
+                _p = r.FindPropertyByNameOrAlias(c.ColumnName);
                 rowData = row[c.ColumnName];
 
                 try
@@ -222,24 +232,7 @@ namespace JR.DevFw.Data.Extensions
                 }
             }
         }
-
-        private static PropertyInfo[] GetTSetterProperties<T>()
-        {
-            return new List<PropertyInfo>(GetEnumeratorProperties<T>()).ToArray();
-        }
-
-        private static IEnumerable<PropertyInfo> GetEnumeratorProperties<T>()
-        {
-            PropertyInfo[] props = typeof (T).GetProperties();
-
-            foreach (PropertyInfo pro in props)
-            {
-                if (pro.CanWrite && pro.GetIndexParameters().Length == 0)
-                {
-                    yield return pro;
-                }
-            }
-        }
+        
 
         public static T ToEntity<T>(this DbDataReader reader) where T : new()
         {
@@ -263,20 +256,20 @@ namespace JR.DevFw.Data.Extensions
             string columnName;
 
             //获取泛型的的所有属性
-            PropertyInfo[] props = GetTSetterProperties<T>();
+            TypeResolver r = TypeRegistry.Create<T>();
             PropertyInfo pro;
             object rowData;
 
 
-            int propertiesCount = props.Length,
+            int propertiesCount = r.PropertyLen();
                 //属性数量
-                hasFoundPropertiesCount = 0; //已经赋值的数量
+             int   hasFoundPropertiesCount = 0; //已经赋值的数量
 
 
             foreach (DataRow dr in schemaTable.Rows)
             {
                 columnName = dr["ColumnName"].ToString();
-                pro = Array.Find(props, a => string.Compare(a.Name, columnName, true) == 0);
+                pro = r.FindPropertyByNameOrAlias(columnName);
                 if (pro == null) continue;
 
 
