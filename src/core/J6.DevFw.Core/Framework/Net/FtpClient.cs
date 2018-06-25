@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -138,7 +139,13 @@ namespace JR.DevFw.Framework.Net
             request.GetResponse();
         }
 
-        public void UploadFile(string filePath, Stream fileStream)
+
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="fileStream"></param>
+        public void PostFile(string filePath, Stream fileStream)
         {
             const int bufferLength = 1;
             byte[] buffer = new byte[bufferLength];
@@ -159,5 +166,39 @@ namespace JR.DevFw.Framework.Net
             requestStream.Dispose();
             fileStream.Dispose();
         }
+
+        /// <summary>
+        /// Obtains a simple file list with the filenames on the FTP server using a wildcard starting at the current remote FTP folder
+        /// </summary>
+        /// <param name="fileSpec">A wildcard to specify the filenames to be searched for and listed. Example: "subfolder/*.txt"</param>
+        /// <returns>A list with the filenames found</returns>
+        public IList<String> GetFileList(string fileSpec)
+        {
+            if (fileSpec == null) fileSpec = "";
+            if (fileSpec.Length > 0 && !fileSpec.StartsWith("/"))
+            {
+                fileSpec = "/" + fileSpec;
+            }
+            var ret = new List<String>();
+            var req = (FtpWebRequest)WebRequest.Create(ftp+fileSpec);
+            req.Proxy = null;
+            req.EnableSsl = false;
+            req.UseBinary = true;
+            req.Credentials = new NetworkCredential(UserName, Password);
+            req.Method = WebRequestMethods.Ftp.ListDirectory;
+            using (WebResponse resp = req.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        ret.Add(reader.ReadLine());
+                    };
+                };
+            }
+            return ret;
+        }
+
+
     }
 }
