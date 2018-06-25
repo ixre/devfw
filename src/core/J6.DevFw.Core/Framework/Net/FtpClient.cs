@@ -50,10 +50,14 @@ namespace JR.DevFw.Framework.Net
             get { return request; }
         }
 
-        public FtpClient(string server, int? port, string userName, string password, string rootPath)
+        public FtpClient(string server, int port, string userName, string password, string rootPath)
         {
+            if(port <= 0)
+            {
+                port = 21;
+            }
             this.Server = server;
-            this.Port = port ?? 21;
+            this.Port = port;
             this.RootPath = rootPath ?? "/";
             this.UserName = userName;
             this.Password = password;
