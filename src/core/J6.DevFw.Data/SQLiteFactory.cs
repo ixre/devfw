@@ -13,39 +13,42 @@
 // Œ»∂®∞Ê£∫
 // http://system.data.sqlite.org/downloads/1.0.95.0/sqlite-netFx40-binary-bundle-Win32-2010-1.0.95.0.zip
 // http://system.data.sqlite.org/downloads/1.0.95.0/sqlite-netFx40-binary-bundle-x64-2010-1.0.95.0.zip
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SQLite;
 
 namespace JR.DevFw.Data
 {
-    public class SQLiteFactory : DataBaseFactory
+    public class SQLiteFactory : IDbDialect
     {
+        private string connectionString;
+
         public SQLiteFactory(string connectionString)
-            : base(connectionString)
         {
+            this.connectionString = connectionString;
         }
 
-        public override DbConnection GetConnection()
+        public  DbConnection GetConnection()
         {
-            return new SQLiteConnection(base.connectionString);
+            return new SQLiteConnection(this.connectionString);
         }
 
-        public override DbParameter CreateParameter(string name, object value)
+        public DbParameter CreateParameter(string name, object value)
         {
             return new SQLiteParameter(name, value);
         }
 
-        public override DbCommand CreateCommand(string sql)
+        public DbCommand CreateCommand(string sql)
         {
             return new SQLiteCommand(sql);
         }
 
-        public override DbDataAdapter CreateDataAdapter(DbConnection connection, string sql)
+        public DbDataAdapter CreateDataAdapter(DbConnection connection, string sql)
         {
             return new SQLiteDataAdapter(sql, (SQLiteConnection) connection);
         }
 
-        public override int ExecuteScript(DbConnection conn, RowAffer r, string sql, string delimiter)
+        public int ExecuteScript(DbConnection conn, RowAffer r, string sql, string delimiter)
         {
             int result = 0;
             string[] array = sql.Split(';');
@@ -54,6 +57,16 @@ namespace JR.DevFw.Data
                 result += r(s);
             }
             return result;
+        }
+
+        public string GetConnectionString()
+        {
+            return this.connectionString;
+        }
+
+        public DbParameter[] ParseParameters(IDictionary<string, object> paramMap)
+        {
+            return DataUtil.ParameterMapToArray(this, paramMap);
         }
     }
 }

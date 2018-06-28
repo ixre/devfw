@@ -11,38 +11,41 @@
 
 using System.Data.Common;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace JR.DevFw.Data
 {
-    public class MySqlFactory : DataBaseFactory
+    public class MySqlFactory : IDbDialect
     {
+        private string connectionString;
+
         public MySqlFactory(string connectionString)
-            : base(connectionString)
         {
+            this.connectionString = connectionString;
         }
 
-        public override DbConnection GetConnection()
+        public  DbConnection GetConnection()
         {
-            return new MySqlConnection(base.connectionString);
+            return new MySqlConnection(this.connectionString);
         }
 
-        public override DbParameter CreateParameter(string name, object value)
+        public  DbParameter CreateParameter(string name, object value)
         {
             return new MySqlParameter(name, value);
         }
 
-        public override DbCommand CreateCommand(string sql)
+        public  DbCommand CreateCommand(string sql)
         {
             return new MySqlCommand(sql);
         }
 
-        public override DbDataAdapter CreateDataAdapter(DbConnection connection, string sql)
+        public  DbDataAdapter CreateDataAdapter(DbConnection connection, string sql)
         {
             return new MySqlDataAdapter(sql, (MySqlConnection) connection);
         }
 
 
-        public override int ExecuteScript(DbConnection conn, RowAffer r, string sql, string delimiter)
+        public  int ExecuteScript(DbConnection conn, RowAffer r, string sql, string delimiter)
         {
             MySqlScript script = new MySqlScript((MySqlConnection) conn, sql);
 
@@ -52,6 +55,16 @@ namespace JR.DevFw.Data
             }
 
             return script.Execute();
+        }
+
+        public string GetConnectionString()
+        {
+            return this.connectionString;
+        }
+
+        public DbParameter[] ParseParameters(IDictionary<string, object> paramMap)
+        {
+            return DataUtil.ParameterMapToArray(this, paramMap);
         }
     }
 }

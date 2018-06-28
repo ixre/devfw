@@ -48,7 +48,7 @@
     <Compile Include="DataBaseAccess.cs" />
     <Compile Include="Extensions\CLR_DataExtensions.cs" />
     <Compile Include="Extensions\DataExtensions.cs" />
-    <Compile Include="IDataBase.cs" />
+    <Compile Include="IDbDialect.cs" />
     <Compile Include="DataBaseType.cs" />
     <Compile Include="ISqlFormat.cs" />
     <Compile Include="OleDbFactory.cs" />

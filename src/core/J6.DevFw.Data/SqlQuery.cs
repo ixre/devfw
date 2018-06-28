@@ -62,7 +62,7 @@ namespace JR.DevFw.Data
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
-        public bool Parse(IDataBase db)
+        public bool Parse(IDbDialect db)
         {
             if(this.parameters == null && this.dataArray != null)
             {

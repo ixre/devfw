@@ -11,37 +11,40 @@
 
 using System.Data.Common;
 using Mono.Data.Sqlite;
+using System.Collections.Generic;
 
 namespace JR.DevFw.Data
 {
-    public class MonoSQLiteFactory : DataBaseFactory
+    public class MonoSQLiteFactory : IDbDialect
     {
+        private string connectionString;
+
         public MonoSQLiteFactory(string connectionString)
-            : base(connectionString)
         {
+            this.connectionString = connectionString;
         }
 
-        public override DbConnection GetConnection()
+        public  DbConnection GetConnection()
         {
-            return new SqliteConnection(base.connectionString);
+            return new SqliteConnection(this.connectionString);
         }
 
-        public override DbParameter CreateParameter(string name, object value)
+        public  DbParameter CreateParameter(string name, object value)
         {
             return new SqliteParameter(name, value);
         }
 
-        public override DbCommand CreateCommand(string sql)
+        public  DbCommand CreateCommand(string sql)
         {
             return new SqliteCommand(sql);
         }
 
-        public override DbDataAdapter CreateDataAdapter(DbConnection connection, string sql)
+        public  DbDataAdapter CreateDataAdapter(DbConnection connection, string sql)
         {
             return new SqliteDataAdapter(sql, (SqliteConnection) connection);
         }
 
-        public override int ExecuteScript(DbConnection conn, RowAffer r, string sql, string delimiter)
+        public int ExecuteScript(DbConnection conn, RowAffer r, string sql, string delimiter)
         {
             int result = 0;
             string[] array = sql.Split(';');
@@ -50,6 +53,16 @@ namespace JR.DevFw.Data
                 result += r(s);
             }
             return result;
+        }
+
+        public string GetConnectionString()
+        {
+            return this.connectionString;
+        }
+
+        public DbParameter[] ParseParameters(IDictionary<string, object> paramMap)
+        {
+            return DataUtil.ParameterMapToArray(this, paramMap);
         }
     }
 }

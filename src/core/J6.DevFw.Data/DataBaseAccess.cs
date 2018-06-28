@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Text.RegularExpressions;
-using JR.DevFw.Data.Extensions;
 using System.Threading;
 
 namespace JR.DevFw.Data
@@ -28,7 +27,7 @@ namespace JR.DevFw.Data
     public class DataBaseAccess
     {
         private static readonly Object locker = new object();
-        private readonly IDataBase dbFactory;
+        private readonly IDbDialect dbFactory;
         private static readonly Regex procedureRegex = new Regex("\\s");
         private int _commandTimeout = 30000;
         private IList<Middleware> mwList = new List<Middleware>();
@@ -133,7 +132,7 @@ namespace JR.DevFw.Data
         /// <summary>
         ///  ˝æ›ø‚  ≈‰∆˜
         /// </summary>
-        public IDataBase GetAdapter()
+        public IDbDialect GetAdapter()
         {
             return this.dbFactory;
         }
@@ -184,6 +183,7 @@ namespace JR.DevFw.Data
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
+        [Obsolete]
         public DbParameter[] CreateParametersFromArray(object[,] parameters)
         {
             return DataUtil.ToParams(this.GetAdapter(), parameters);

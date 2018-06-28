@@ -15,7 +15,7 @@ namespace JR.DevFw.Data
         /// <param name="db"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static DbParameter[] ToParams(IDataBase db, object[,] data)
+        public static DbParameter[] ToParams(IDbDialect db, object[,] data)
         {
             if (data != null)
             {
@@ -57,6 +57,22 @@ namespace JR.DevFw.Data
                 }
             }
             return "";
+        }
+
+        /// <summary>
+        /// 参数字典转为数组
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="paramMap"></param>
+        /// <returns></returns>
+        public static DbParameter[] ParameterMapToArray(IDbDialect d, IDictionary<string, object> paramMap)
+        {
+            List<DbParameter> parameters = new List<DbParameter>();
+            foreach(KeyValuePair<String,Object> p in paramMap)
+            {
+                parameters.Add(d.CreateParameter(p.Key, p.Value));
+            }
+            return parameters.ToArray();
         }
 
         /// <summary>

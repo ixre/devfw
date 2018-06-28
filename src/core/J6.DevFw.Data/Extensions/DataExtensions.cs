@@ -13,7 +13,6 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection;
 using System.Text;
-using System.Collections;
 using JR.DevFw.Data;
 using JR.DevFw.Framework;
 
@@ -32,10 +31,6 @@ namespace System.Data
             IList<T> list = new List<T>();
             T t;
             object rowData;
-
-
-
-
             //获取各自的属性
             TypeResolver r = TypeRegistry.Create<T>();
             PropertyInfo _p;

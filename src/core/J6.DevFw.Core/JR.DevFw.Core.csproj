@@ -55,6 +55,7 @@
     <Compile Include="Framework\IO\FileEncoder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Framework\Message.cs" />
     <Compile Include="Framework\Security\AESCryptoImpl.cs" />
     <Compile Include="Framework\TypeResolver.cs" />
     <Compile Include="Utils\Utils.cs" />
