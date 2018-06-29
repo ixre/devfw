@@ -8,7 +8,7 @@ namespace JR.DevFw.Framework
     {
         public static Encoding Encoding = Encoding.UTF8;
 
-        public static string SerializerObject<T>(T t)
+        public static string SerializeObject<T>(T t)
         {
             using (var ms = new MemoryStream())
             {
@@ -20,7 +20,7 @@ namespace JR.DevFw.Framework
             }
         }
 
-        public static T DeserializerObject<T>(string json)
+        public static T DeserializeObject<T>(string json)
         {
             using (var ms = new MemoryStream(Encoding.GetBytes(json)))
             {

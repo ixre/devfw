@@ -6,7 +6,7 @@ namespace JR.DevFw.Framework.TaskBox
     {
         public static string ConvertSyncMessageToString(TaskMessage message)
         {
-            return JsonSerializer.SerializerObject<TaskMessage>(message);
+            return JsonSerializer.SerializeObject<TaskMessage>(message);
         }
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace JR.DevFw.Framework.TaskBox
         {
             if (!String.IsNullOrEmpty(message))
             {
-                return JsonSerializer.DeserializerObject<TaskMessage>(message);
+                return JsonSerializer.DeserializeObject<TaskMessage>(message);
             }
             return default(TaskMessage);
         }

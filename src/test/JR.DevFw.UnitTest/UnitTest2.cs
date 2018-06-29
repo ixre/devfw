@@ -55,7 +55,7 @@ namespace UnitTestProject1
                 new[] {db.CreateParameter("@orderNo", orderNo)});
             if (e != null)
             {
-                Console.WriteLine(JsonSerializer.SerializerObject(e));
+                Console.WriteLine(JsonSerializer.SerializeObject(e));
             }
 
         }

@@ -15,7 +15,7 @@ namespace JR.DevFw.Framework.Security
     /// <summary>
     /// Description of Md5Crypto.
     /// </summary>
-    public class Md5CryptoImpl
+    class Md5CryptoImpl
     {
         /// <summary>
         /// 用md5加密

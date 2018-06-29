@@ -51,12 +51,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\Api\ApiClient.cs" />
+    <Compile Include="Framework\Api\ApiUtils.cs" />
     <Compile Include="Framework\InnerAppDomainResolver.cs" />
     <Compile Include="Framework\IO\FileEncoder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Framework\Message.cs" />
     <Compile Include="Framework\Security\AESCryptoImpl.cs" />
+    <Compile Include="Framework\Security\CryptoUtils.cs" />
     <Compile Include="Framework\TypeResolver.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Variable.cs" />

@@ -62,7 +62,7 @@ namespace JR.DevFw.Framework.Extensions
         /// <returns></returns>
         public static string EncodeMD5(this String str)
         {
-            return Md5CryptoImpl.EncodeMD5(str);
+            return CryptoUtils.MD5(str);
         }
 
         /// <summary>
@@ -70,11 +70,21 @@ namespace JR.DevFw.Framework.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
+        [Obsolete("使用MD516()代替")]
         public static string Encode16MD5(this String str)
         {
-            return Md5CryptoImpl.Encode16MD5(str);
+            return MD516(str);
         }
 
+        /// <summary>
+        /// 转换为16位的md5
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string MD516(this String str)
+        {
+            return CryptoUtils.MD516(str);
+        }
 
         /// <summary>
         /// HTML编码
