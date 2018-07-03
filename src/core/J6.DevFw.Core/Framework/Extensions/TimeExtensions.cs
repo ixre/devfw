@@ -11,7 +11,7 @@ namespace System
         /// 获取时间戳  
         /// </summary>  
         /// <returns></returns>  
-        public static string Unix(this DateTime d)
+        public static long Unix(this DateTime d)
         {
             return TimeUtils.Unix(d);
         }
@@ -20,7 +20,7 @@ namespace System
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
-        public static string MilliUnix(DateTime d)
+        public static long MilliUnix(DateTime d)
         {
             return TimeUtils.MilliUnix(d);
         }
@@ -30,7 +30,7 @@ namespace System
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
-        public static String DateUnix(DateTime d)
+        public static long DateUnix(DateTime d)
         {
             return TimeUtils.DateUnix(d);
         }

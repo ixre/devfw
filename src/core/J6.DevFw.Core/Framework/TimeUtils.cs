@@ -21,10 +21,10 @@ namespace JR.DevFw.Framework
         /// 获取时间戳  
         /// </summary>  
         /// <returns></returns>  
-        public static string Unix(DateTime d)
+        public static long Unix(DateTime d)
         {
             TimeSpan ts = d - unixVar;
-            return Convert.ToInt64(ts.TotalSeconds).ToString();
+            return Convert.ToInt64(ts.TotalSeconds);
         }
 
         /// <summary>
@@ -32,10 +32,10 @@ namespace JR.DevFw.Framework
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
-        public static string MilliUnix(DateTime d)
+        public static long MilliUnix(DateTime d)
         {
             TimeSpan ts = d - unixVar;
-            return Convert.ToInt64(ts.Milliseconds).ToString();
+            return Convert.ToInt64(ts.Milliseconds);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace JR.DevFw.Framework
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
-        public static String DateUnix(DateTime d)
+        public static long DateUnix(DateTime d)
         {
             return Unix(d.Date);
         }
