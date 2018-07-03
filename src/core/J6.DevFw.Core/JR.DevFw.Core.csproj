@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Error.cs" />
     <Compile Include="Framework\Api\ApiClient.cs" />
     <Compile Include="Framework\Api\ApiUtils.cs" />
     <Compile Include="Framework\Extensions\TimeExtensions.cs" />
