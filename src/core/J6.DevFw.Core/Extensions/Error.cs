@@ -9,7 +9,7 @@ namespace System
     /// <summary>
     /// 错误
     /// </summary>
-    public class Error:Exception
+    public class Error : Exception
     {
         /// <summary>
         /// 创建新的错误
@@ -27,7 +27,7 @@ namespace System
         /// <returns></returns>
         public static Message ToMessage(Error err)
         {
-            if(err != null)
+            if (err != null)
             {
                 IDictionary<String, String> extra = new Dictionary<String, String>();
                 extra.Add("details", err.StackTrace);
@@ -45,7 +45,8 @@ namespace System
         {
             int code;
             String msg;
-            if (err == null) {
+            if (err == null)
+            {
                 code = 0;
                 msg = "";
             }
@@ -54,10 +55,16 @@ namespace System
                 code = 1;
                 msg = err.Message;
             }
-            String[] arr = new string[] { "{", String.Format("\"err_code\":\"{0}\",\"err_msg\":\"{1}\"", code, err), "}"};
-            return String.Join("",arr);
 
-
+            String[] arr = new string[]
+            {
+                "{\"err_code\":",
+                code.ToString(),
+                ",\"err_msg\":\"",
+                err.Message,
+                "\"}"
+          };
+            return String.Join("", arr);
         }
     }
 }

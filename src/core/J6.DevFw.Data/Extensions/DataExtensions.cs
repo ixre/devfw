@@ -229,20 +229,25 @@ namespace System.Data
         }
         
 
+        /// <summary>
+        /// 转换为实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         public static T ToEntity<T>(this DbDataReader reader) where T : new()
         {
-            T t = new T();
             if (reader.Read())
             {
-                CopyToEntity<T>(reader, t);
+               return CopyToEntity<T>(reader, new T());
             }
-            return t;
+            return default(T);
         }
 
         /// <summary>
         ///将DataReader转换成实体(仅拷贝实体与数据表列名相同的数据,DataReader游标已经指向实体数据对应位置)
         /// </summary>
-        public static void CopyToEntity<T>(this DbDataReader reader, T t)
+        public static T CopyToEntity<T>(this DbDataReader reader, T t)
         {
             //获取表结构
             DataTable schemaTable = reader.GetSchemaTable();
@@ -300,6 +305,7 @@ namespace System.Data
                     break;
                 }
             }
+            return t;
         }
 
 
