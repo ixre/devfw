@@ -10,6 +10,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 
 namespace JR.DevFw.Data
@@ -21,19 +22,31 @@ namespace JR.DevFw.Data
     {
         private DbParameter[] parameters;
         private Object[,] dataArray;
+        private IDictionary<String, Object> dataMap;
 
         public SqlQuery(string sql)
         {
             this.Sql = sql;
             this.parameters = new DbParameter[0] { };
             this.dataArray = null;
+            this.dataMap = null;
+
         }
 
         public SqlQuery(string sql,Object[,] data)
         {
             this.Sql = sql;
             this.parameters = null;
+            this.dataMap = null;
             this.dataArray = data;
+        }
+
+        public SqlQuery(string sql,IDictionary<String,Object> parameters)
+        {
+            this.Sql = sql;
+            this.parameters = null;
+            this.dataMap = parameters;
+            this.dataArray = null;
         }
 
         public SqlQuery(string sql, DbParameter[] parameters)
@@ -41,6 +54,7 @@ namespace JR.DevFw.Data
             this.Sql = sql;
             this.parameters = parameters;
             this.dataArray = null;
+            this.dataMap = null;
         }
 
         /// <summary>
@@ -64,10 +78,18 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public bool Parse(IDbDialect db)
         {
-            if(this.parameters == null && this.dataArray != null)
+            if (this.parameters == null)
             {
-                this.parameters = DataUtil.ToParams(db, this.dataArray);
-                return true;
+                if (this.dataArray != null)
+                {
+                    this.parameters = DataUtil.ToParams(db, this.dataArray);
+                    return true;
+                }
+                if(this.dataMap != null)
+                {
+                    this.parameters = DataUtil.ParameterMapToArray(db, this.dataMap);
+                    return true;
+                }
             }
             return false;
         }

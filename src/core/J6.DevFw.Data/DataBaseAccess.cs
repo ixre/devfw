@@ -27,7 +27,7 @@ namespace JR.DevFw.Data
     public class DataBaseAccess
     {
         private static readonly Object locker = new object();
-        private readonly IDbDialect dbFactory;
+        private readonly IDbDialect dbDialect;
         private static readonly Regex procedureRegex = new Regex("\\s");
         private int _commandTimeout = 30000;
         private IList<Middleware> mwList = new List<Middleware>();
@@ -49,19 +49,19 @@ namespace JR.DevFw.Data
             switch (type)
             {
                 case DataBaseType.OLEDB:
-                    dbFactory = new OleDbFactory(connectionString);
+                    dbDialect = new OleDbFactory(connectionString);
                     break;
                 case DataBaseType.SQLite:
-                    dbFactory = new SQLiteFactory(connectionString);
+                    dbDialect = new SQLiteFactory(connectionString);
                     break;
                 case DataBaseType.MonoSQLite:
-                    dbFactory = new MonoSQLiteFactory(connectionString);
+                    dbDialect = new MonoSQLiteFactory(connectionString);
                     break;
                 case DataBaseType.SQLServer:
-                    dbFactory = new SqlServerFactory(connectionString);
+                    dbDialect = new SqlServerFactory(connectionString);
                     break;
                 case DataBaseType.MySQL:
-                    dbFactory = new MySqlFactory(connectionString);
+                    dbDialect = new MySqlFactory(connectionString);
                     break;
             }
         }
@@ -120,7 +120,7 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         private DbConnection createNewConnection()
         {
-            DbConnection connection = dbFactory.GetConnection();
+            DbConnection connection = dbDialect.GetConnection();
             if (connection.State == ConnectionState.Closed || connection.State == ConnectionState.Broken)
             {
                 connection.Open();
@@ -132,16 +132,16 @@ namespace JR.DevFw.Data
         /// <summary>
         /// 数据库适配器
         /// </summary>
-        public IDbDialect GetAdapter()
+        public IDbDialect GetDialect()
         {
-            return this.dbFactory;
+            return this.dbDialect;
         }
 
       
 
         private DbCommand CreateCommand(string sql)
         {
-            DbCommand cmd = this.dbFactory.CreateCommand(sql);
+            DbCommand cmd = this.dbDialect.CreateCommand(sql);
             cmd.CommandTimeout = this._commandTimeout;
             return cmd;
         }
@@ -175,7 +175,7 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public DbParameter CreateParameter(String name,object value)
         {
-            return this.GetAdapter().CreateParameter(name, value);
+            return this.GetDialect().CreateParameter(name, value);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace JR.DevFw.Data
         [Obsolete]
         public DbParameter[] CreateParametersFromArray(object[,] parameters)
         {
-            return DataUtil.ToParams(this.GetAdapter(), parameters);
+            return DataUtil.ToParams(this.GetDialect(), parameters);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace JR.DevFw.Data
             {
                 try
                 {
-                    result = dbFactory.ExecuteScript(conn,this.ExecuteNonQuery, sql, delimiter);
+                    result = dbDialect.ExecuteScript(conn,this.ExecuteNonQuery, sql, delimiter);
                     this.callMiddleware("ExecuteScript", sql, null, null);
                 }
                 catch (Exception ex)
@@ -405,7 +405,7 @@ namespace JR.DevFw.Data
             {
                 foreach (SqlQuery sql in sqls)
                 {
-                    sql.Parse(this.GetAdapter());
+                    sql.Parse(this.GetDialect());
                     result += this.executeNonQuery(conn,trans,sql);
                 }
                 //this.callMiddleware("提交事务", "", null, null);
@@ -437,7 +437,7 @@ namespace JR.DevFw.Data
         /// <param name="func"></param>
         public void ExecuteReader(SqlQuery sql, DataReaderFunc func)
         {
-            sql.Parse(this.GetAdapter());
+            sql.Parse(this.GetDialect());
             DbConnection conn = this.createNewConnection();
             DbCommand cmd = this.CreateCommand(sql.Sql);
             cmd.Connection = conn;
@@ -471,11 +471,11 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public DataSet GetDataSet(SqlQuery sql)
         {
-            sql.Parse(this.GetAdapter());
+            sql.Parse(this.GetDialect());
             DataSet ds = new DataSet();
             using (DbConnection conn = this.createNewConnection())
             {
-                DbDataAdapter adapter = dbFactory.CreateDataAdapter(conn, sql.Sql);
+                DbDataAdapter adapter = dbDialect.CreateDataAdapter(conn, sql.Sql);
                 if (sql.Parameters != null)
                 {
                     adapter.SelectCommand.Parameters.AddRange(sql.Parameters);
@@ -507,7 +507,7 @@ namespace JR.DevFw.Data
         /// <returns></returns>
         public object ExecuteScalar(SqlQuery sql)
         {
-            sql.Parse(this.GetAdapter());
+            sql.Parse(this.GetDialect());
             DbConnection conn = this.createNewConnection();
             DbCommand cmd = this.CreateCommand(sql.Sql);
             cmd.Connection = conn;
@@ -607,7 +607,7 @@ namespace JR.DevFw.Data
             int i = 0;
             foreach (DictionaryEntry d in data)
             {
-                parameters[i++] = this.GetAdapter().CreateParameter("@" + d.Key, d.Value);
+                parameters[i++] = this.GetDialect().CreateParameter("@" + d.Key, d.Value);
             }
             return parameters;
         }
