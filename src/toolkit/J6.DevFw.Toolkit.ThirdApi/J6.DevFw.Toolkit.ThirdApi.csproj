@@ -153,6 +153,12 @@
       <LastGenOutput>BankRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\J6.DevFw.Core\JR.DevFw.Core.csproj">
+      <Project>{44E05D6C-5B0A-453A-913F-00124D1BF435}</Project>
+      <Name>JR.DevFw.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

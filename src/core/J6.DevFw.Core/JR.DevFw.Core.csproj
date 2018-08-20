@@ -51,7 +51,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\Error.cs" />
     <Compile Include="Framework\Api\ApiClient.cs" />
     <Compile Include="Framework\Api\ApiUtils.cs" />
     <Compile Include="Framework\Extensions\TimeExtensions.cs" />
@@ -59,7 +58,7 @@
     <Compile Include="Framework\IO\FileEncoder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Framework\Message.cs" />
+    <Compile Include="Framework\Result.cs" />
     <Compile Include="Framework\Security\AESCryptoImpl.cs" />
     <Compile Include="Framework\Security\CryptoUtils.cs" />
     <Compile Include="Framework\TimeUtils.cs" />

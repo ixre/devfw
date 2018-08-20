@@ -6,25 +6,25 @@ namespace JR.DevFw.Framework
     /// <summary>
     /// 消息
     /// </summary>
-    public class Message
+    public class Result
     {
         /// <summary>
         /// 错误码,0表示成功
         /// </summary>
-        public int errCode { get; set; }
+        public int ErrCode { get; set; }
         /// <summary>
         /// 错误消息
         /// </summary>
-        public String errMsg { get; set; }
+        public String ErrMsg { get; set; }
         /// <summary>
         /// 数据
         /// </summary>
-        public IDictionary<String, String> data { get; set; }
+        public IDictionary<String, String> Data { get; set; }
 
         /// <summary>
         /// 创建新的消息
         /// </summary>
-        public Message()
+        public Result()
         {
 
         }
@@ -34,11 +34,11 @@ namespace JR.DevFw.Framework
         /// <param name="code"></param>
         /// <param name="msg"></param>
         /// <param name="data"></param>
-        public Message(int code, String msg, IDictionary<String, String> data)
+        public Result(int code, String msg, IDictionary<String, String> data)
         {
-            this.errCode = code;
-            this.errMsg = msg;
-            this.data = data;
+            this.ErrCode = code;
+            this.ErrMsg = msg;
+            this.Data = data;
         }
         /// <summary>
         /// 创建新的消息
@@ -46,12 +46,12 @@ namespace JR.DevFw.Framework
         /// <param name="code"></param>
         /// <param name="msg"></param>
         /// <param name="data"></param>
-        public static Message New(int code, String msg, IDictionary<String, String> data)
+        public static Result New(int code, String msg, IDictionary<String, String> data)
         {
-            Message m = new Message();
-            m.errCode = code;
-            m.errMsg = msg;
-            m.data = data;
+            Result m = new Result();
+            m.ErrCode = code;
+            m.ErrMsg = msg;
+            m.Data = data;
             return m;
         }
     }
