@@ -68,9 +68,9 @@ namespace JR.DevFw.Data
         public static DbParameter[] ParameterMapToArray(IDbDialect d, IDictionary<string, object> paramMap)
         {
             List<DbParameter> parameters = new List<DbParameter>();
-            foreach(KeyValuePair<String,Object> p in paramMap)
+            foreach (KeyValuePair<String, Object> p in paramMap)
             {
-                parameters.Add(d.CreateParameter(p.Key, p.Value));
+                parameters.Add(d.CreateParameter(p.Key, p.Value ?? ""));
             }
             return parameters.ToArray();
         }
