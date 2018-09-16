@@ -3,28 +3,26 @@
 
 echo =======================================
 
-echo = ´úÂëºÏ²¢¹¤¾ß github.com/jsix/devfw =
+echo = project url: github.com/jsix/devfw =
 
 echo =======================================
 
 
-set megdir=%dir%\dll\
 
-if exist "%megdir%merge.exe" (
+dir=$(pwd)
+target="${dir}/dist/jrdev.dll"
+cd dist/dll
 
-  echo Éú³ÉÖĞ,ÇëÉÔµÈ...
-  cd %dir%dist\dll\
-
-echo  /keyfile:%dir%j6.devfw.snk>nul
-
-"%megdir%merge.exe" /closed /keyfile:%dir%/src/core/J6.DevFw.Core/j6.devfw.snk /ndebug /targetplatform:v4 /target:dll /out:%dir%dist\jrdev.dll^
- JR.DevFw.Core.dll JR.DevFw.PluginKernel.dll JR.DevFw.Data.dll JR.DevFw.Template.dll JR.DevFw.Web.dll JR.DevFw.Toolkit.Data.dll
+echo "ç”Ÿæˆåˆ°:${dir}/dist/jrdev.dll"
+	
+../../dll/merge.exe -closed -ndebug \
+	 /keyfile:../../src/core/J6.DevFw.Core/jr.devfw.snk \
+	 /targetplatform:v4 /target:dll /out:../jrdev.dll \
+ 	 JR.DevFw.Core.dll JR.DevFw.PluginKernel.dll JR.DevFw.Data.dll \
+	 JR.DevFw.Template.dll JR.DevFw.Web.dll JR.DevFw.Toolkit.Data.dll
   
 
 
-  echo Íê³É!Êä³öµ½:%dir%dist\jrdev.dll
-
-)
 
 
-pause
+
