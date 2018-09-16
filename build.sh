@@ -16,6 +16,7 @@ cd dist/dll
 echo "生成到:${dir}/dist/jrdev.dll"
 	
 ../../dll/merge.exe -closed -ndebug \
+	 /keyfile:../../src/core/J6.DevFw.Core/jr.devfw.snk \
 	 /targetplatform:v4 /target:dll /out:../jrdev.dll \
  	 JR.DevFw.Core.dll JR.DevFw.PluginKernel.dll JR.DevFw.Data.dll \
 	 JR.DevFw.Template.dll JR.DevFw.Web.dll JR.DevFw.Toolkit.Data.dll
