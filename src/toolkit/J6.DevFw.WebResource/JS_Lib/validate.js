@@ -1,14 +1,16 @@
+
+
 //===================== 验证器(2012-09-30) =====================//
 jr.extend({
     validator: {
         //设置提示
         setTip: function (e, success, summaryKey, msg) {
-            var tipID = e.getAttribute('validate_id');
+            var tipID = e.attr('validate_id');
             //根据键值获取提示信息
             if (summaryKey) {
-                var summary = e.getAttribute('summary');
+                var summary = e.attr('summary');
                 if (summary) {
-                    summary = jr.toJson(summary);
+                    summary = JSON.parse(summary.replace(/'/g, '"'));
                     if (summary[summaryKey]) {
                         msg = summary[summaryKey];
                     }
@@ -16,18 +18,18 @@ jr.extend({
             }
 
             //如果设置了提示信息容器
-            if (e.getAttribute('tipin')) {
-                var tipin = document.getElementById(e.getAttribute('tipin'));
+            if (e.attr('tipin')) {
+                var tipin = jr.$fn("#" + e.attr('tipin'));
                 if (tipin) {
-                    if (tipin.className.indexOf('validator') == -1) {
-                        tipin.className += ' validator';
+                    if (tipin.hasClass('validator')) {
+                        tipin.addClass("validator");
                     }
-                    var tipInId = tipin.getAttribute('valid-src');
-                    if(!success){
-                        tipin.setAttribute('valid-src',tipID);
-                        tipin.innerHTML = '<span class="valid-error"><span class="msg">' + msg + '</span></span>';
-                    }else if(tipInId == tipId){
-                        tipin.innerHTML = '<span class="valid-right"><span class="msg">' + msg + '</span></span>';
+                    var tipInId = tipin.attr('valid-src');
+                    if (!success) {
+                        tipin.attr('valid-src', tipID);
+                        tipin.html('<span class="valid-error"><span class="msg">' + msg + '</span></span>');
+                    } else if (tipInId == tipId) {
+                        tipin.html('<span class="valid-right"><span class="msg">' + msg + '</span></span>');
                     }
                     return false;
                 }
@@ -35,251 +37,198 @@ jr.extend({
 
 
             //未指定提示信息容器,则生成显示的容器
-            var tipEle = document.getElementById(tipID);
-            if (!tipEle) {
-                tipEle = document.createElement('DIV');
-                tipEle.id = tipID;
-                tipEle.className = 'validator';
-
-                var pos = jr.getPosition(e);
-
-                tipEle.style.cssText = 'position:fixed;left:' + (pos.right + document.documentElement.scrollLeft) + 'px;top:'
-                        + (pos.top + document.documentElement.scrollTop) + 'px';
-                document.body.appendChild(tipEle);
+            var tipEle = jr.$fn("#" + tipID);
+            if (tipEle.len() == 0) {
+                var elem = document.createElement('DIV');
+                document.body.appendChild(elem);
+                var pos = jr.getPosition(elem);
+                tipEle = jr.$fn(elem);
+                tipEle.css({
+                    "position": "fixed", "left": (pos.right + document.documentElement.scrollLeft) + "px",
+                    "top": (pos.top + document.documentElement.scrollTop) + 'px'
+                });
+                tipEle.attr("id", tipID);
+                tipEle.attr("className", "validator");
+                //console.log("---", pos, "|", document.documentElement.scrollLeft,
+                //    "|", document.documentElement.clientWidth);
             }
 
             //设置值
-            tipEle.innerHTML = '<span class="' + (success ? 'valid-right' : 'valid-error') + '"><span class="msg">' + msg + '</span></span>';
+            tipEle.html('<span class="' + (success ? 'valid-right' : 'valid-error') +
+                '"><span class="msg">' + msg + '</span></span>');
 
         },
         //移除提示
         removeTip: function (e) {
-
             //如果指定了提示信息容器
-            if (e.getAttribute('tipin')) {
-                var tipin = document.getElementById(e.getAttribute('tipin'));
-                if (tipin) {
-                    tipin.innerHTML = '';
+            if (e.attr('tipin')) {
+                var tipin = jr.$fn("#" + e.attr('tipin'));
+                if (tipin.len() > 0) {
+                    tipin.html("");
                     return false;
                 }
             }
-
             //如果未指定提示信息容器
-            var tipEle = document.getElementById(e.getAttribute('validate_id'));
-            if (tipEle) {
-                document.body.removeChild(tipEle);
+            var tipEle = jr.$fn("#" + e.attr('validate_id'));
+            if (tipEle.len() > 0) {
+                document.body.removeChild(tipEle.elem());
             }
-
         },
         //验证结果
         result: function (id) {
             //指定了父元素
-            if (id) {
-                var isSuccess = true;
-                var ele = document.getElementById(id);
-                jr.each(jr.dom.getsByClass(ele, 'ui-validate'), function (i, e) {
-                    if (isSuccess) {
-                        //获取显示在指定位置的信息
-                        if (e.getAttribute('tipin')) {
-                            if (jr.$(e.getAttribute('tipin')).innerHTML.indexOf('valid-error') != -1) {
-                                isSuccess = false;
-                            }
-                        } else {
-
-                            //获取浮动的信息
-                            e = document.getElementById(e.getAttribute('validate_id'));
-
-                            if (jr.dom.getsByClass(e, 'valid-error').length != 0) {
-                                isSuccess = false;
-                            }
-                        }
-                    }
-                });
-                return isSuccess;
-
-            } else {
-                return jr.dom.getsByClass(document, 'valid-error').length == 0;
+            if (!id) {
+                return jr.$fn(".valid-error").len() == 0;
             }
+            var isSuccess = true;
+            jr.$fn("#" + id + " .ui-validate").each(function (i, e) {
+                if (!isSuccess) return;
+                var tipIn = e.attr("tipin");
+                if (tipIn) {
+                    // 获取显示在指定位置的信息
+                    var c = e.find("#" + tipIn);
+                    if (c.len() > 0 && c.html().indexOf("valid-error") != -1) {
+                        isSuccess = false;
+                    }
+                } else {
+                    // 获取浮动的信息
+                    var c = e.find("#" + e.attr("validate_id"));
+                    if (c.len() > 0 && c.find(".validate-error").len() > 0) {
+                        isSuccess = false;
+                    }
+                }
+            });
+            return isSuccess;
         },
 
         //初始化事件
         init: function () {
-            var $J = j6;
-            if (!$J) {
-                alert('未引用核心库!');
+            var $J = jr;
+            if (!jr) {
+                alert("未引用核心库!");
                 return false;
             }
-
-            var eles = document.getElementsByClassName('ui-validate');
-            var tipID;
-
-            for (var i = 0; i < eles.length; i++) {
-
-                tipID = eles[i].getAttribute('validate_id');
+            var t = this;
+            jr.$fn(".ui-validate").each(function (i, e) {
+                var tipID = e.attr("validate_id");
                 while (tipID == null) {
-                    tipID = eles[i].id;
+                    tipID = e.attr("id");
                     if (tipID && tipID != '') {
                         tipID = 'validate_item_' + tipID;
                     } else {
                         tipID = 'validate_item_' + parseInt(Math.random() * 1000).toString();
                     }
-
                     if (document.getElementById(tipID) != null) {
                         tipID = null;
                     } else {
-                        eles[i].setAttribute('validate_id', tipID);
+                        e.attr('validate_id', tipID);
                     }
                 }
 
-                //验证方法组
-                var validFuncs = new Array();
-
-                //添加本身的事件
-                if (eles[i].onblur) {
-                    validFuncs[validFuncs.length] = eles[i].onblur;
-                }
 
                 //只能输入数字
-                if (eles[i].getAttribute('isnumber') == 'true') {
-
-                    eles[i].style.cssText += 'ime-mode:disabled';
+                if (e.attr('isnumber') == "true") {
+                    e.css({ "ime-mode": "disabled" });
                     var func = (function (validater, e) {
                         return function () {
-                            if (/\D/.test(e.value)) {
-                                e.value = e.value.replace(/\D/g, '');
+                            if (/\D/.test(e.val())) {
+                                e.val(e.val().replace(/\D/g, ''));
                             }
-                            e.value = e.value.replace(/^0([0-9])/, '$1');
+                            e.val(e.val().replace(/^0([0-9])/, '$1'));
                         };
-                    })(this, eles[i]);
-
-                    jr.event.add(eles[i], 'keyup', func);
-                    jr.event.add(eles[i], 'change', func);
+                    })(t, e);
+                    e.keyup(func);
+                    e.change(func);
                 }
-                
-                //只能
-                if (eles[i].getAttribute('isfloat') == 'true') {
-                    eles[i].style.cssText += 'ime-mode:disabled';
+
+                //只能浮点数
+                if (e.attr('isfloat') == 'true') {
+                    e.css({ "ime-mode": "disabled" });
                     var func = (function (validater, e) {
                         return function () {
-                            if (/[^\d\.]/.test(e.value)) {
-                                e.value = e.value.replace(/[^\d\.]/g, '');
+                            if (/[^\d\.]/.test(e.val())) {
+                                e.val(e.val().replace(/[^\d\.]/g, ''));
                             }
-                            //e.value = e.value.replace(/^([0]+|\.*)|[\.0]*$/g,'');
-                            e.value = e.value.replace(/^(0|\.)([0-9]+\.*[0-9]*)/, '$2');
+                            e.val(e.val().replace(/^(0|\.)([0-9]+\.*[0-9]*)/, '$2'));
                         };
-                    })(this, eles[i]);
-
-                    jr.event.add(eles[i], 'keyup', func);
-                    jr.event.add(eles[i], 'change', func);
+                    })(t, e);
+                    e.keyup(func);
+                    e.change(func);
                 }
 
-                //============= 使用正则表达式 ==============/
-                if (eles[i].getAttribute('regex')) {
+                // 使用正则表达式
+                if (e.attr('regex')) {
                     var func = (function (validator, e) {
                         return function () {
                             var reg = new RegExp();
-                            reg.compile(e.getAttribute('regex'));
+                            reg.compile(e.attr('regex'));
                             if (!reg.test(e.value)) {
                                 validator.setTip(e, false, 'regex', '输入不正确');
                             } else {
                                 validator.removeTip(e);
                             }
                         };
-                    })(this, eles[i]);
-
-                    //绑定正则验证事件
-                    validFuncs[validFuncs.length] = func;
-
+                    })(t, eles[i]);
+                    e.blur(func);
+                    e.keyup(func);
                 } else {
-                    //================ 常规校验 =================/
-
-                    //不能为空
-                    if (eles[i].getAttribute('isrequired') == 'true' || eles[i].getAttribute('required') == 'true') {
-                        var func = (function (validator, e) {
+                    // 常规校验
+                    if (e.attr("isrequired") == "true" || e.attr("required") == "true") {
+                        var fn = (function (validator, e) {
                             return function () {
-                                if (e.value.replace(/\s/g, '') == '') {
+                                if (e.val().replace(/\s/g, '') == '') {
                                     validator.setTip(e, false, 'required', '该项不能为空');
                                 } else {
                                     validator.removeTip(e);
                                 }
                             };
-                        })(this, eles[i]);
-
-                        //绑定空值验证事件
-                        validFuncs[validFuncs.length] = func;
+                        })(t, e);
+                        e.blur(fn);
+                        e.keyup(fn);
                     }
 
-
                     //长度限制
-                    if (eles[i].getAttribute('length')) {
-                        var func = (function (validator, e) {
+                    if (e.attr("nodeName") == "INPUT" && e.attr('length') != null) {
+                        var fn = (function (validator, e) {
                             return function () {
-                                var pro_val = e.getAttribute('length');
+                                var pro_val = e.attr('length');
                                 var reg = /\[(\d*),(\d*)\]/ig;
                                 var l_s = parseInt(pro_val.replace(reg, '$1')),
                                     l_e = parseInt(pro_val.replace(reg, '$2'));
-
-                                if (e.value.length < l_s) {
-                                    validator.setTip(e, false, 'length', l_e ? '长度必须为' + l_s + '-' + l_e + '位' : '长度至少' + (l_s ) + '位');
-                                } else if (e.value.length > l_e) {
+                                if (e.val().length < l_s) {
+                                    validator.setTip(e, false, 'length', l_e ? '长度必须为' + l_s + '-' + l_e + '位' : '长度至少' + (l_s) + '位');
+                                } else if (e.val().length > l_e) {
                                     validator.setTip(e, false, 'length', l_s ? '长度必须为' + l_s + '-' + l_e + '位' : '长度超出' + (l_e) + '位');
-                                } else if (e.getAttribute('required') == null || e.value.length > 0) {
+                                } else if (e.attr('required') == null || e.val().length > 0) {
                                     validator.removeTip(e);
                                 }
                             };
-                        })(this, eles[i]);
-
-                        //绑定长度验证事件
-                        validFuncs[validFuncs.length] = func;
+                        })(t, e);
+                        e.blur(fn);
+                        e.keyup(fn);
                     }
-
                 }
+            });
 
-
-                var callFuncs = (function (funcs) {
-                    return function () {
-                        for (var i = 0; i < funcs.length; i++) {
-                            if (funcs[i]) {
-                                //解决变量引用
-                                funcs[i].apply(this, arguments);
-                                // _funcs[i]();
-                            }
-                        }
-                    };
-                })(validFuncs);
-
-                eles[i].onblur = callFuncs;
-
-                //添加keyup
-                // jr.event.add(eles[i], 'keyup', callFuncs);
-            }
         },
 
         validate: function (id) {
             var eles;
             if (id) {
                 //指定了父元素
-                eles = jr.dom.getsByClass(document.getElementById(id), 'ui-validate');
-
+                eles = jr.$fn("#" + id + " .ui-validate");
             } else {
                 //所有元素，未指定父元素
-                eles = jr.dom.getsByClass(document, 'ui-validate');
+                eles = jr.$fn(".ui-validate");
             }
-
-            var chkV = function (e) {
-                return e.getAttribute('required') == "true" ||
-                    e.getAttribute('isrequired') == "true" ||
-                    e.getAttribute('length') ||
-                    e.getAttribute('regex');
-            };
-
-            for (var i = 0; i < eles.length; i++) {
-                if (chkV(eles[i])) {
-                    if (eles[i].onblur) { 
-                        eles[i].onblur();
+            eles.each(function (i, e) {
+                if (e.attr("required") == "true" || e.attr("isrequired") == "true" ||
+                    (e.attr("nodeName") == "INPUT" && e.attr("length")) || e.attr("regex")) {
+                    if (e.elem().onblur != null) {
+                        e.elem().onblur();
                     }
                 }
-            }
+            });
             return this.result(id);
         }
     }

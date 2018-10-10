@@ -1,4 +1,4 @@
-﻿/*--------------------------------------------------|
+/*--------------------------------------------------|
 
 | dTree 2.05 | www.destroydrop.com/javascript/tree/ |
 
@@ -147,31 +147,24 @@ dTree.prototype.add = function (id, pid, name, url, title,value, target, icon, i
 };
 
 dTree.prototype.bind = function (json,completeFunc) {
-    this.add(0, -1, '<b class="title">' + json.text + '</b>', json.url, json.text, '', json.icon);
+    this.add(0, -1, '<b class="title">' + json.title + '</b>', json.url, json.title, '', json.icon);
     var id = 0;
-    var _node = json;
     var _this = this;
 
     var load = function (j, pid) {
-        var childs = j.childs;
-        jr.each(childs, function (i, e) {
-            //e.id = ++id;
-            //e.pid = pid;
-
+        jr.each(j.children, function (i, e) {
             var url = e.url || 'javascript:void(0);';
 			
 			//如果e.icon = "img.gif"这样的，则自动加上路径
 			if(e.icon && e.icon!='' && e.icon.indexOf('/')==-1){
 				e.icon =  _this.config.iconPath + e.icon;
 			}
-            _this.add(++id, pid, e.text, url, '', e.value,'',e.icon, null, e.open);
-            //alert(childs.length + '/' + e.text + '/' + (id) + '/' + (index - 1));
+            _this.add(++id, pid, e.title, url, '', e.value,'',e.icon, null, e.expand);
+            //alert(childs.length + '/' + e.title + '/' + (id) + '/' + (index - 1));
 
             load(e, id);
 
         });
-
-
     };
 
     load(json, 0);
@@ -484,7 +477,7 @@ dTree.prototype.oAll = function (status) {
 
 // Opens the tree to a specific node
 
-dTree.prototype.openTo = function (nId, bSelect, bFirst) {
+dTree.prototype.expandTo = function (nId, bSelect, bFirst) {
 
     if (!bFirst) {
 
@@ -726,25 +719,25 @@ if (!Array.prototype.pop) {
 
 jr.extend({
     tree: {
-        load: function (id, data, resPath, handler,completeFunc) {
+        load: function (id, data, resPath, handler, completeFunc) {
             var rdId = 'tree_' + Math.ceil(Math.random() * 100);
-            var ele = jr.$(id);
+            var ele = jr.$fn("#" + id);
             window[rdId] = new dTree(rdId, resPath);
-            window[rdId].bind(data,completeFunc);
-            ele.innerHTML = window[rdId].toString();
-            
-            if(handler && handler instanceof Function){
-                jr.each(ele.getElementsByTagName('A'),function(i,e){
-                	if(e.className == 'node'){
-                		jr.event.add(e,'click',(function(_e,_v,_t){
-                			return function(){
-                				handler(_e,_v,_t);
-                			};
-                		})(e,e.getAttribute('node-value'),e.innerHTML.replace(/<[>]+>/,'')));
-                	}
+            window[rdId].bind(data, completeFunc);
+            ele.html(window[rdId].toString());
+            if (handler && handler instanceof Function) {
+                ele.find("A").each(function (i, e) {
+                    if (e.hasClass("node")) {
+                        var value = e.attr("node-value");
+                        var txt = e.text();
+                        e.click((function (_e, _v, _t) {
+                            return function () {
+                                handler(_e, _v, _t);
+                            };
+                        })(e, value, txt));
+                    }
                 });
             }
-            
             return window[rdId];
         }
     }

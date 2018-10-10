@@ -51,7 +51,7 @@ function datagrid(ele, config) {
         if (this.columns && this.columns.length != 0) {
             //添加头部
             html += '<div class="ui-datagrid-header"><table width="100%" cellspacing="0" cellpadding="0"><tr>';
-            for (var i in this.columns) {
+            for (var i = 0; i < this.columns.length; i++) {
                 // this.columns_width.push(this.columns[i].width);
                 html += '<td'
                     + (i == 0 ? ' class="first"' : '')
@@ -92,7 +92,7 @@ function datagrid(ele, config) {
                 + (item[this.idField] != null ? ' data-indent="' + item[this.idField] + '"' : '')
                 + '>';
 
-            for (var j in this.columns) {
+            for (var j = 0; j < this.columns.length; j++) {
                 col = this.columns[j];
                 val = item[col.field];
                 html += '<td'
