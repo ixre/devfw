@@ -67,8 +67,15 @@ namespace JR.DevFw.Web
             {
                 if (this._host == null)
                 {
-                    this._host = String.Format("{0}{1}", HttpCtx.Request.Url.Host,
-                        HttpCtx.Request.Url.Port != 80 ? ":" + HttpCtx.Request.Url.Port.ToString() : "");
+                    // 通过Header获取Host
+                    this._host = HttpCtx.Request.Headers.Get("Host");
+                    // 通过ASP.NET方式获取Host
+                    if (String.IsNullOrEmpty(this._host))
+                    {
+                        this._host = String.Format("{0}{1}", HttpCtx.Request.Url.Host,
+                            HttpCtx.Request.Url.Port != 80 ? ":" +
+                            HttpCtx.Request.Url.Port.ToString() : "");
+                    }
                 }
                 return this._host;
             }
@@ -218,12 +225,10 @@ namespace JR.DevFw.Web
                 if (this._domain == null)
                 {
                     HttpRequest request = HttpCtx.Request;
-                    String applicationPath = request.ApplicationPath;
-                    this._domain = String.Format("{0}//{1}{2}{3}",
+                    String appPath = request.ApplicationPath;
+                    this._domain = String.Format("{0}//{1}{2}",
                         request.Url.Scheme == "http" ? "" : request.Url.Scheme + ":",
-                       request.Url.Host,
-                       HttpCtx.Request.Url.Port != 80 ? ":" + request.Url.Port.ToString() : "",
-                       applicationPath == "/" ? "" : applicationPath
+                       this.Host,appPath == "/" ? "" : appPath
                        );
                 }
 
