@@ -77,6 +77,10 @@ namespace JR.DevFw.Template
 
 
                 string partialFilePath = "";
+
+                // 替换注释
+                content = Regex.Replace(content, "<!--[^\\[][\\s\\S]*?-->", String.Empty);
+
                 //读取模板里的部分视图
                 content = TemplateRegexUtility.partialRegex.Replace(content, m =>
                 {
@@ -85,13 +89,12 @@ namespace JR.DevFw.Template
                     return Regex.Replace(m.Value, _path, tplId);
                 });
 
-
                 //替换系统标签
                 content = TemplateRegexUtility.Replace(content, m => { return TemplateCache.Tags[m.Groups[1].Value]; });
 
 
                 //压缩模板代码
-                if (false || Config.EnabledCompress)
+                if (Config.EnabledCompress)
                 {
                     content = TemplateUtility.CompressHtml(content);
                 }
