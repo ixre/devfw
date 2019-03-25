@@ -37,25 +37,31 @@ namespace JR.DevFw.Framework
             this._xdoc = new XmlDocument();
             this._filePath = filePath;
 
-            //不存在，则创建
-            if (!File.Exists(this._filePath))
+            try
             {
-                File.Create(filePath).Dispose();
-                const string initData = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<settings>\r\n</settings>";
+                //不存在，则创建
+                if (!File.Exists(this._filePath))
+                {
+                    File.Create(filePath).Dispose();
+                    const string initData = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<settings>\r\n</settings>";
 
-                byte[] data = Encoding.UTF8.GetBytes(initData);
-                FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read);
-                fs.Write(data, 0, data.Length);
-                fs.Flush();
-                fs.Dispose();
-            }
+                    byte[] data = Encoding.UTF8.GetBytes(initData);
+                    FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read);
+                    fs.Write(data, 0, data.Length);
+                    fs.Flush();
+                    fs.Dispose();
+                }
 
-            //读取文档
-            using (TextReader tr = new StreamReader(this._filePath))
+                //读取文档
+                using (TextReader tr = new StreamReader(this._filePath))
+                {
+                    _xdoc.LoadXml(tr.ReadToEnd());
+                    tr.Dispose();
+                    this._rootNode = _xdoc.SelectSingleNode("/settings");
+                }
+            }catch(Exception ex)
             {
-                _xdoc.LoadXml(tr.ReadToEnd());
-                tr.Dispose();
-                this._rootNode = _xdoc.SelectSingleNode("/settings");
+                throw new IOException(ex.Message + ", File:" + filePath);
             }
         }
 
