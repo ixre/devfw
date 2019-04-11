@@ -25,13 +25,20 @@ namespace JR.DevFw.Framework.Web.UI
         /// 文件名
         /// </summary>
         private readonly string _fileName;
-
+        private readonly bool _autoRename;
         private UploadFileInfo _fileInfo;
 
-        public FileUpload(string saveAbsoluteDir, string fileName)
+        /// <summary>
+        /// 文件上传
+        /// </summary>
+        /// <param name="saveAbsoluteDir">保存目录</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="autoRename">如果文件名存在，是否自动命名</param>
+        public FileUpload(string saveAbsoluteDir, string fileName,bool autoRename)
         {
             this._saveAbsoluteDir = saveAbsoluteDir;
             this._fileName = fileName;
+            this._autoRename = autoRename;
         }
 
         /// <summary>
@@ -43,8 +50,7 @@ namespace JR.DevFw.Framework.Web.UI
             HttpRequest request = HttpContext.Current.Request;
             String baseDir = AppDomain.CurrentDomain.BaseDirectory;
             string[] process = request.Form["upload_process"].Split('|');
-            string processID = process[1],
-                field = process[0];
+            string processID = process[1], field = process[0];
 
             var postedFile = request.Files[field];
             if (postedFile == null)
@@ -53,17 +59,28 @@ namespace JR.DevFw.Framework.Web.UI
             }
             string fileExt = postedFile.FileName.Substring(postedFile.
                 FileName.LastIndexOf('.') + 1); //扩展名
-
-            _fileInfo = new UploadFileInfo
+            InitUplDirectory(baseDir, this._saveAbsoluteDir);
+            this._fileInfo = new UploadFileInfo
             {
                 Id = processID,
                 ContentLength = postedFile.ContentLength,
-                FilePath = String.Format("{0}{1}.{2}", this._saveAbsoluteDir, _fileName, fileExt)
+                FilePath = String.Format("{0}{1}.{2}", this._saveAbsoluteDir, this._fileName, fileExt)
             };
-
-            InitUplDirectory(baseDir, this._saveAbsoluteDir);
-            saveStream(postedFile, baseDir + _fileInfo.FilePath);
-
+            String targetPath = baseDir + this._fileInfo.FilePath;
+            if (!this._autoRename && File.Exists(targetPath))
+            {
+                throw new IOException("文件已存在");
+            }
+            // 自动将重复的名称命名
+            int i = 0;
+            while (File.Exists(targetPath))
+            {
+                i++;
+                this._fileInfo.FilePath = String.Format("{0}{1}_{2}.{3}",
+                    this._saveAbsoluteDir, this._fileName, i.ToString(), fileExt);
+                targetPath = baseDir + this._fileInfo.FilePath;
+            }
+            this.SaveStream(postedFile, targetPath);
             return _fileInfo.FilePath;
         }
 
@@ -77,7 +94,7 @@ namespace JR.DevFw.Framework.Web.UI
             }
         }
 
-        private void saveStream(HttpPostedFile postedFile, string path)
+        private void SaveStream(HttpPostedFile postedFile, string path)
         {
             const int bufferSize = 100; //缓冲区大小
             byte[] buffer = new byte[bufferSize]; //缓冲区
