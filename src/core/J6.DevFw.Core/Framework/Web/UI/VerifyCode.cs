@@ -168,7 +168,7 @@ namespace JR.DevFw.Framework.Web.UI
         /// <returns></returns>
         private Font GetDefaultFont()
         {
-            return new Font(GetFontFamily(), 14, FontStyle.Bold, GraphicsUnit.Pixel);
+            return new Font(GetFontFamily(), 14, FontStyle.Regular, GraphicsUnit.Pixel);
         }
 
         /// <summary>
