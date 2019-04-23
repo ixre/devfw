@@ -133,8 +133,11 @@ namespace JR.DevFw
         /// <param name="classInstance"></param>
         public MicroTemplateEngine(ITemplateClass classInstance)
         {
-            this._classInstance = classInstance;
-            this._classInstance.UpdateEngine(this);
+            if(classInstance != null)
+            {
+                this._classInstance = classInstance;
+                this._classInstance.UpdateEngine(this);
+            }
         }
 
         /// <summary>
