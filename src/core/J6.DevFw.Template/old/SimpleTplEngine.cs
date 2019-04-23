@@ -68,12 +68,7 @@ namespace JR.DevFw.Template
             Regex methodRegex = new Regex(methodPattern); //方法正则
 
             //如果不包括方法,则直接返回
-            if (!methodRegex.IsMatch(html))
-            {
-                return;
-            }
-
-
+            if (!methodRegex.IsMatch(html))return;
             Regex paramRegex = new Regex(paramPattern); //参数正则
 
             Type type = this.classInstance.GetType();
