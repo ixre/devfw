@@ -228,7 +228,7 @@ namespace JR.DevFw.Framework.Web.UI
                 linkUrl = this.Getter.Get(this.CurrentPageIndex, this.PageCount,
                     this.CurrentPageIndex, PagingFlag.Control | PagingFlag.Previous, out linkText);
             }
-            sb.Append(String.Format(@"<span class=""{0}""><a href=""{1}"">{2}</a></span>"
+            sb.Append(String.Format(@"<span class=""it {0}""><a href=""{1}"">{2}</a></span>"
                 , cls, linkUrl, linkText));
 
 
@@ -256,13 +256,13 @@ namespace JR.DevFw.Framework.Web.UI
                     {
                         linkUrl = this.Getter.Get(this.CurrentPageIndex, this.PageCount,
                             j - 1, 0, out linkText);
-                        sb.Append(String.Format(@"<a class=""page"" href=""{1}"">{2}</a>",
+                        sb.Append(String.Format(@"<span  class=""it page""><a href=""{1}"">{2}</a></span>",
                             cls, linkUrl, "..."));
                     }
 
                     //如果为页码为当前页
 
-                    sb.Append("<span class=\"current\">").Append(j.ToString()).Append("</span>");
+                    sb.Append("<span class=\"it current\">").Append(j.ToString()).Append("</span>");
 
 
                     //如果为最后一个页码，则显示下一栏
@@ -271,7 +271,7 @@ namespace JR.DevFw.Framework.Web.UI
                         linkUrl = this.Getter.Get(this.CurrentPageIndex, this.PageCount,
                             j + 1, 0, out linkText);
 
-                        sb.Append(String.Format(@"<a class=""page"" href=""{1}"">{2}</a>",
+                        sb.Append(String.Format(@"<span class=""it page""><a href=""{1}"">{2}</a></a>",
                             cls, linkUrl, "..."));
                     }
                 }
@@ -282,7 +282,7 @@ namespace JR.DevFw.Framework.Web.UI
 
                     linkUrl = this.Getter.Get(this.CurrentPageIndex, this.PageCount,
                         j, 0, out linkText);
-                    sb.Append(String.Format("<a class=\"page\" href=\"{0}\">{1}</a>",
+                    sb.Append(String.Format("<span class=\"it page\"><a href=\"{0}\">{1}</a></span>",
                         linkUrl, linkText));
                 }
             }
@@ -305,7 +305,7 @@ namespace JR.DevFw.Framework.Web.UI
                 linkUrl = this.Getter.Get(this.CurrentPageIndex, this.PageCount,
                     this.CurrentPageIndex, PagingFlag.Control | PagingFlag.Next, out linkText);
             }
-            sb.Append(String.Format(@"<span class=""{0}""><a href=""{1}"">{2}</a></span>"
+            sb.Append(String.Format(@"<span class=""it {0}""><a href=""{1}"">{2}</a></span>"
                 , cls, linkUrl, linkText));
 
 
@@ -317,7 +317,7 @@ namespace JR.DevFw.Framework.Web.UI
 
                 //选页框
                 StringBuilder selectSb = new StringBuilder();
-                selectSb.Append("<select onchange=\"").Append("location.href='")
+                selectSb.Append("<select class=\"page-select\" onchange=\"").Append("location.href='")
                     .Append(linkUrl.Replace("1", "#")).Append("'.replace('#',this.value);").Append("\">");
 
                 if (this.PageCount == 0)
@@ -352,7 +352,7 @@ namespace JR.DevFw.Framework.Web.UI
             //显示信息
             if (this.PagerTotal != null)
             {
-                const string _pagerTotalFormat = @"&nbsp;<span class=""pageinfo"">第{0}/{1}页，共{2}条。</span>";
+                const string _pagerTotalFormat = @"&nbsp;<span class=""page-info"">第{0}/{1}页，共{2}条。</span>";
                 string _pagerTotal = this.PagerTotal;
                 if (_pagerTotal == String.Empty)
                 {
