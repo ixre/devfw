@@ -271,7 +271,7 @@ namespace JR.DevFw.Framework.Web.UI
                         linkUrl = this.Getter.Get(this.CurrentPageIndex, this.PageCount,
                             j + 1, 0, out linkText);
 
-                        sb.Append(String.Format(@"<span class=""it page""><a href=""{1}"">{2}</a></a>",
+                        sb.Append(String.Format(@"<span class=""it page""><a href=""{1}"">{2}</a></span>",
                             cls, linkUrl, "..."));
                     }
                 }
