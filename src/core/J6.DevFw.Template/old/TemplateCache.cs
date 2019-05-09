@@ -13,7 +13,7 @@ namespace JR.DevFw.Template
     /// <summary>
     /// 模板缓存
     /// </summary>
-    public static class TemplateCache
+     static class TemplateCache
     {
         /// <summary>
         /// 模板编号列表
@@ -71,6 +71,31 @@ namespace JR.DevFw.Template
                     FilePath = filePath
                 });
             }
+        }
+
+        /// <summary>
+        /// 是否存在模板
+        /// </summary>
+        /// <param name="templatePath"></param>
+        /// <returns></returns>
+        internal static bool Exists(String templatePath)
+        {
+            return templateDictionary.ContainsKey(templatePath);
+        }
+
+        /// <summary>
+        /// 获取模板的实际路径
+        /// </summary>
+        /// <param name="templatePath"></param>
+        /// <returns></returns>
+        internal static String GetTemplateFilePath(String templatePath)
+        {
+            if (Exists(templatePath))
+            {
+                Template t = templateDictionary[templatePath];
+                return t.FilePath;
+            }
+            return null;
         }
 
         /// <summary>

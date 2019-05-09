@@ -17,11 +17,40 @@ namespace JR.DevFw.Template
     /// </summary>
     public sealed class TemplateUtility
     {
+
+        private static DateTime unixVar = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+
+        /// <summary>  
+        /// 获取时间戳  
+        /// </summary>  
+        /// <returns></returns>  
+        public static int Unix(DateTime d)
+        {
+            TimeSpan ts = d - unixVar;
+            return Convert.ToInt32(ts.TotalSeconds);
+        }
+
         internal static string Read(string templateId)
         {
             //从缓存中获取模板内容
             return TemplateCache.GetTemplateContent(templateId);
         }
+
+
+        /// <summary>
+        /// 从缓存中读取部分模板内容
+        /// </summary>
+        /// <param name="templateId"></param>
+        /// <returns></returns>
+        internal static string ReadPartial(string templateId)
+        {
+            if (!TemplateCache.Exists(templateId))
+            {
+                return String.Format("No such partial file, key:%s", templateId);
+            }
+            return TemplateCache.GetTemplateContent(templateId);
+        }
+
 
         /// <summary>
         /// 使用模板引擎自带的压缩程序压缩代码
@@ -59,7 +88,8 @@ namespace JR.DevFw.Template
             if (String.IsNullOrEmpty(match.Value)) throw new Exception("模版页文件名:" + filePath + "不合法");
 
             string fileName = match.Groups[2].Value;
-            if (!fileName.ToLower().EndsWith(".phtml") && nametype == TemplateNames.FileName)
+            String lowerFileName = fileName.ToLower();
+            if ((!lowerFileName.EndsWith(".part.phtml") && !lowerFileName.EndsWith(".phtml")) && nametype == TemplateNames.FileName)
             {
                 string id = String.Format("{0}{1}",
                     match.Groups[1].Value,
@@ -73,7 +103,6 @@ namespace JR.DevFw.Template
                 return MD5.EncodeTo16(Regex.Replace(fileName, "/|\\\\", String.Empty).ToLower());
             }
         }
-
         /// <summary>
         /// 获取部分模板的编号
         /// </summary>
@@ -224,9 +253,9 @@ namespace JR.DevFw.Template
 
             sb.Append(@"<tr><td colspan=""6"" align=""center"" style=""background:#f0f0f0;color:#333"">
 						部分视图扩展名为“.phtml”,可允许格式如:
-						&nbsp;&nbsp;A:${partial:""inc/header.phtml""}
-						&nbsp;&nbsp;B:${partial:""/tmpdir/inc/header.phtml""}
-						&nbsp;&nbsp;C:${partial:""../../inc/header.phtml""}
+						&nbsp;&nbsp;A:${partial:""inc/header.part.html""}
+						&nbsp;&nbsp;B:${partial:""/tmpdir/inc/header.part.html""}
+						&nbsp;&nbsp;C:${partial:""../../inc/header.part.html""}
 						</td></tr>");
 
             sb.Append(

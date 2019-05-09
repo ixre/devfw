@@ -26,6 +26,12 @@ namespace JR.DevFw.Template
         /// </summary>
         public string FilePath { get; set; }
 
+        
+        /// <summary>
+        /// 最近修改时间
+        /// </summary>
+        public  int LastModify { get;private  set; }
+
         /// <summary>
         /// 模板注释(第一个html注释)
         /// </summary>
@@ -50,6 +56,7 @@ namespace JR.DevFw.Template
             }
         }
 
+        private String content;
 
         /// <summary>
         /// 模板内容
@@ -58,6 +65,7 @@ namespace JR.DevFw.Template
         {
             get
             {
+                /*
                 string content;
                 IDataContrainer dc = new HttpDataContrainer();
 
@@ -69,40 +77,37 @@ namespace JR.DevFw.Template
                 }
 
                 if (String.IsNullOrEmpty(this.FilePath)) throw new ArgumentNullException("模板文件不存在!" + this.FilePath);
-
-                //读取内容并缓存
-                StreamReader sr = new StreamReader(this.FilePath);
-                content = sr.ReadToEnd();
-                sr.Dispose();
-
-
-                string partialFilePath = "";
-
-                // 替换注释
-                content = Regex.Replace(content, "<!--[^\\[][\\s\\S]*?-->", String.Empty);
-
-                //读取模板里的部分视图
-                content = TemplateRegexUtility.partialRegex.Replace(content, m =>
+                */
+                FileInfo fi = new FileInfo(this.FilePath);
+                int lastWriteUnix = TemplateUtility.Unix(fi.LastWriteTime);
+                if (this.content == null || lastWriteUnix > this.LastModify)
                 {
-                    string _path = m.Groups[1].Value;
-                    string tplId = TemplateUtility.GetPartialTemplateId(_path, this.FilePath, out partialFilePath);
-                    return Regex.Replace(m.Value, _path, tplId);
-                });
+                    // 读取内容并缓存
+                    StreamReader sr = new StreamReader(this.FilePath);
+                    string content = sr.ReadToEnd();
+                    sr.Dispose();
+                    string partialFilePath = "";
+                    // 替换注释
+                    content = Regex.Replace(content, "<!--[^\\[][\\s\\S]*?-->", String.Empty);
 
-                //替换系统标签
-                content = TemplateRegexUtility.Replace(content, m => { return TemplateCache.Tags[m.Groups[1].Value]; });
-
-
-                //压缩模板代码
-                if (Config.EnabledCompress)
-                {
-                    content = TemplateUtility.CompressHtml(content);
+                    // 读取模板里的部分视图
+                    content = TemplateRegexUtility.partialRegex.Replace(content, m =>
+                    {
+                        string _path = m.Groups[1].Value;
+                        string tplId = TemplateUtility.GetPartialTemplateId(_path, this.FilePath, out partialFilePath);
+                        return Regex.Replace(m.Value, _path, tplId);
+                    });
+                    // 替换系统标签
+                    content = TemplateRegexUtility.Replace(content, m => { return TemplateCache.Tags[m.Groups[1].Value]; });
+                    // 缓存内容
+                    this.LastModify = lastWriteUnix;
+                    this.content = content;
                 }
-
+                //压缩模板代码
+                if (Config.EnabledCompress) return TemplateUtility.CompressHtml(this.content);
                 //缓存模板
-                if (Config.EnabledCache) dc.SetTemplatePageCacheContent(this.Id, content, this.FilePath);
-
-                return content;
+                //if (Config.EnabledCache) dc.SetTemplatePageCacheContent(this.Id, content, this.FilePath);
+                return this.content;
             }
         }
     }

@@ -12,34 +12,34 @@ using System.Text.RegularExpressions;
 namespace JR.DevFw.Template
 {
     /// <summary>
-    /// 模板注册
+    /// 模板仓储
     /// </summary>
-    public class TemplateRegister
+    public class TemplateRegistry
     {
         private DirectoryInfo directory;
-        private TemplateNames nametype;
+        private TemplateNames nameType;
 
         /// <summary>
         /// 注册模板时发生
         /// </summary>
         public event TemplateBehavior OnRegister;
 
-        public TemplateRegister(string directoryPath, TemplateNames nametype)
+        public TemplateRegistry(string directoryPath, TemplateNames nametype)
         {
-            this.nametype = nametype;
+            this.nameType = nametype;
             this.directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + directoryPath);
             if (!this.directory.Exists) throw new DirectoryNotFoundException("模版文件夹不存在!");
         }
 
-        public TemplateRegister(string directoryPath)
+        public TemplateRegistry(string directoryPath)
         {
             this.directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + directoryPath);
             if (!this.directory.Exists) throw new DirectoryNotFoundException("模版文件夹不存在!");
         }
 
-        public TemplateRegister(DirectoryInfo templateDirectory, TemplateNames nametype)
+        public TemplateRegistry(DirectoryInfo templateDirectory, TemplateNames nameType)
         {
-            this.nametype = nametype;
+            this.nameType = nameType;
             this.directory = templateDirectory;
             if (!this.directory.Exists) throw new DirectoryNotFoundException("模版文件夹不存在!");
         }
@@ -50,22 +50,32 @@ namespace JR.DevFw.Template
         public void Register()
         {
             //注册模板
-            RegisterTemplates(directory, this.nametype);
+            RegisterTemplates(directory, this.nameType);
 
             //触发注册模板事件
             if (OnRegister != null) OnRegister();
         }
 
+        /// <summary>
+        /// 是否存在模板
+        /// </summary>
+        /// <param name="templatePath"></param>
+        /// <returns></returns>
+        public static bool Exists(String templatePath)
+        {
+            return TemplateCache.Exists(templatePath);
+        }
+
         //递归方式注册模板
-        private static void RegisterTemplates(DirectoryInfo dir, TemplateNames nametype)
+        private static void RegisterTemplates(DirectoryInfo dir, TemplateNames nameType)
         {
             // tml 为模板文件，防止可以被直接浏览
-            Regex allowExt = new Regex("(.html|.tml|.phtml)$", RegexOptions.IgnoreCase);
+            Regex allowExt = new Regex("(.html|.part.html|.phtml)$", RegexOptions.IgnoreCase);
             foreach (FileInfo file in dir.GetFiles())
             {
                 if (allowExt.IsMatch(file.Extension))
                 {
-                    TemplateCache.RegisterTemplate(TemplateUtility.GetTemplateId(file.FullName, nametype), file.FullName);
+                    TemplateCache.RegisterTemplate(TemplateUtility.GetTemplateId(file.FullName, nameType), file.FullName);
                 }
             }
             foreach (DirectoryInfo _dir in dir.GetDirectories())
@@ -73,7 +83,7 @@ namespace JR.DevFw.Template
                 //如果文件夹是可见的
                 if ((_dir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
                 {
-                    RegisterTemplates(_dir, nametype);
+                    RegisterTemplates(_dir, nameType);
                 }
             }
         }

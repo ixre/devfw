@@ -63,12 +63,12 @@
     <Compile Include="old\ITemplateVariableObject.cs" />
     <Compile Include="old\MD5.cs" />
     <Compile Include="old\NormalDataContrainer.cs" />
+    <Compile Include="old\TemplateRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="old\SimpleTplEngine.cs" />
     <Compile Include="old\TemplateCache.cs" />
     <Compile Include="old\ITemplate.cs" />
     <Compile Include="old\TemplateNames.cs" />
-    <Compile Include="old\TemplateRegister.cs" />
     <Compile Include="old\TemplateAttribute.cs" />
     <Compile Include="old\TemplateUtility.cs" />
     <Compile Include="old\TemplateRegexUtility.cs" />

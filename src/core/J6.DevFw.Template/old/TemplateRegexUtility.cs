@@ -14,7 +14,7 @@ namespace JR.DevFw.Template
         private static readonly Regex tagRegex = new Regex("\\${([a-zA-Z\u4e00-\u9fa5\\._]+)}");
 
         //部分页匹配模式
-        internal static Regex partialRegex = new Regex("\\${partial:\"(.+?)\"}");
+        internal static Regex partialRegex = new Regex("\\${(partial|include):\"(.+?)\"}");
 
         public static string Replace(string templateID, string tagKey, string tagValue)
         {
@@ -62,22 +62,19 @@ namespace JR.DevFw.Template
         /// <returns></returns>
         internal static string ReplacePartial(string html)
         {
-            //匹配的部分视图编号
-            string matchValue;
-
             //如果包含部分视图，则替换成部分视图的内容
             if (partialRegex.IsMatch(html))
             {
                 //替换模板里的部分视图，并将内容添加到模板内容中
-                html = Regex.Replace(html, "\\${partial:\"(.+?)\"}", match =>
+                html = partialRegex.Replace(html, match =>
                 {
-                    matchValue = match.Groups[1].Value;
+                    // 匹配的部分视图编号
+                    string matchValue = match.Groups[2].Value;
                     return Regex.IsMatch(matchValue, "^[a-z0-9]+$", RegexOptions.IgnoreCase)
-                        ? TemplateUtility.Read(match.Groups[1].Value)
+                        ? TemplateUtility.ReadPartial(match.Groups[1].Value)
                         : match.Value;
                 });
             }
-
             //返回替换部分视图后的内容
             return html;
         }
