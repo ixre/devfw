@@ -51,7 +51,6 @@ namespace JR.DevFw.Template
         {
             //注册模板
             RegisterTemplates(directory, this.nameType);
-
             //触发注册模板事件
             if (OnRegister != null) OnRegister();
         }
@@ -75,6 +74,7 @@ namespace JR.DevFw.Template
             {
                 if (allowExt.IsMatch(file.Extension))
                 {
+                   // Console.WriteLine("---" + file.FullName);
                     TemplateCache.RegisterTemplate(TemplateUtility.GetTemplateId(file.FullName, nameType), file.FullName);
                 }
             }

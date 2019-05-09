@@ -33,7 +33,7 @@ namespace JR.DevFw.Template
         internal static string Read(string templateId)
         {
             //从缓存中获取模板内容
-            return TemplateCache.GetTemplateContent(templateId);
+            return TemplateCache.GetTemplateContent(templateId.ToLower());
         }
 
 
@@ -44,11 +44,11 @@ namespace JR.DevFw.Template
         /// <returns></returns>
         internal static string ReadPartial(string templateId)
         {
-            if (!TemplateCache.Exists(templateId))
+            if (TemplateCache.Exists(templateId))
             {
-                return String.Format("No such partial file, key:%s", templateId);
+                return TemplateCache.GetTemplateContent(templateId);
             }
-            return TemplateCache.GetTemplateContent(templateId);
+            return null;
         }
 
 
@@ -86,39 +86,35 @@ namespace JR.DevFw.Template
         {
             Match match = Regex.Match(filePath, "templates(/|\\\\)+#*(.+?)$", RegexOptions.IgnoreCase);
             if (String.IsNullOrEmpty(match.Value)) throw new Exception("模版页文件名:" + filePath + "不合法");
-
             string fileName = match.Groups[2].Value;
             String lowerFileName = fileName.ToLower();
-            if ((!lowerFileName.EndsWith(".part.phtml") && !lowerFileName.EndsWith(".phtml")) && nametype == TemplateNames.FileName)
-            {
-                string id = String.Format("{0}{1}",
-                    match.Groups[1].Value,
-                    match.Groups[2].Value)
-                    .Replace('\\', '/');
-
-                return id.Substring(0, id.LastIndexOf('.'));
-            }
-            else
+            if (lowerFileName.EndsWith(".part.html") || lowerFileName.EndsWith(".phtml") || nametype == TemplateNames.ID)
             {
                 return MD5.EncodeTo16(Regex.Replace(fileName, "/|\\\\", String.Empty).ToLower());
             }
+            string id = String.Format("{0}{1}",
+                match.Groups[1].Value,
+                match.Groups[2].Value)
+                .Replace('\\', '/');
+            return id.Substring(0, id.LastIndexOf('.')).ToLower();
         }
         /// <summary>
         /// 获取部分模板的编号
         /// </summary>
-        /// <param name="_path"></param>
-        /// <param name="tmpPath"></param>
+        /// <param name="partPath"></param>
+        /// <param name="filePath"></param>
+        /// <param name="partialFilePath"></param>
         /// <returns></returns>
-        internal static string GetPartialTemplateId(string _path, string tmpPath, out string partialFilePath)
+        internal static string GetPartialTemplateId(string partPath, string filePath, out string partialFilePath)
         {
-            string _filepath = tmpPath;
-            string _filename = _path;
+            string _filepath = filePath;
+            string _filename = partPath;
 
             //
             // inc/header.html
             //
 
-            if (!_path.StartsWith("/"))
+            if (!partPath.StartsWith("/"))
             {
                 DirectoryInfo p_wrap = null,
                     p_par = null,
@@ -126,10 +122,10 @@ namespace JR.DevFw.Template
 
 
                 //exsample path: ../../inc/top.phtml
-                if (Regex.IsMatch(_path, "^\\.\\./"))
+                if (Regex.IsMatch(partPath, "^\\.\\./"))
                 {
                     Regex pathRegex = new Regex("\\.\\./");
-                    int dirlayer = pathRegex.Matches(_path).Count;
+                    int dirlayer = pathRegex.Matches(partPath).Count;
                     _filename = pathRegex.Replace(_filename, String.Empty);
 
                     int i = 0;
@@ -180,12 +176,7 @@ namespace JR.DevFw.Template
                     } while (String.Compare(p_par.Name, "templates", true) != 0);
                 }
             }
-
-            //
-            //TODO:测试
-            //
             partialFilePath = _filename;
-
             return MD5.EncodeTo16(Regex.Replace(_filename, "/|\\\\", String.Empty).ToLower());
         }
 

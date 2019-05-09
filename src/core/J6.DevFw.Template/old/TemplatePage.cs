@@ -153,7 +153,6 @@ namespace JR.DevFw.Template
             {
                 //读取内容
                 _templateHtml = TemplateUtility.Read(_templateId);
-
                 //替换部分视图
                 _templateHtml = TemplateRegexUtility.ReplacePartial(_templateHtml);
             }
@@ -178,7 +177,6 @@ namespace JR.DevFw.Template
 
             //替换自定义变量
             IDictionary<string, object> defineVars = dc.GetDefineVariable();
-
             if (defineVars != null && defineVars.Count != 0)
             {
                 foreach (string key in defineVars.Keys)

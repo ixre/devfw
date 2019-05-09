@@ -105,26 +105,11 @@ namespace JR.DevFw.Template
         /// <returns></returns>
         internal static string GetTemplateContent(string templateID)
         {
-            string _templateID = templateID.ToLower();
-
-            if (templateDictionary.ContainsKey(_templateID))
+            if (templateDictionary.ContainsKey(templateID))
             {
-                return templateDictionary[_templateID].Content;
+                return templateDictionary[templateID].Content;
             }
-            //throw new ArgumentNullException("TemplateID", String.Format("模板{0}不存在,ID:", templateID));
             throw new ArgumentNullException("TemplateID", String.Format("模板{0}不存在。", templateID));
         }
-
-        /// <summary>
-        /// 清除所有模板缓存
-        /// </summary>
-        //internal static void Clear()
-        //{
-        //    templateDictionary = null;
-        //    foreach (System.Collections.DictionaryEntry k in HttpRuntime.Cache)
-        //    {
-        //        if (k.Key.ToString().StartsWith("tpl_")) HttpRuntime.Cache.Remove(k.Key.ToString());
-        //    }
-        //}
     }
 }

@@ -33,7 +33,7 @@ namespace JR.DevFw.Template
             //取32位的中间部分
             var md5 = System.Security.Cryptography.MD5.Create();
             return BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(str)), 4, 8)
-                .Replace("-", String.Empty);
+                .Replace("-", String.Empty).ToLower();
         }
     }
 }

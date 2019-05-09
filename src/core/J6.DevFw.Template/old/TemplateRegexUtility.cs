@@ -5,6 +5,7 @@
 // Create:2011/06/05
 //
 
+using System;
 using System.Text.RegularExpressions;
 
 namespace JR.DevFw.Template
@@ -15,11 +16,8 @@ namespace JR.DevFw.Template
 
         //部分页匹配模式
         internal static Regex partialRegex = new Regex("\\${(partial|include):\"(.+?)\"}");
-
-        public static string Replace(string templateID, string tagKey, string tagValue)
-        {
-            return null;
-        }
+        // 部分面ID匹配模式
+        private static Regex partialIdRegexp = new Regex("^[a-z0-9]+$", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// 替换模板数据
@@ -30,7 +28,6 @@ namespace JR.DevFw.Template
         internal static string ReplaceTemplate(string templateID, MatchEvaluator eval)
         {
             string html = TemplateUtility.Read(templateID);
-
             return TemplateRegexUtility.Replace(html, eval);
         }
 
@@ -70,9 +67,15 @@ namespace JR.DevFw.Template
                 {
                     // 匹配的部分视图编号
                     string matchValue = match.Groups[2].Value;
-                    return Regex.IsMatch(matchValue, "^[a-z0-9]+$", RegexOptions.IgnoreCase)
-                        ? TemplateUtility.ReadPartial(match.Groups[1].Value)
-                        : match.Value;
+                    string[] arr = matchValue.Split('@');
+                    //Console.WriteLine("---" + arr[0]);
+                    if (partialIdRegexp.IsMatch(arr[0]))
+                    {
+                        //Console.WriteLine("---" + arr[1]);
+                        string content = TemplateUtility.ReadPartial(arr[0]);
+                        if (content != null) return content;
+                    }
+                    return String.Format("No such partial file \"{0}\"", matchValue);
                 });
             }
             //返回替换部分视图后的内容

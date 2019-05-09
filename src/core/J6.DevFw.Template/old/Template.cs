@@ -86,23 +86,22 @@ namespace JR.DevFw.Template
                     StreamReader sr = new StreamReader(this.FilePath);
                     string content = sr.ReadToEnd();
                     sr.Dispose();
-                    string partialFilePath = "";
                     // 替换注释
                     content = Regex.Replace(content, "<!--[^\\[][\\s\\S]*?-->", String.Empty);
-
                     // 读取模板里的部分视图
+                    string partialFilePath = "";
                     content = TemplateRegexUtility.partialRegex.Replace(content, m =>
                     {
-                        string _path = m.Groups[1].Value;
+                        string _path = m.Groups[2].Value;
                         string tplId = TemplateUtility.GetPartialTemplateId(_path, this.FilePath, out partialFilePath);
-                        return Regex.Replace(m.Value, _path, tplId);
+                        return m.Value.Replace(_path, tplId + "@" + partialFilePath);
                     });
-                    // 替换系统标签
-                    content = TemplateRegexUtility.Replace(content, m => { return TemplateCache.Tags[m.Groups[1].Value]; });
                     // 缓存内容
                     this.LastModify = lastWriteUnix;
                     this.content = content;
                 }
+                // 替换系统标签
+                content = TemplateRegexUtility.Replace(content, m => { return TemplateCache.Tags[m.Groups[1].Value]; });
                 //压缩模板代码
                 if (Config.EnabledCompress) return TemplateUtility.CompressHtml(this.content);
                 //缓存模板
