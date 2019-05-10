@@ -144,7 +144,7 @@ namespace JR.DevFw
         /// 数据列正则
         /// </summary>
         //private static Regex fieldRegex = new Regex("{([A-Za-z\\[\\]0-9_\u4e00-\u9fa5]+)}");
-        private static Regex fieldRegex = new Regex("{([A-Za-z][^}]+?)}");
+        private static Regex fieldRegex = new Regex("{([A-Za-z\u4e00-\u9fa5]+[^}]+?)}");
         //方法正则
         private static Regex fnRegex = new Regex("\\$([A-Za-z_0-9\u4e00-\u9fa5]+)\\(([^)]*)\\)");
         //参数正则
