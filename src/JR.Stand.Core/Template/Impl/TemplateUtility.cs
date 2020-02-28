@@ -9,7 +9,6 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using JR.DevFw.Template;
 
 namespace JR.Stand.Core.Template.Impl
 {
@@ -184,7 +183,7 @@ namespace JR.Stand.Core.Template.Impl
         /// <summary>
         /// 显示模板信息到页面
         /// </summary>
-        public static void PrintTemplatesInfo()
+        public static string GetTemplatePagesHTML()
         {
             string templateContent = Embed.SysTemplatePage;
             StringBuilder sb = new StringBuilder();
@@ -266,10 +265,7 @@ namespace JR.Stand.Core.Template.Impl
                 }
                 return String.Empty;
             });
-
-            System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
-            response.Write(TemplateUtility.CompressHtml(templateContent));
-            response.End();
+            return CompressHtml(templateContent);
         }
     }
 }

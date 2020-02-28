@@ -3,9 +3,14 @@ using System.Collections.Generic;
 
 namespace JR.Stand.Core.Template.Impl
 {
-    internal class NormalDataContrainer : IDataContrainer
+    internal class NormalDataContrainer : IDataContainer
     {
         private IDictionary<string, object> varDict;
+
+        public IDataAdapter GetAdapter()
+        {
+            throw new NotImplementedException();
+        }
 
         public string GetTemplatePageCacheContent(string templateID)
         {

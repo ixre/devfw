@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 
 namespace JR.Stand.Core.Template.Impl
 {
-    public delegate string EvalVariableFunc(string varType,string varKey);
     public sealed class Eval
     {
         /// <summary>
@@ -28,7 +27,7 @@ namespace JR.Stand.Core.Template.Impl
         /// 赋值到变量
         /// $v = form('key')
         /// </summary>
-        private static string SetToVariable(IDataContrainer dc, string content,EvalVariableFunc f)
+        private static string SetToVariable(IDataContainer dc, string content)
         {
             //正则模式，支持以下
             // //$menu="123456\" f" sdf
@@ -61,22 +60,23 @@ namespace JR.Stand.Core.Template.Impl
                     valueMatch = Regex.Match(varValue, specialVarPattern, RegexOptions.IgnoreCase);
                     varKey = valueMatch.Groups[2].Value;
                     var varType = valueMatch.Groups[1].Value.ToLower();
-                    dc.DefineVariable(varName,f(varType,varKey));
-                    // switch (valueMatch.Groups[1].Value.ToLower())
-                    // {
-                    //     case "item":
-                    //         dc.DefineVariable(varName, HttpContext.Current.Items[varKey]);
-                    //         break;
-                    //     case "cache":
-                    //         dc.DefineVariable(varName, HttpRuntime.Cache[varKey]);
-                    //         break;
-                    //     case "query":
-                    //         dc.DefineVariable(varName, HttpContext.Current.Request[varKey]);
-                    //         break;
-                    //     case "form":
-                    //         dc.DefineVariable(varName,HttpContext.Current.Request.Form[varKey]);
-                    //         break;
-                    // }
+                    object value = "";
+                    switch (valueMatch.Groups[1].Value.ToLower())
+                    {
+                        case "item":
+                            value = dc.GetAdapter().GetItem(varKey);
+                            break;
+                        case "cache":
+                            value = dc.GetAdapter().GetCache(varKey);
+                            break;
+                        case "query":
+                            value = dc.GetAdapter().GetQueryParam(varKey);
+                            break;
+                        case "form":
+                            value = dc.GetAdapter().GetFormParam(varKey);
+                            break;
+                    }
+                    dc.DefineVariable(varName,value);
                 }
                 else
                 {
@@ -130,7 +130,7 @@ namespace JR.Stand.Core.Template.Impl
         /// <param name="data"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        public static string EvalMethodToVar(IDataContrainer dc, string content, object data)
+        public static string EvalMethodToVar(IDataContainer dc, string content, object data)
         {
             //正则模式，支持以下
             // //$menu="123456\" f" sdf
@@ -226,7 +226,7 @@ namespace JR.Stand.Core.Template.Impl
         /// <param name="content"></param>
         /// <returns></returns>
         [Obsolete]
-        public static string EntityVariable(IDataContrainer dc, string content)
+        public static string EntityVariable(IDataContainer dc, string content)
         {
             //正则模式，支持以下
             // //$menu="123456\" f" sdf
@@ -271,11 +271,11 @@ namespace JR.Stand.Core.Template.Impl
         }
 
 
-        public static string Compile(IDataContrainer dc, string html, EvalVariableFunc f, object data)
+        public static string Compile(IDataContainer dc, string html,object data)
         {
             string outHtml;
             //======= 设置变量 ======//
-            outHtml = SetToVariable(dc, html,f);
+            outHtml = SetToVariable(dc, html);
             //======= 求方法 =======//
             if (data != null)
             {

@@ -30,7 +30,7 @@ namespace JR.Stand.Core.Template.Impl
 
 
         private string _templateId;
-        private IDataContrainer dc;
+        private IDataContainer dc;
 
         /// <summary>
         /// 模板数据
@@ -42,17 +42,17 @@ namespace JR.Stand.Core.Template.Impl
         /// <summary>
         /// 
         /// </summary>
-        public TemplatePage(IDataContrainer container)
+        public TemplatePage(IDataContainer container)
         {
             this.dc = container;
         }
 
-        public TemplatePage(string templateId,IDataContrainer container):this(container)
+        public TemplatePage(string templateId,IDataContainer container):this(container)
         {
             this._templateId = templateId;
         }
 
-        public TemplatePage(string templateId,IDataContrainer container, object templateData)
+        public TemplatePage(string templateId,IDataContainer container, object templateData)
             : this(templateId,container)
         {
             this.AddDataObject(templateData);
@@ -136,7 +136,7 @@ namespace JR.Stand.Core.Template.Impl
 
         public override string ToString()
         {
-            return TemplateHtml();
+            return CompileString();
         }
 
         private string CompileString()

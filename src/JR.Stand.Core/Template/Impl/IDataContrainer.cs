@@ -17,6 +17,7 @@ namespace JR.Stand.Core.Template.Impl
         object GetItem(string key);
         void SetItem(string key, object value);
         object GetCache(string key);
+
         /// <summary>
         /// 写入缓存
         /// </summary>
@@ -24,7 +25,21 @@ namespace JR.Stand.Core.Template.Impl
         /// <param name="value">值</param>
         /// <param name="duration">时间间隔(单位：秒)</param>
         /// <param name="dependFileName">缓存依赖文件路径</param>
-        void InsertCache(string key, object value, int duration,string dependFileName);
+        void InsertCache(string key, object value, int duration, string dependFileName);
+
+        /// <summary>
+        ///  获取查询参数
+        /// </summary>
+        /// <param name="varKey"></param>
+        /// <returns></returns>
+        string GetQueryParam(string varKey);
+
+        /// <summary>
+        /// 获取表单参数
+        /// </summary>
+        /// <param name="varKey"></param>
+        /// <returns></returns>
+        string GetFormParam(string varKey);
     }
 
     /// <summary>
